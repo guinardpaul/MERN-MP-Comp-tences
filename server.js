@@ -10,7 +10,7 @@ const cors = require('cors');
 const nodemailer = require('nodemailer');
 const passport = require('passport');
 require('./app/config/passport')(passport);
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 4000;
 
 // Changer config file in environment mode
 const config = require('./app/config/config.dev');
@@ -46,7 +46,7 @@ app.use(favicon(path.join(__dirname, config.favicon_path, config.favicon)));
 // app.use(favicon(path.join(__dirname, 'dist', 'favicon.ico')))
 
 // Allows cross origin in development only
-app.use(cors({ origin: 'http://localhost:4200' }));
+app.use(cors(config.cors_origin));
 // app.use(cors({ origin: 'http://gp-suivifact.herokuapp.com/' }));
 // body-parser
 app.use(bodyParser.json());

@@ -4,9 +4,9 @@ module.exports = {
   uri: 'mongodb://localhost:27017/MP-Competences',
   options: { useMongoClient: true },
   db: 'MP-Competences',
-  favicon_path: 'public/src',
+  favicon_path: 'client/public',
   favicon: 'favicon.ico',
-  cors_origin: { origin: 'http://localhost:4200' },
-  static_path: 'dist',
+  cors_origin: { origin: 'http://localhost:3000' },
+  static_path: 'client/build', // TODO: change static path/file
   static_file: 'index.html'
 };
