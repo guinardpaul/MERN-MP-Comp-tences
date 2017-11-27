@@ -5,6 +5,16 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# Project folder
+/MP-CT
+
+# Auth Secret
+secret.js
+
+# Database
+*.mwb
+*.bak
+
 # Runtime data
 pids
 *.pid
