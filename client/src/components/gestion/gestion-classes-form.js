@@ -1,32 +1,61 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Classe } from '../../models/classe';
-
+// TODO: Controlled forms
 class GestionClassesForm extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      classe: Classe,
+      classe: { nom_classe: '', cycle: '' },
       cycles: ['Cycle 3', 'Cycle 4']
     };
 
     this.addClasse = this.addClasse.bind(this);
+    this.handleChangeNomClasse = this.handleChangeNomClasse.bind(this);
+    this.handleChangeCycle = this.handleChangeCycle.bind(this);
     this.onCancel = this.onCancel.bind(this);
   }
 
   componentDidMount() {
-    this.setState({
+    if (this.props.classe) {
+      this.setState({
+        classe: { nom_classe: this.props.classe.nom_classe, cycle: this.props.classe.cycle }
+      });
+    }
+    /* this.setState({
       classe: this.props.classe
+    }); */
+  }
+
+  addClasse(event) {
+    event.preventDefault();
+    if (this.state.classe.nom_classe !== '' && this.state.classe.cycle !== '') {
+      this.props.onFormSubmit(this.state.classe);
+      this.setState({
+        classe: { nom_classe: '', cycle: '' }
+      });
+    }
+  }
+
+  handleChangeNomClasse(event) {
+    const newState = this.state.classe;
+    this.setState({
+      classe: {
+        nom_classe: event.target.value,
+        cycle: newState.cycle
+      }
     });
   }
 
-  addClasse() {
-    /* this.setState({
-      classe:{
-
+  handleChangeCycle(event) {
+    const newState = this.state.classe;
+    this.setState({
+      classe: {
+        nom_classe: newState.nom_classe,
+        cycle: event.target.value
       }
-    }) */
+    });
   }
 
   onCancel() {
@@ -46,11 +75,13 @@ class GestionClassesForm extends Component {
             <div className="panel-body">
               <div className="form-group">
                 <label htmlFor="nom_classe">Nom classe :</label>
-                <input type="text" className="form-control" name="nom_classe" id="nom_classe" value={this.props.classe.nom_classe} autoFocus required />
+                <input type="text" className="form-control" name="nom_classe" id="nom_classe" value={this.state.classe.nom_classe}
+                  onChange={this.handleChangeNomClasse} autoFocus required />
               </div>
 
               <div className="form-group">
-                <select className="form-control" name="selectedCycle" id="selectedCycle">
+                <select className="form-control" name="cycle" id="cycle" value={this.state.classe.cycle}
+                  onChange={this.handleChangeCycle}>
                   <option value="">Cycles</option>
                   {options}
                 </select>

@@ -21,6 +21,7 @@ class GestionClasses extends Component {
     };
 
     this.displayForm = this.displayForm.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
     this.handleUpdate = this.handleUpdate.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
     this.onCancelForm = this.onCancelForm.bind(this);
@@ -49,6 +50,16 @@ class GestionClasses extends Component {
       updateForm: false,
       classe: Classe
     });
+  }
+
+  handleSubmit(classe) {
+    console.log(classe);
+    const newState = this.state.classes;
+    newState.push(classe);
+    this.setState({
+      classes: newState
+    });
+    console.log(this.state);
   }
 
   handleUpdate(obj) {
@@ -80,6 +91,7 @@ class GestionClasses extends Component {
     let classeForm;
     if (this.state.addForm) {
       classeForm = <GestionClassesForm
+        onFormSubmit={this.handleSubmit}
         styleForm="panel-info"
         headingForm="Création classe"
         buttonStyle="btn btn-success"
@@ -89,6 +101,7 @@ class GestionClasses extends Component {
       />
     } else if (this.state.updateForm) {
       classeForm = <GestionClassesForm
+        onFormSubmit={this.handleSubmit}
         styleForm="panel-warning"
         headingForm="Modification classe"
         buttonStyle="btn btn-warning"
