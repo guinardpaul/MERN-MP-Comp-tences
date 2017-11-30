@@ -9,7 +9,7 @@ class GestionClasses extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      classes: [Classe],
+      classes: [],
       classe: Classe,
       classesHeader: ['Nom classe', 'Cycle', 'Actions'],
       tableStyle: 'table table-striped',
@@ -27,7 +27,7 @@ class GestionClasses extends Component {
     this.onCancelForm = this.onCancelForm.bind(this);
   }
 
-  componentDidMount() {
+  componentWillMount() {
     fetch('http://localhost:4000/api/classes', {
       method: 'GET'
     })
@@ -57,12 +57,15 @@ class GestionClasses extends Component {
     const newState = this.state.classes;
     newState.push(classe);
     this.setState({
-      classes: newState
+      classes: newState,
+      addForm: false,
+      updateForm: false
     });
     console.log(this.state);
   }
 
   handleUpdate(obj) {
+    console.log(obj);
     this.setState({
       updateForm: true,
       addForm: false,
@@ -111,6 +114,22 @@ class GestionClasses extends Component {
       />
     }
 
+    let data;
+    if (this.state.classes.length > 0) {
+      data = <Tableau
+        onUpdate={this.handleUpdate}
+        onDelete={this.handleDelete}
+        listHeaders={this.state.classesHeader}
+        listBody={this.state.classes}
+        listKey={this.state.itemKey}
+        tableStyle={this.state.tableStyle}
+        rowStyle={this.state.rowStyle}
+        consulterButton={this.state.consulterButton}
+      />
+    } else {
+      data = <p>No data to display</p>
+    }
+
     return (
       <div className="container">
         <h2 className="page-header">
@@ -120,16 +139,7 @@ class GestionClasses extends Component {
           </button>
         </h2>
         <div className="col-sm-6 col-md-6 col-lg-6 col-xs-12">
-          <Tableau
-            onUpdate={this.handleUpdate}
-            onDelete={this.handleDelete}
-            listHeaders={this.state.classesHeader}
-            listBody={this.state.classes}
-            listKey={this.state.itemKey}
-            tableStyle={this.state.tableStyle}
-            rowStyle={this.state.rowStyle}
-            consulterButton={this.state.consulterButton}
-          />
+          {data}
         </div>
         <div className="col-sm-6 col-md-6 col-lg-6 col-xs-12">
           {classeForm}

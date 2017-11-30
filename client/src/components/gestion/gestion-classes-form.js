@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Classe } from '../../models/classe';
-// TODO: Controlled forms
+
 class GestionClassesForm extends Component {
   constructor(props) {
     super(props);
