@@ -1,18 +1,14 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 
 class Register extends Component {
   render() {
-    return (
-      <div>
-        Register
-      </div>
-    );
+    return <div>Register</div>;
   }
 }
 
-Register.propTypes = {
+// Register.propTypes = {
 
-};
+// };
 
 export default Register;

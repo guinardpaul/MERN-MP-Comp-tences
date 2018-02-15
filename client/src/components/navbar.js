@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom'
+import { NavLink } from 'react-router-dom';
 
 class NavBar extends Component {
   render() {
@@ -7,54 +7,73 @@ class NavBar extends Component {
       <nav className="navbar navbar-inverse navbar-fixed-top">
         <div className="container-fluid">
           <div className="navbar-header">
-            <button type="button" className="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-              <span className="icon-bar"></span>
-              <span className="icon-bar"></span>
-              <span className="icon-bar"></span>
+            <button
+              type="button"
+              className="navbar-toggle"
+              data-toggle="collapse"
+              data-target="#myNavbar">
+              <span className="icon-bar" />
+              <span className="icon-bar" />
+              <span className="icon-bar" />
             </button>
-            <Link to="/" className="navbar-brand" >MP-CT</Link>
+            <NavLink to="/" exact className="navbar-brand">
+              MP-CT
+            </NavLink>
           </div>
           <div className="collapse navbar-collapse" id="myNavbar">
-
             <ul className="nav navbar-nav">
-              <li >
-                <Link to="/">Home</Link>
+              <li>
+                <NavLink
+                  activeStyle={{ backgroundColor: 'white' }}
+                  to="/"
+                  exact>
+                  Home
+                </NavLink>
               </li>
               {/*  Gestion dropdown  */}
-              <li className="dropdown"  >
-                <Link className="dropdown-toggle" data-toggle="dropdown" to="#">Gestion
-            <span className="caret"></span>
-                </Link>
+              <li className="dropdown">
+                <NavLink
+                  className="dropdown-toggle"
+                  data-toggle="dropdown"
+                  to="#">
+                  Gestion
+                  <span className="caret" />
+                </NavLink>
                 <ul className="dropdown-menu">
                   <li>
-                    <Link to="gestion-classes">Gestion classes</Link>
+                    <NavLink to="gestion-classes">Gestion classes</NavLink>
                   </li>
                   <li>
-                    <Link to="gestion-eleves">Gestion élèves</Link>
+                    <NavLink to="gestion-eleves">Gestion élèves</NavLink>
                   </li>
                   <li>
-                    <Link to="gestion-competences">Gestion compétences</Link>
+                    <NavLink to="gestion-competences">
+                      Gestion compétences
+                    </NavLink>
                   </li>
                 </ul>
               </li>
-              <li >
-                <Link to="resultats-competences">Ajouter Résultats élèves</Link>
+              <li>
+                <NavLink to="resultats-competences">
+                  Ajouter Résultats élèves
+                </NavLink>
               </li>
             </ul>
             <ul className="nav navbar-nav navbar-right">
-              <li >
-                <Link to="login">
-                  <span className="glyphicon glyphicon-log-in"></span> Se connecter
-                </Link>
-              </li>
-              <li >
-                <Link to="register">
-                  <span className="glyphicon glyphicon-user"></span> Créer un compte
-                </Link>
+              <li>
+                <NavLink to="login">
+                  <span className="glyphicon glyphicon-log-in" /> Se connecter
+                </NavLink>
               </li>
               <li>
-                <a className="cursor" >
-                  <span className="glyphicon glyphicon-log-out"></span> Se déconnecter
+                <NavLink to="register">
+                  <span className="glyphicon glyphicon-user" /> Créer un compte
+                </NavLink>
+              </li>
+              <li>
+                <a className="cursor">
+                  <span className="glyphicon glyphicon-log-out" /> Se
+                  déconnecter
                 </a>
               </li>
             </ul>

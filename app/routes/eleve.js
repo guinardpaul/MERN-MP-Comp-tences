@@ -1,8 +1,7 @@
 const mongoose = require('mongoose');
 const Eleve = require('../models/eleves');
 
-module.exports = (router) => {
-
+module.exports = router => {
   /**
    * Get All Eleves
    */
@@ -120,22 +119,32 @@ module.exports = (router) => {
         message: 'id not provided'
       });
     } else {
-      Eleve.findByIdAndUpdate(req.params.id, req.body, { new: true }, (err, eleve) => {
-        if (err) return next(err);
+      const eleve = {
+        nom: req.body.nom.toUpperCase(),
+        prenom: req.body.prenom,
+        classe: req.body.classe
+      };
+      Eleve.findByIdAndUpdate(
+        req.params.id,
+        eleve,
+        { new: true },
+        (err, eleve) => {
+          if (err) return next(err);
 
-        if (!eleve) {
-          return res.status(404).json({
-            success: false,
-            message: 'Object Eleve not find'
+          if (!eleve) {
+            return res.status(404).json({
+              success: false,
+              message: 'Object Eleve not find'
+            });
+          }
+
+          return res.status(201).json({
+            success: true,
+            message: 'Object eleve updated',
+            obj: eleve
           });
         }
-
-        return res.status(201).json({
-          success: true,
-          message: 'Object eleve updated',
-          obj: eleve
-        });
-      });
+      );
     }
   });
 
@@ -168,4 +177,4 @@ module.exports = (router) => {
   });
 
   return router;
-}
+};

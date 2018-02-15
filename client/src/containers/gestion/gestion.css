@@ -1,6 +1,10 @@
-.header {
+.header2 {
   font-size: 120%;
   font-weight: bold;
+}
+
+.header {
+  margin-top: 40px;
 }
 
 .btn-circle.btn-lg {
@@ -14,4 +18,8 @@
 
 .margin {
   margin-left: 10px;
+}
+
+.select-classe {
+  width: 15%;
 }

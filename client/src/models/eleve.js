@@ -1,6 +1,8 @@
-export function eleve() {
-  this._id = 0;
-  this.nom = '';
-  this.prenom = '';
-  this.classe = 0;
-};
+export class Eleve {
+  constructor(_id, nom, prenom, classe) {
+    this._id = _id;
+    this.nom = nom;
+    this.prenom = prenom;
+    this.classe = classe;
+  }
+}
