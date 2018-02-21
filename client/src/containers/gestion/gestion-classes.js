@@ -5,6 +5,8 @@ import GestionClassesForm from '../../components/gestion-form/gestion-classes-fo
 import './gestion.css';
 import axios from '../../axios-instance';
 import Spinner from '../../components/UI/Spinner/Spinner';
+import * as actionCreator from '../../store/actions/index';
+import { connect } from 'react-redux';
 
 class GestionClasses extends Component {
   state = {
@@ -218,4 +220,15 @@ GestionClasses.propTypes = {
   loading: PropTypes.bool
 };
 
-export default GestionClasses;
+const mapStateToProps = state => {
+  return {
+    listClasses: state.classe.classes,
+    classe: state.classe.classe
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(GestionClasses);
