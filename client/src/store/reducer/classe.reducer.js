@@ -1,14 +1,17 @@
 import * as actionTypes from '../actions/actionTypes';
 
 const initialState = {
-  classes: [],
+  listClasses: [],
   classe: {}
 };
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.GET_ALL_CLASSES:
-      break;
+      return {
+        ...state,
+        listClasses: action.array
+      };
 
     case actionTypes.GET_ONE_CLASSE:
       break;

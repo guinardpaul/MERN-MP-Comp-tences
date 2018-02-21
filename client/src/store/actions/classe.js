@@ -1,9 +1,24 @@
 import * as actionTypes from './actionTypes';
+import axios from '../../axios-instance';
 
 // Action creators
-export const getAllClasses = () => {
+const getAllClasses = listClasses => {
   return {
-    type: actionTypes.GET_ALL_CLASSES
+    type: actionTypes.GET_ALL_CLASSES,
+    array: listClasses
+  };
+};
+
+export const getAllClassesAsync = () => {
+  return dispatch => {
+    axios
+      .get('/classes')
+      .then(res => {
+        dispatch(getAllClasses(res.data));
+      })
+      .catch(err => {
+        console.log('err: ', err);
+      });
   };
 };
 
