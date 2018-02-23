@@ -60,6 +60,11 @@ class GestionClassesForm extends Component {
       );
     });
 
+    let disabled = false;
+    if (this.props.loading && !this.props.error) {
+      disabled = true;
+    }
+
     return (
       <div className="panel-group">
         <form className="form-horizontal" onSubmit={this.addClasse}>

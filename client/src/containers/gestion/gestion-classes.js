@@ -3,14 +3,13 @@ import PropTypes from 'prop-types';
 import Tableau from '../../components/UI/Table/Tableau';
 import GestionClassesForm from '../../components/gestion-form/gestion-classes-form';
 import './gestion.css';
-import axios from '../../axios-instance';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import * as actionCreator from '../../store/actions/index';
 import { connect } from 'react-redux';
 
 class GestionClasses extends Component {
   state = {
-    listClasses: [],
+    error: {},
     classe: {},
     classesHeader: ['Nom classe', 'Cycle', 'Actions'],
     tableStyle: 'table table-striped',
@@ -18,22 +17,11 @@ class GestionClasses extends Component {
     itemKey: ['nom_classe', 'cycle'],
     addForm: false,
     updateForm: false,
-    consulterButton: false,
-    loading: true
+    consulterButton: false
   };
 
   componentDidMount() {
-    axios
-      .get('/classes')
-      .then(res => {
-        this.setState({
-          listClasses: res.data,
-          loading: false
-        });
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    this.props.getAllClasses();
   }
 
   displayAddForm = () => {
@@ -46,39 +34,21 @@ class GestionClasses extends Component {
 
   handleSubmit = obj => {
     if (this.state.addForm) {
-      axios
-        .post('/classes', obj)
-        .then(res => {
-          console.log(res);
-          const newState = [...this.state.listClasses];
-          newState.push(res.data.obj);
-
-          this.setState({
-            listClasses: newState,
-            addForm: false,
-            updateForm: false
-          });
-        })
-        .catch(err => console.log(err));
+      this.props.addClasse(obj);
+      if (!this.props.loading) {
+        this.setState({
+          addForm: false,
+          updateForm: false
+        });
+      }
     } else {
-      axios
-        .put('/classes/' + obj._id, obj)
-        .then(res => {
-          console.log(res);
-          const newState = [...this.state.listClasses];
-          newState.forEach((c, i) => {
-            if (c._id === obj._id) {
-              newState[i] = res.data.obj;
-            }
-          });
-
-          this.setState({
-            listClasses: newState,
-            addForm: false,
-            updateForm: false
-          });
-        })
-        .catch(err => console.log(err));
+      this.props.updateClasse(obj);
+      if (!this.props.loading) {
+        this.setState({
+          addForm: false,
+          updateForm: false
+        });
+      }
     }
   };
 
@@ -91,19 +61,7 @@ class GestionClasses extends Component {
   };
 
   handleDelete = obj => {
-    axios
-      .delete('/classes/' + obj._id)
-      .then(res => {
-        console.log(res);
-        let newState = [...this.state.listClasses];
-        let i = newState.indexOf(obj);
-        newState.splice(i, 1);
-
-        this.setState({
-          listClasses: newState
-        });
-      })
-      .catch(err => console.log(err));
+    this.props.deleteClasse(obj._id);
   };
 
   onCancelForm = () => {
@@ -168,17 +126,22 @@ class GestionClasses extends Component {
           handleChangeCycle={event => this.handleChangeCycle(event)}
         />
       );
+    } else if (
+      this.props.error &&
+      (this.state.addForm || this.state.updateForm)
+    ) {
+      classeForm = this.props.error.message;
     }
 
     let data = <Spinner />;
-    if (!this.state.loading) {
-      if (this.state.listClasses.length > 0) {
+    if (!this.props.loading) {
+      if (this.props.listClasses.length > 0) {
         data = (
           <Tableau
             onUpdate={this.handleUpdate}
             onDelete={this.handleDelete}
             listHeaders={this.state.classesHeader}
-            listBody={this.state.listClasses}
+            listBody={this.props.listClasses}
             listKey={this.state.itemKey}
             tableStyle={this.state.tableStyle}
             rowStyle={this.state.rowStyle}
@@ -186,8 +149,10 @@ class GestionClasses extends Component {
           />
         );
       } else {
-        data = <p>No data to display</p>;
+        data = <p>Aucune donnée à afficher</p>;
       }
+    } else {
+      data = this.props.error.message;
     }
 
     return (
@@ -222,13 +187,21 @@ GestionClasses.propTypes = {
 
 const mapStateToProps = state => {
   return {
-    listClasses: state.classe.classes,
+    listClasses: state.classe.listClasses,
+    loading: state.classe.loading,
+    error: state.classe.error,
     classe: state.classe.classe
   };
 };
 
 const mapDispatchToProps = dispatch => {
-  return {};
+  return {
+    getAllClasses: () => dispatch(actionCreator.getAllClassesAsync()),
+    addClasse: classe => dispatch(actionCreator.addClasseAsync(classe)),
+    updateClasse: classe => dispatch(actionCreator.updateClasseAsync(classe)),
+    deleteClasse: id_classe =>
+      dispatch(actionCreator.deleteClasseAsync(id_classe))
+  };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GestionClasses);

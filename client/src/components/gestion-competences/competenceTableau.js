@@ -1,22 +1,20 @@
 import React, { Component } from 'react';
 import Tableau from '../UI/Table/Tableau';
 
-class DomaineTableau extends Component {
+class competenceTableau extends Component {
   state = {
-    domainesHeader: ['Référence', 'Description'],
-    tableStyle: 'table table-striped table-hover',
+    competencesHeader: ['Référence', 'Description'],
+    tableStyle: 'table table-striped',
     rowStyle: [100, 100, 200],
-    itemKey: ['ref_domaine', 'description_domaine']
+    itemKey: ['ref_ct', 'description_ct']
   };
 
   render() {
     return (
       <Tableau
-        consulterButton
-        onConsulter={this.props.onConsulter}
         onUpdate={this.props.onUpdate}
         onDelete={this.props.onDelete}
-        listHeaders={this.state.domainesHeader}
+        listHeaders={this.state.competencesHeader}
         listBody={this.props.listBody}
         listKey={this.state.itemKey}
         tableStyle={this.state.tableStyle}
@@ -26,4 +24,4 @@ class DomaineTableau extends Component {
   }
 }
 
-export default DomaineTableau;
+export default competenceTableau;

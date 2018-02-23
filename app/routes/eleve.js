@@ -58,10 +58,7 @@ module.exports = router => {
           });
         }
 
-        return res.status(200).json({
-          success: true,
-          obj: eleve
-        });
+        return res.status(200).json(eleve);
       });
     }
   });
@@ -95,11 +92,7 @@ module.exports = router => {
       eleve.save(req.body, (err, eleve) => {
         if (err) return next(err);
 
-        return res.status(201).json({
-          success: true,
-          message: 'Object eleve sauvé',
-          obj: eleve
-        });
+        return res.status(201).json(eleve);
       });
     }
   });
@@ -138,11 +131,7 @@ module.exports = router => {
             });
           }
 
-          return res.status(201).json({
-            success: true,
-            message: 'Object eleve updated',
-            obj: eleve
-          });
+          return res.status(201).json(eleve);
         }
       );
     }

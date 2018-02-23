@@ -3,14 +3,13 @@ import PropTypes from 'prop-types';
 import Tableau from '../../components/UI/Table/Tableau';
 import GestionElevesForm from '../../components/gestion-form/gestion-eleves-form';
 import './gestion.css';
-import axios from '../../axios-instance';
 import Spinner from '../../components/UI/Spinner/Spinner';
-import { Eleve } from '../../models/eleve';
+import { connect } from 'react-redux';
+import * as actionCreator from '../../store/actions/eleve';
+import { getAllClassesAsync } from '../../store/actions/classe';
 
 class GestionEleves extends Component {
   state = {
-    listEleves: [Eleve],
-    listClasses: [],
     selectedClasse: '',
     eleve: { _id: null, nom: '', prenom: '', classe: '' },
     elevesHeader: ['Nom', 'Prénom'],
@@ -19,41 +18,11 @@ class GestionEleves extends Component {
     itemKey: ['nom', 'prenom'],
     addForm: false,
     updateForm: false,
-    consulterButton: false,
-    loadingData: true,
-    loadingClasses: true
+    consulterButton: false
   };
 
   componentDidMount() {
-    this.getListClasses();
-  }
-
-  getListClasses() {
-    axios
-      .get('/classes')
-      .then(res => {
-        this.setState({
-          listClasses: res.data,
-          loadingClasses: false
-        });
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  }
-
-  getListElevesByClasse(id_classe) {
-    axios
-      .get('/eleves/classe/' + id_classe)
-      .then(res => {
-        this.setState({
-          listEleves: res.data,
-          loadingData: false
-        });
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    this.props.getAllClasses();
   }
 
   handleChangeSelectedClasse(event) {
@@ -61,12 +30,11 @@ class GestionEleves extends Component {
       {
         selectedClasse: event.target.value,
         addForm: false,
-        updateForm: false,
-        loadingData: true
+        updateForm: false
       },
       () => {
         if (this.state.selectedClasse !== '') {
-          this.getListElevesByClasse(this.state.selectedClasse);
+          this.props.getAllElevesByClasse(this.state.selectedClasse);
         }
       }
     );
@@ -125,41 +93,23 @@ class GestionEleves extends Component {
 
   handleSubmit = eleve => {
     if (this.state.addForm && this.state.eleve._id === undefined) {
-      axios
-        .post('/eleves', eleve)
-        .then(res => {
-          console.log(res);
-          const newList = [...this.state.listEleves];
-          newList.push(res.data.obj);
-          this.setState({
-            addForm: false,
-            updateForm: false,
-            eleve: { _id: null, nom: '', prenom: '', classe: '' },
-            listEleves: newList
-          });
-        })
-        .catch(err => console.log(err));
+      this.props.addEleve(eleve);
+      if (!this.props.loading) {
+        this.setState({
+          addForm: false,
+          updateForm: false,
+          eleve: { _id: null, nom: '', prenom: '', classe: '' }
+        });
+      }
     } else {
-      axios
-        .put('/eleves/' + eleve._id, eleve)
-        .then(res => {
-          console.log(res);
-          const newList = [...this.state.listEleves];
-          newList.forEach((e, i) => {
-            if (e._id === eleve._id) {
-              newList[i] = res.data.obj;
-            }
-          });
-
-          console.log(newList);
-          this.setState({
-            addForm: false,
-            updateForm: false,
-            eleve: { _id: null, nom: '', prenom: '', classe: '' },
-            listEleves: newList
-          });
-        })
-        .catch(err => console.log(err));
+      this.props.updateEleve(eleve);
+      if (!this.props.loading) {
+        this.setState({
+          addForm: false,
+          updateForm: false,
+          eleve: { _id: null, nom: '', prenom: '', classe: '' }
+        });
+      }
     }
   };
 
@@ -172,18 +122,7 @@ class GestionEleves extends Component {
   };
 
   handleDelete = eleve => {
-    axios
-      .delete('/eleves/' + eleve._id)
-      .then(res => {
-        console.log(res);
-        let newList = [...this.state.listEleves];
-        let i = newList.indexOf(eleve);
-        newList.splice(i, 1);
-        this.setState({
-          listEleves: newList
-        });
-      })
-      .catch(err => console.log(err));
+    this.props.deleteEleve(eleve._id);
   };
 
   render() {
@@ -198,7 +137,7 @@ class GestionEleves extends Component {
           buttonStyle="btn btn-success"
           buttonName="Sauver"
           eleve={this.state.eleve}
-          listClasses={this.state.listClasses}
+          listClasses={this.props.listClasses}
           selectedClasse={this.state.selectedClasse}
           cancelForm={this.onCancelForm}
           handleChangeNomEleve={event => this.handleChangeNomEleve(event)}
@@ -216,7 +155,7 @@ class GestionEleves extends Component {
           buttonStyle="btn btn-warning"
           buttonName="Modifier"
           eleve={this.state.eleve}
-          listClasses={this.state.listClasses}
+          listClasses={this.props.listClasses}
           selectedClasse={this.state.selectedClasse}
           cancelForm={this.onCancelForm}
           handleChangeNomEleve={event => this.handleChangeNomEleve(event)}
@@ -238,16 +177,16 @@ class GestionEleves extends Component {
     }
 
     // Select classe
-    let options = this.state.listClasses.map((c, i) => {
-      return (
-        <option value={c._id} key={i}>
-          {c.nom_classe}
-        </option>
-      );
-    });
-
     let selectClasse = <Spinner />;
-    if (!this.state.loadingClasses) {
+    if (!this.props.loadingClasses) {
+      let options = this.props.listClasses.map((c, i) => {
+        return (
+          <option value={c._id} key={i}>
+            {c.nom_classe}
+          </option>
+        );
+      });
+
       selectClasse = (
         <select
           className="form-control select-classe"
@@ -263,14 +202,14 @@ class GestionEleves extends Component {
 
     let data = <Spinner />;
     if (this.state.selectedClasse !== '') {
-      if (!this.state.loadingData) {
-        if (this.state.listEleves.length > 0) {
+      if (!this.props.loadingEleves) {
+        if (this.props.listEleves.length > 0) {
           data = (
             <Tableau
               onUpdate={this.handleUpdate}
               onDelete={this.handleDelete}
               listHeaders={this.state.elevesHeader}
-              listBody={this.state.listEleves}
+              listBody={this.props.listEleves}
               listKey={this.state.itemKey}
               tableStyle={this.state.tableStyle}
               rowStyle={this.state.rowStyle}
@@ -320,4 +259,26 @@ GestionEleves.propTypes = {
   options: PropTypes.element
 };
 
-export default GestionEleves;
+const mapStateToProps = state => {
+  return {
+    listEleves: state.eleve.listEleves,
+    listClasses: state.classe.listClasses,
+    loadingClasses: state.classe.loading,
+    loadingEleve: state.eleve.loading,
+    error: state.eleve.error
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    getAllClasses: () => dispatch(getAllClassesAsync()),
+    getAllEleves: () => dispatch(actionCreator.getAllElevesAsync()),
+    getAllElevesByClasse: id_classe =>
+      dispatch(actionCreator.getElevesByClasseAsync(id_classe)),
+    addEleve: eleve => dispatch(actionCreator.addEleveAsync(eleve)),
+    updateEleve: eleve => dispatch(actionCreator.updateEleveAsync(eleve)),
+    deleteEleve: id_eleve => dispatch(actionCreator.deleteEleveAsync(id_eleve))
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(GestionEleves);

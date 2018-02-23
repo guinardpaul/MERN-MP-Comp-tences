@@ -1,30 +1,30 @@
 export {
-  addEleve,
-  deleteEleve,
-  getAllEleves,
-  getElevesByClasse,
-  getOneEleve,
-  updateEleve
+  addEleveAsync,
+  deleteEleveAsync,
+  getAllElevesAsync,
+  getElevesByClasseAsync,
+  getOneEleveAsync,
+  updateEleveAsync
 } from './eleve';
 export {
-  addClasse,
-  deleteClasse,
-  getAllClasses,
+  addClasseAsync,
+  deleteClasseAsync,
   getOneClasse,
-  updateClasse
+  updateClasseAsync,
+  getAllClassesAsync
 } from './classe';
 export {
-  addCompetence,
-  deleteCompetence,
-  getAllCompetences,
-  getAllCompetencesByDomaine,
-  getOneCompetence,
-  updateCompetence
+  addCompetenceAsync,
+  deleteCompetenceAsync,
+  getAllCompetencesAsync,
+  getAllCompetencesByDomaineAsync,
+  getOneCompetenceAsync,
+  updateCompetenceAsync
 } from './competence';
 export {
-  addDomaine,
-  deleteDomaine,
-  getAllDomaines,
-  getOneDomaine,
-  updateDomaine
+  addDomaineAsync,
+  deleteDomaineAsync,
+  getAllDomainesAsync,
+  getOneDomaineAsync,
+  updateDomaineAsync
 } from './domaine';

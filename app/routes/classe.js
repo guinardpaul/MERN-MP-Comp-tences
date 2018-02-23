@@ -1,8 +1,7 @@
 const mongoose = require('mongoose');
 const Classe = require('../models/classes');
 
-module.exports = (router) => {
-
+module.exports = router => {
   /**
    * Get All Classes
    */
@@ -40,10 +39,7 @@ module.exports = (router) => {
           });
         }
 
-        return res.status(200).json({
-          success: true,
-          obj: classe
-        });
+        return res.status(200).json(classe);
       });
     }
   });
@@ -65,10 +61,7 @@ module.exports = (router) => {
           });
         }
 
-        return res.status(200).json({
-          success: true,
-          obj: classe
-        });
+        return res.status(200).json(classe);
       });
     }
   });
@@ -100,11 +93,7 @@ module.exports = (router) => {
           }
         }
 
-        return res.status(201).json({
-          success: true,
-          message: 'Object Classe saved',
-          obj: classe
-        });
+        return res.status(201).json(classe);
       });
     }
   });
@@ -124,21 +113,22 @@ module.exports = (router) => {
         message: 'id not provided'
       });
     } else {
-      Classe.findByIdAndUpdate(req.params.id, req.body, { new: true }, (err, classe) => {
-        if (err) return next(err);
+      Classe.findByIdAndUpdate(
+        req.params.id,
+        req.body,
+        { new: true },
+        (err, classe) => {
+          if (err) return next(err);
 
-        if (!classe) {
-          return res.status(404).json({
-            success: false,
-            message: 'Object Classe not find'
-          });
+          if (!classe) {
+            return res.status(404).json({
+              success: false,
+              message: 'Object Classe not find'
+            });
+          }
+          return res.status(200).json(classe);
         }
-        return res.status(200).json({
-          success: true,
-          message: 'Object Classe updated',
-          obj: classe
-        });
-      });
+      );
     }
   });
 
@@ -170,4 +160,4 @@ module.exports = (router) => {
   });
 
   return router;
-}
+};

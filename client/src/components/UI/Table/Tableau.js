@@ -10,6 +10,7 @@ const tableau = props => {
   const tableBody = props.listBody.map(item => {
     return (
       <TableBody
+        onClick={item => this.props.handleClick(item)}
         item={item}
         key={item._id}
         itemKey={props.listKey}
