@@ -11,7 +11,10 @@ class GestionClasses extends Component {
   state = {
     error: {},
     classe: {},
-    classesHeader: ['Nom classe', 'Cycle', 'Actions'],
+    classesHeader: [
+      { header: 'Nom classe', accessor: 'nom_classe' },
+      { header: 'Cycle', accessor: 'cycle' }
+    ],
     tableStyle: 'table table-striped',
     rowStyle: [100, 100, 200],
     itemKey: ['nom_classe', 'cycle'],
@@ -140,8 +143,9 @@ class GestionClasses extends Component {
           <Tableau
             onUpdate={this.handleUpdate}
             onDelete={this.handleDelete}
-            listHeaders={this.state.classesHeader}
-            listBody={this.props.listClasses}
+            onConsulter={this.handleUpdate}
+            columns={this.state.classesHeader}
+            data={this.props.listClasses}
             listKey={this.state.itemKey}
             tableStyle={this.state.tableStyle}
             rowStyle={this.state.rowStyle}

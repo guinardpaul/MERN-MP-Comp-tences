@@ -7,13 +7,17 @@ import Spinner from '../../components/UI/Spinner/Spinner';
 import { connect } from 'react-redux';
 import * as actionCreator from '../../store/actions/eleve';
 import { getAllClassesAsync } from '../../store/actions/classe';
+import Select from '../../components/UI/Select/select';
 
 class GestionEleves extends Component {
   state = {
     selectedClasse: '',
     eleve: { _id: null, nom: '', prenom: '', classe: '' },
-    elevesHeader: ['Nom', 'Prénom'],
-    tableStyle: 'table table-striped',
+    elevesHeader: [
+      { header: 'Nom', accessor: 'nom' },
+      { header: 'Prénom', accessor: 'prenom' }
+    ],
+    tableStyle: ['table-striped'],
     rowStyle: [200, 150, 150],
     itemKey: ['nom', 'prenom'],
     addForm: false,
@@ -186,17 +190,18 @@ class GestionEleves extends Component {
           </option>
         );
       });
-
+      const cssClasses = ['form-control', 'select-classe'];
       selectClasse = (
-        <select
-          className="form-control select-classe"
-          name="classe"
+        <Select
+          cssClasses={cssClasses}
           id="classe"
+          name="classe"
           value={this.state.selectedClasse}
-          onChange={event => this.handleChangeSelectedClasse(event)}>
-          <option value="">Classe</option>
-          {options}
-        </select>
+          handleChange={event => this.handleChangeSelectedClasse(event)}
+          defaultOption="Classe"
+          defaultOptionValue=""
+          options={options}
+        />
       );
     }
 
@@ -208,8 +213,8 @@ class GestionEleves extends Component {
             <Tableau
               onUpdate={this.handleUpdate}
               onDelete={this.handleDelete}
-              listHeaders={this.state.elevesHeader}
-              listBody={this.props.listEleves}
+              columns={this.state.elevesHeader}
+              data={this.props.listEleves}
               listKey={this.state.itemKey}
               tableStyle={this.state.tableStyle}
               rowStyle={this.state.rowStyle}

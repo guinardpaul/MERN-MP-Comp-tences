@@ -1,31 +1,34 @@
 import React from 'react';
 import TableBody from './TableBody';
-import TableHeader from './TableHeader';
 
 const tableau = props => {
-  const tableHeader = props.listHeaders.map(item => {
-    return <TableHeader header={item} key={item} />;
+  const cssClasses = [...props.tableStyle, 'table'];
+
+  const headers = props.columns.map(item => {
+    return <th key={item.header}>{item.header}</th>;
   });
 
-  const tableBody = props.listBody.map(item => {
+  const tableBody = props.data.map(obj => {
     return (
       <TableBody
-        onClick={item => this.props.handleClick(item)}
-        item={item}
-        key={item._id}
-        itemKey={props.listKey}
-        rowStyle={props.rowStyle}
-        consulterButton={props.consulterButton}
+        key={obj._id}
+        item={obj}
+        columns={props.columns}
         onUpdate={props.onUpdate}
         onDelete={props.onDelete}
+        consulterButton={props.consulterButton}
+        onConsulter={props.onConsulter}
       />
     );
   });
 
   return (
-    <table className={props.tableStyle}>
+    <table className={cssClasses.join(' ')}>
       <thead>
-        <tr>{tableHeader}</tr>
+        <tr>
+          {headers}
+          <th>Actions</th>
+        </tr>
       </thead>
       <tbody>{tableBody}</tbody>
     </table>

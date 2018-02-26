@@ -1,39 +1,46 @@
 import React from 'react';
-import TableItems from './TableItems';
-import ConsulterButton from './Button/ConsulterButton';
-import UpdateButton from './Button/UpdateButton';
-import DeleteButton from './Button/DeleteButton';
+import Button from './Button/Button';
 
 const tableBody = props => {
-  let sameKey = false;
-  const tableItems = Object.keys(props.item).map(key => {
-    props.itemKey.map(k => {
-      if (k === key) {
-        sameKey = true;
-      }
-      return null;
-    });
-    if (sameKey) {
-      sameKey = false;
-      return <TableItems key={key} data={props.item[key]} />;
-    }
-    return null;
+  const tableItems = props.columns.map(header => {
+    return (
+      <td key={props.item[header.accessor]}>{props.item[header.accessor]}</td>
+    );
   });
 
-  let button;
+  let button = null;
   if (props.consulterButton) {
+    const AddBtncss = ['btn', 'btn-sm', 'btn-success'];
     button = (
-      <ConsulterButton item={props.item} onConsulter={props.onConsulter} />
+      <Button
+        cssClasses={AddBtncss}
+        item={props.item}
+        clicked={() => props.onConsulter(props.item)}>
+        Consulter
+      </Button>
     );
   }
+
+  const updateBtnCss = ['btn', 'btn-sm', 'btn-warning'];
+  const deleteBtnCss = ['btn', 'btn-sm', 'btn-danger'];
 
   return (
     <tr>
       {tableItems}
       <td>
         {button}
-        <UpdateButton item={props.item} onUpdate={props.onUpdate} />
-        <DeleteButton item={props.item} onDelete={props.onDelete} />
+        <Button
+          cssClasses={updateBtnCss}
+          item={props.item}
+          clicked={() => props.onUpdate(props.item)}>
+          Modifier
+        </Button>
+        <Button
+          cssClasses={deleteBtnCss}
+          item={props.item}
+          clicked={() => props.onDelete(props.item)}>
+          Supprimer
+        </Button>
       </td>
     </tr>
   );
