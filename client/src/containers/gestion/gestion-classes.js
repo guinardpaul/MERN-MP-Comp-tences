@@ -146,7 +146,6 @@ class GestionClasses extends Component {
             onConsulter={this.handleUpdate}
             columns={this.state.classesHeader}
             data={this.props.listClasses}
-            listKey={this.state.itemKey}
             tableStyle={this.state.tableStyle}
             rowStyle={this.state.rowStyle}
             consulterButton={this.state.consulterButton}

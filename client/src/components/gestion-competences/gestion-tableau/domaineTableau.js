@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
-import Tableau from '../UI/Table/Tableau';
+import Tableau from '../../UI/Table/Tableau';
 
 class DomaineTableau extends Component {
   state = {
-    domainesHeader: ['Référence', 'Description'],
+    domainesHeader: [
+      { header: 'Référence', accessor: 'ref_domaine' },
+      { header: 'Description', accessor: 'description_domaine' }
+    ],
     tableStyle: 'table table-striped table-hover',
-    rowStyle: [100, 100, 200],
+    rowStyle: [100, 100, 300],
     itemKey: ['ref_domaine', 'description_domaine']
   };
 
@@ -16,11 +19,11 @@ class DomaineTableau extends Component {
         onConsulter={this.props.onConsulter}
         onUpdate={this.props.onUpdate}
         onDelete={this.props.onDelete}
-        listHeaders={this.state.domainesHeader}
-        listBody={this.props.listBody}
-        listKey={this.state.itemKey}
+        columns={this.state.domainesHeader}
+        data={this.props.listBody}
         tableStyle={this.state.tableStyle}
         rowStyle={this.state.rowStyle}
+        btnStyle={this.props.btnStyle}
       />
     );
   }

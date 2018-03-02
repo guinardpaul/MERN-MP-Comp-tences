@@ -18,6 +18,7 @@ const tableau = props => {
         onDelete={props.onDelete}
         consulterButton={props.consulterButton}
         onConsulter={props.onConsulter}
+        btnStyle={props.btnStyle}
       />
     );
   });

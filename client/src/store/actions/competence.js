@@ -14,7 +14,7 @@ export const getAllCompetencesAsync = () => {
   return dispatch => {
     dispatch(loading());
     axios
-      .get('/competences')
+      .get('/competences/')
       .then(res => {
         dispatch(getAllCompetences(res.data));
       })
@@ -41,7 +41,7 @@ export const getAllCompetencesByDomaineAsync = id_domaine => {
   return dispatch => {
     dispatch(loading());
     axios
-      .get('/competences/domaine' + id_domaine)
+      .get('/competences/domaine/' + id_domaine)
       .then(res => {
         dispatch(getAllCompetencesByDomaine(res.data));
       })

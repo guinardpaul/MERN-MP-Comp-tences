@@ -57,7 +57,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         listCompetences: utils.removeElemToArray(
           state.listCompetences,
-          action.obj
+          action.id
         ),
         loading: false
       };

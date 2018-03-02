@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
-import Tableau from '../UI/Table/Tableau';
+import Tableau from '../../UI/Table/Tableau';
 
 class competenceTableau extends Component {
   state = {
-    competencesHeader: ['Référence', 'Description'],
+    competencesHeader: [
+      { header: 'Référence', accessor: 'ref_ct' },
+      { header: 'Description', accessor: 'description_ct' }
+    ],
     tableStyle: 'table table-striped',
-    rowStyle: [100, 100, 200],
-    itemKey: ['ref_ct', 'description_ct']
+    rowStyle: [100, 100, 200]
   };
 
   render() {
@@ -14,11 +16,11 @@ class competenceTableau extends Component {
       <Tableau
         onUpdate={this.props.onUpdate}
         onDelete={this.props.onDelete}
-        listHeaders={this.state.competencesHeader}
-        listBody={this.props.listBody}
-        listKey={this.state.itemKey}
+        columns={this.state.competencesHeader}
+        data={this.props.listBody}
         tableStyle={this.state.tableStyle}
         rowStyle={this.state.rowStyle}
+        btnStyle
       />
     );
   }

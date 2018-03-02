@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import DomaineTableau from '../../components/gestion-competences/domaineTableau';
 import { connect } from 'react-redux';
 import * as domaineActionCreators from '../../store/actions/domaine';
 import * as competenceActionCreators from '../../store/actions/competence';
 import GestionDomaines from '../../components/gestion-competences/gestion-domaines';
 import GestionCompetences from '../../components/gestion-competences/gestion-competences';
+import Spinner from '../../components/UI/Spinner/Spinner';
+import SelectTreeTable from '../../components/UI/SelectTreeTable/SelectTreeTable';
 
 class GestionDomainesCompetences extends Component {
   state = {
@@ -24,7 +25,8 @@ class GestionDomainesCompetences extends Component {
   handleChangeSelectedCycle(event) {
     this.setState(
       {
-        selectedCycle: event.target.value
+        selectedCycle: event.target.value,
+        selectedDomaine: ''
       },
       () => {
         if (this.state.selectedCycle !== '') {
@@ -32,6 +34,14 @@ class GestionDomainesCompetences extends Component {
         }
       }
     );
+  }
+
+  selectDomaine(domaine) {
+    this.setState({ selectedDomaine: domaine }, () => {
+      if (domaine !== undefined) {
+        this.props.getCompetencesByDomaine(domaine._id);
+      }
+    });
   }
 
   render() {
@@ -43,21 +53,19 @@ class GestionDomainesCompetences extends Component {
       );
     });
 
-    let domaineTable;
-    if (!this.props.loadingDomaine && this.state.selectedCycle !== '') {
-      if (this.props.listDomaines.length > 0) {
-        domaineTable = (
-          <DomaineTableau
-            onUpdate={this.handleUpdate}
-            onDelete={this.handleDelete}
-            listBody={this.props.listDomaines}
-            consulterButton={this.state.consulterButton}
-          />
-        );
-      } else {
-        domaineTable = <p>Aucune donnée à afficher</p>;
-      }
+    let gestionCompetences = null;
+    if (this.state.selectedDomaine !== '') {
+      gestionCompetences = (
+        <GestionCompetences selectedDomaine={this.state.selectedDomaine} />
+      );
     }
+
+    /*  const columns = [
+      { header: 'Référence', accessor: 'ref_domaine' },
+      { header: 'Description', accessor: 'description_domaine' }
+    ]; */
+
+    // let reactTableTest = <SelectTreeTable data={this.props.listCompetences} />;
 
     return (
       <div className="container header">
@@ -78,19 +86,18 @@ class GestionDomainesCompetences extends Component {
           <option value="">Cycle</option>
           {options}
         </select>
+        {/* {this.props.listCompetences.length > 0 && !this.props.loadingCompetence
+          ? reactTableTest
+          : null} */}
         <div className="row">
           <div className="col-sm-6 col-md-6 col-lg-6">
             <GestionDomaines
               selectedCycle={this.state.selectedCycle}
               listDomaines={this.props.listDomaines}
+              selectDomaine={domaine => this.selectDomaine(domaine)}
             />
           </div>
-          <div className="col-sm-6 col-md-6 col-lg-6">
-            <GestionCompetences
-              selectedDomaine={this.state.selectedDomaine}
-              listCompetences={this.props.listCompetences}
-            />
-          </div>
+          <div className="col-sm-6 col-md-6 col-lg-6">{gestionCompetences}</div>
         </div>
       </div>
     );
@@ -129,6 +136,8 @@ const mapDispatchToProps = dispatch => {
       dispatch(domaineActionCreators.updateDomaineAsync(domaine)),
     deleteDomaine: id_domaine =>
       dispatch(domaineActionCreators.deleteDomaineAsync(id_domaine)),
+    getAllCompetences: () =>
+      dispatch(competenceActionCreators.getAllCompetencesAsync()),
     getCompetencesByDomaine: id_domaine =>
       dispatch(
         competenceActionCreators.getAllCompetencesByDomaineAsync(id_domaine)

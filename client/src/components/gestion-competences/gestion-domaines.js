@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import DomaineTableau from '../../components/gestion-competences/domaineTableau';
+import DomaineTableau from './gestion-tableau/domaineTableau';
 import { connect } from 'react-redux';
 import * as domaineActionCreators from '../../store/actions/domaine';
 import * as competenceActionCreators from '../../store/actions/competence';
@@ -32,8 +32,16 @@ class GestionDomaines extends Component {
     );
   }
 
-  handleClick = obj => {
-    console.log(obj);
+  handleSelectDomaine = obj => {
+    this.props.selectDomaine(obj);
+  };
+
+  handleUpdate = domaine => {
+    console.log('domaine: ', domaine);
+  };
+
+  handleDelete = domaine => {
+    console.log('domaine: ', domaine);
   };
 
   render() {
@@ -42,11 +50,12 @@ class GestionDomaines extends Component {
       if (this.props.listDomaines.length > 0) {
         domaineTable = (
           <DomaineTableau
-            onConsulter={this.handleClick}
+            onConsulter={this.handleSelectDomaine}
+            consulterButton={this.state.consulterButton}
             onUpdate={this.handleUpdate}
             onDelete={this.handleDelete}
             listBody={this.props.listDomaines}
-            consulterButton={this.state.consulterButton}
+            btnStyle
           />
         );
       } else {

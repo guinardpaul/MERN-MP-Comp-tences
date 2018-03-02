@@ -1,7 +1,24 @@
 const mongoose = require('mongoose');
 const Competence = require('../models/competences');
 
-module.exports = (router) => {
+module.exports = router => {
+  /**
+   * Get All competences
+   */
+  router.get('/competences', (req, res, next) => {
+    Competence.find((err, ct) => {
+      if (err) return next(err);
+
+      if (!ct) {
+        res.status(404).json({
+          success: false,
+          message: 'Object Competences not find'
+        });
+      }
+
+      return res.status(200).json(ct);
+    });
+  });
 
   /**
    * Get All competences par Cycle
@@ -66,18 +83,20 @@ module.exports = (router) => {
         message: 'domaine not provided'
       });
     } else {
-      Competence.find({ domaine: req.params.domaine }).sort({ 'sous_domaine': 1, 'ref_ct': 1 }).exec((err, ct) => {
-        if (err) return next(err);
+      Competence.find({ domaine: req.params.domaine })
+        .sort({ sous_domaine: 1, ref_ct: 1 })
+        .exec((err, ct) => {
+          if (err) return next(err);
 
-        if (!ct) {
-          res.status(404).json({
-            success: false,
-            message: 'Competences not find'
-          });
-        }
+          if (!ct) {
+            res.status(404).json({
+              success: false,
+              message: 'Competences not find'
+            });
+          }
 
-        return res.status(200).json(ct);
-      });
+          return res.status(200).json(ct);
+        });
     }
   });
 
@@ -96,21 +115,24 @@ module.exports = (router) => {
         message: 'cycle not provided'
       });
     } else {
-      Competence.find({ domaine: req.params.domaine, cycle: req.params.cycle }, (err, ct) => {
-        if (err) return next(err);
+      Competence.find(
+        { domaine: req.params.domaine, cycle: req.params.cycle },
+        (err, ct) => {
+          if (err) return next(err);
 
-        if (!ct) {
-          res.status(404).json({
-            success: false,
-            message: 'Competences not find'
+          if (!ct) {
+            res.status(404).json({
+              success: false,
+              message: 'Competences not find'
+            });
+          }
+
+          return res.status(200).json({
+            success: true,
+            obj: ct
           });
         }
-
-        return res.status(200).json({
-          success: true,
-          obj: ct
-        });
-      });
+      );
     }
   });
 
@@ -129,21 +151,24 @@ module.exports = (router) => {
         message: 'ref CT not provided'
       });
     } else {
-      Competence.findOne({ ref_ct: req.params.ref_ct, cycle: req.params.cycle }, (err, ct) => {
-        if (err) return next(err);
+      Competence.findOne(
+        { ref_ct: req.params.ref_ct, cycle: req.params.cycle },
+        (err, ct) => {
+          if (err) return next(err);
 
-        if (!ct) {
+          if (!ct) {
+            return res.status(200).json({
+              success: true,
+              message: 'Ref CT disponible'
+            });
+          }
+
           return res.status(200).json({
-            success: true,
-            message: 'Ref CT disponible'
+            success: false,
+            message: 'Ref CT déjà utilisée par une compétence'
           });
         }
-
-        return res.status(200).json({
-          success: false,
-          message: 'Ref CT déjà utilisée par une compétence'
-        });
-      });
+      );
     }
   });
 
@@ -199,22 +224,27 @@ module.exports = (router) => {
         message: 'body not provided'
       });
     } else {
-      Competence.findByIdAndUpdate(req.params.id, req.body, { new: true }, (err, ct) => {
-        if (err) return next(err);
+      Competence.findByIdAndUpdate(
+        req.params.id,
+        req.body,
+        { new: true },
+        (err, ct) => {
+          if (err) return next(err);
 
-        if (!ct) {
-          return res.status(404).json({
-            success: false,
-            message: 'Object Competence not find'
+          if (!ct) {
+            return res.status(404).json({
+              success: false,
+              message: 'Object Competence not find'
+            });
+          }
+
+          return res.status(200).json({
+            success: true,
+            message: 'Object Competence updated',
+            obj: ct
           });
         }
-
-        return res.status(200).json({
-          success: true,
-          message: 'Object Competence updated',
-          obj: ct
-        });
-      });
+      );
     }
   });
 
@@ -333,4 +363,4 @@ module.exports = (router) => {
    }); */
 
   return router;
-}
+};
