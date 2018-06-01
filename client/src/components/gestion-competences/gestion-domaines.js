@@ -55,6 +55,7 @@ class GestionDomaines extends Component {
             onUpdate={this.handleUpdate}
             onDelete={this.handleDelete}
             listBody={this.props.listDomaines}
+            expandableList={this.props.listCompetences}
             btnStyle
           />
         );

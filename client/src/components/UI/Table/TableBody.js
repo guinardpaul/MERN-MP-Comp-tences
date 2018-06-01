@@ -8,10 +8,10 @@ const tableBody = props => {
     );
   });
 
-  let button = null;
+  let addButton = null;
   if (props.consulterButton) {
     const AddBtncss = ['btn', 'btn-sm', 'btn-success'];
-    button = (
+    addButton = (
       <Button
         cssClasses={AddBtncss}
         item={props.item}
@@ -28,7 +28,7 @@ const tableBody = props => {
   if (props.btnStyle) {
     buttons = (
       <div className="btn-group-vertical">
-        {button}
+        {addButton}
         <Button
           cssClasses={updateBtnCss}
           item={props.item}
@@ -46,7 +46,7 @@ const tableBody = props => {
   } else {
     buttons = (
       <div className="btn-group">
-        {button}
+        {addButton}
         <Button
           cssClasses={updateBtnCss}
           item={props.item}

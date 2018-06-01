@@ -192,16 +192,15 @@ class GestionEleves extends Component {
       });
       const cssClasses = ['form-control', 'select-classe'];
       selectClasse = (
-        <Select
-          cssClasses={cssClasses}
-          id="classe"
+        <select
+          className="form-control select-classe"
           name="classe"
+          id="classe"
           value={this.state.selectedClasse}
-          handleChange={event => this.handleChangeSelectedClasse(event)}
-          defaultOption="Classe"
-          defaultOptionValue=""
-          options={options}
-        />
+          onChange={event => this.handleChangeSelectedClasse(event)}>
+          <option value="">Classe</option>
+          {options}
+        </select>
       );
     }
 

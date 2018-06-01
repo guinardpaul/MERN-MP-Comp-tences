@@ -16,6 +16,43 @@ class GestionDomainesCompetences extends Component {
     selectedDomaine: ''
   };
 
+  buildTreeTableData = selectedCycle => {
+    const treeTableData = [];
+    this.props.getAllDomainesByCycle(this.state.selectedCycle);
+
+    console.log(this.props.loadingDomaine);
+    this.props.listDomaines.forEach(domaine => {
+      this.props.getCompetencesByDomaine(domaine._id);
+      const domaineTree = {
+        domaine: domaine,
+        children: [this.props.listCompetences]
+      };
+      console.log('domaineTree: ', domaineTree);
+      treeTableData.push(domaineTree);
+    });
+
+    console.log(treeTableData);
+  };
+
+  componentWillMount() {
+    this.props.getAllCompetences();
+  }
+
+  buildData = () => {
+    const treeTableData = [];
+    this.props.listDomaines.forEach(domaine => {
+      const domaineTree = {
+        domaine: domaine,
+        children: [
+          this.props.listCompetences.filter(ct => ct.domaine !== domaine._id)
+        ]
+      };
+      console.log('domaineTree: ', domaineTree);
+      treeTableData.push(domaineTree);
+    });
+    console.log(treeTableData);
+  };
+
   displayAddDomaineForm = () => {
     this.setState({
       addDomaineForm: true
@@ -31,6 +68,9 @@ class GestionDomainesCompetences extends Component {
       () => {
         if (this.state.selectedCycle !== '') {
           this.props.getAllDomainesByCycle(this.state.selectedCycle);
+          setTimeout(() => {
+            this.buildData();
+          }, 3000);
         }
       }
     );
@@ -95,6 +135,7 @@ class GestionDomainesCompetences extends Component {
               selectedCycle={this.state.selectedCycle}
               listDomaines={this.props.listDomaines}
               selectDomaine={domaine => this.selectDomaine(domaine)}
+              listCompetences={this.props.listCompetences}
             />
           </div>
           <div className="col-sm-6 col-md-6 col-lg-6">{gestionCompetences}</div>

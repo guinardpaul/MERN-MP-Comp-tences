@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import * as competenceActionCreators from '../../store/actions/competence';
 import Aux from '../../hoc/Auxil/Auxil';
 import Button from '../UI/Table/Button/Button';
+import GestionCompetencesForm from '../gestion-form/gestion-competences-form';
 
 class GestionCompetences extends Component {
   state = {
@@ -38,64 +39,25 @@ class GestionCompetences extends Component {
     this.props.deleteCompetence(competence._id);
   };
 
+  handleChangeRefCT = event => {};
+
+  handleChangeDescriptionCT = event => {};
+
+  addCompetence = competence => {};
+
   render() {
     let competence;
     if (this.props.selectedDomaine !== '') {
       if (this.state.addCompetenceForm) {
         competence = (
-          <form className="form-horizontal">
-            <div className="form-group">
-              <label htmlFor="ref_ct">Référence</label>
-              <input
-                type="text"
-                className="form-control"
-                name="ref_ct"
-                id="ref_ct"
-                value={this.state.competence.ref_ct}
-                onChange={this.props.handleChangRefCT}
-                autoFocus
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label>Description</label>
-              <input
-                type="text"
-                className="form-control"
-                name="ref_ct"
-                id="ref_ct"
-                value={this.state.competence.description_ct}
-                onChange={this.props.handleChangeDescriptionCT}
-                autoFocus
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label>Domaine</label>
-              <input
-                type="text"
-                className="form-control"
-                name="ref_ct"
-                id="ref_ct"
-                value={this.state.competence.domaine}
-                onChange={this.props.handleChangedomaineCT}
-                autoFocus
-                required
-              />
-            </div>
-            <div className="form-group">
-              <Button
-                cssClasses={['btn', 'btn-success']}
-                clicked={this.addComptence}>
-                Ajouter
-              </Button>
-              <Button
-                cssClasses={['btn', 'btn-default']}
-                clicked={this.cancelForm}>
-                Annuler
-              </Button>
-            </div>
-          </form>
+          <GestionCompetencesForm
+            competence={this.state.competence}
+            selectedDomaine={this.props.selectedDomaine}
+            handleChangeRefCT={this.handleChangeRefCT}
+            handleChangeDescriptionCT={this.handleChangeDescriptionCT}
+            onFormSubmit={this.addCompetence}
+            cancelForm={this.cancelForm}
+          />
         );
       } else {
         if (this.props.listCompetences.length > 0) {

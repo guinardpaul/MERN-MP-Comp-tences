@@ -21,6 +21,7 @@ class DomaineTableau extends Component {
         onDelete={this.props.onDelete}
         columns={this.state.domainesHeader}
         data={this.props.listBody}
+        expandableList={this.props.expandableList}
         tableStyle={this.state.tableStyle}
         rowStyle={this.state.rowStyle}
         btnStyle={this.props.btnStyle}
