@@ -7,7 +7,7 @@ const treeTable = props => {
     return <th key={item.header}>{item.header}</th>;
   });
 
-  const tableBody = null;
+  const tableRow = null;
 
   return (
     <table className={cssClasses.join(' ')}>
@@ -17,7 +17,7 @@ const treeTable = props => {
           <th>Actions</th>
         </tr>
       </thead>
-      <tbody>{tableBody}</tbody>
+      <tbody>{tableRow}</tbody>
     </table>
   );
 };

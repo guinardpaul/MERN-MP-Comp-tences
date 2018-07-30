@@ -1,8 +1,7 @@
 {
   "name": "mp-competences",
   "version": "1.0.0",
-  "description":
-    "Application de stokage et visionnage des compétences par classe et élèves",
+  "description": "Application de stokage et visionnage des compétences par classe et élèves",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -13,7 +12,14 @@
     "type": "git",
     "url": "git+https://github.com/guinardpaul/MP-Competences.git"
   },
-  "keywords": ["MEAN", "Stack", "App", "MP", "Compétences", "Angular2"],
+  "keywords": [
+    "MEAN",
+    "Stack",
+    "App",
+    "MP",
+    "Compétences",
+    "Angular2"
+  ],
   "author": "Paul GUINARD",
   "license": "MIT",
   "bugs": {
@@ -29,6 +35,7 @@
     "jsonwebtoken": "^8.1.0",
     "mongoose": "^4.11.1",
     "morgan": "^1.8.2",
+    "mysql": "^2.15.0",
     "nodemailer": "^4.3.1",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",

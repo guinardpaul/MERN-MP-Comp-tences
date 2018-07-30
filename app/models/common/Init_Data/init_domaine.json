@@ -1,0 +1,73 @@
+{
+  "ref": "D 1",
+  "description": "Les langages mathématiques, scientifiques et informatique pour penser et communiquer.",
+  "cycle": "Cycle 3"
+} {
+  "ref": "D 2",
+  "description": "Les méthodes et outils pour apprendre",
+  "cycle": "Cycle 3"
+} {
+  "ref": "D 3",
+  "description": "La formation de la personne et du citoyen",
+  "cycle": "Cycle 3"
+} {
+  "ref": "D 4",
+  "description": "les systèmes naturels et les systèmes techniques",
+  "cycle": "Cycle 3"
+} {
+  "ref": "",
+  "description": "Pratiquer des démarches scientifiques et technologiques",
+  "cycle": "Cycle 3"
+} {
+  "ref": "",
+  "description": "Conception, création, réalisation",
+  "cycle": "Cycle 3"
+} {
+  "ref": "",
+  "description": "Mettre en pratique des comportements simples respectueux des autres, de l'environnement, de sa santé ",
+  "cycle": "Cycle 3"
+} {
+  "ref": "D 5",
+  "description": "les représentations du monde et l'activité humaine ",
+  "cycle": "Cycle 3"
+} {
+  "ref": "D 1",
+  "description": "Les langages mathématiques, scientifiques et informatique pour penser et communiquer.",
+  "cycle": "Cycle 4"
+} {
+  "ref": "D 2",
+  "description": "Les méthodes et outils pour apprendre",
+  "cycle": "Cycle 4"
+} {
+  "ref": "",
+  "description": "Organiser son travail personnel",
+  "cycle": "Cycle 4"
+} {
+  "ref": "",
+  "description": "Coopération et réalisation de projet.",
+  "cycle": "Cycle 4"
+} {
+  "ref": "",
+  "description": "S'approprier des outils et méthodes",
+  "cycle": "Cycle 4"
+} {
+  "ref": "D 3",
+  "description": "La formation de la personne et du citoyen",
+  "cycle": "Cycle 4"
+} {
+  "ref": "D 4",
+  "description": "Les systèmes naturels et les systèmes techniques",
+  "cycle": "Cycle 4"
+} {
+  "ref": "",
+  "description": "Pratiquer des démarches scientifiques et technologiques",
+  "cycle": "Cycle 4"
+} {
+  "ref": "",
+  "description": "Responsabilités individuelles et collectives",
+  "cycle": "Cycle 4"
+} {
+  "ref": "D 5",
+  "description": "Les représentations du monde et l'activité humaine",
+  "cycle": "Cycle 4"
+}

@@ -1,5 +1,5 @@
 import React from 'react';
-import TableBody from './TableBody';
+import TableRow from './TableRow';
 
 const tableau = props => {
   const cssClasses = [...props.tableStyle, 'table'];
@@ -8,9 +8,13 @@ const tableau = props => {
     return <th key={item.header}>{item.header}</th>;
   });
 
-  const tableBody = props.data.map(obj => {
+  const tableRow = props.data.map(obj => {
+    let selectedRow = false;
+    if (obj === props.selectedRow) {
+      selectedRow = true;
+    }
     return (
-      <TableBody
+      <TableRow
         key={obj._id}
         item={obj}
         columns={props.columns}
@@ -19,6 +23,7 @@ const tableau = props => {
         consulterButton={props.consulterButton}
         onConsulter={props.onConsulter}
         btnStyle={props.btnStyle}
+        selectedRow={selectedRow}
       />
     );
   });
@@ -31,7 +36,7 @@ const tableau = props => {
           <th>Actions</th>
         </tr>
       </thead>
-      <tbody>{tableBody}</tbody>
+      <tbody>{tableRow}</tbody>
     </table>
   );
 };

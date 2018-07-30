@@ -10,19 +10,22 @@ class GestionDomaines extends Component {
   state = {
     addDomaineForm: false,
     cycles: ['Cycle 3', 'Cycle 4'],
-    selectedCycle: ''
+    selectedCycle: '',
+    selectedRow: null
   };
 
   displayAddDomaineForm = () => {
     this.setState({
-      addDomaineForm: true
+      addDomaineForm: true,
+      selectedRow: null
     });
   };
 
   handleChangeSelectedCycle(event) {
     this.setState(
       {
-        selectedCycle: event.target.value
+        selectedCycle: event.target.value,
+        selectedRow: null
       },
       () => {
         if (this.state.selectedCycle !== '') {
@@ -34,6 +37,9 @@ class GestionDomaines extends Component {
 
   handleSelectDomaine = obj => {
     this.props.selectDomaine(obj);
+    this.setState({
+      selectedRow: obj
+    });
   };
 
   handleUpdate = domaine => {
@@ -54,9 +60,10 @@ class GestionDomaines extends Component {
             consulterButton={this.state.consulterButton}
             onUpdate={this.handleUpdate}
             onDelete={this.handleDelete}
-            listBody={this.props.listDomaines}
+            data={this.props.listDomaines}
             expandableList={this.props.listCompetences}
             btnStyle
+            selectedRow={this.state.selectedRow}
           />
         );
       } else {
@@ -101,4 +108,7 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(GestionDomaines);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(GestionDomaines);

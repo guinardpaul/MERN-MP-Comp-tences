@@ -1,10 +1,15 @@
 import React from 'react';
 import Button from './Button/Button';
+import './Tableau.css';
 
-const tableBody = props => {
+const tableRow = props => {
+  const cssRow = props.selectedRow ? 'selectedRow' : null;
+
   const tableItems = props.columns.map(header => {
     return (
-      <td key={props.item[header.accessor]}>{props.item[header.accessor]}</td>
+      <td className={cssRow} key={props.item[header.accessor]}>
+        {props.item[header.accessor]}
+      </td>
     );
   });
 
@@ -71,4 +76,4 @@ const tableBody = props => {
   );
 };
 
-export default tableBody;
+export default tableRow;

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Tableau from '../../components/UI/Table/Tableau';
+import EleveTableau from '../../components/gestion-competences/gestion-tableau/eleveTableau';
 import GestionElevesForm from '../../components/gestion-form/gestion-eleves-form';
 import './gestion.css';
 import Spinner from '../../components/UI/Spinner/Spinner';
@@ -12,22 +12,50 @@ import Select from '../../components/UI/Select/select';
 class GestionEleves extends Component {
   state = {
     selectedClasse: '',
-    eleve: { _id: null, nom: '', prenom: '', classe: '' },
+    eleve: {
+      _id: null,
+      nom: '',
+      prenom: '',
+      classe: ''
+    },
     elevesHeader: [
-      { header: 'Nom', accessor: 'nom' },
-      { header: 'Prénom', accessor: 'prenom' }
+      {
+        header: 'Nom',
+        accessor: 'nom'
+      },
+      {
+        header: 'Prénom',
+        accessor: 'prenom'
+      }
     ],
     tableStyle: ['table-striped'],
     rowStyle: [200, 150, 150],
     itemKey: ['nom', 'prenom'],
     addForm: false,
     updateForm: false,
-    consulterButton: false
+    consulterButton: false,
+    selectedRow: null
   };
 
-  componentDidMount() {
+  componentWillMount() {
+    // On recupere la liste des classes pour le select
     this.props.getAllClasses();
+    // On recupere la liste des eleves si une classe est sélectionné
+    if (this.props.location.state !== undefined) {
+      if (this.props.location.state.selectedClasse !== '') {
+        this.setState(
+          {
+            selectedClasse: this.props.location.state.selectedClasse._id
+          },
+          () => {
+            this.props.getAllElevesByClasse(this.state.selectedClasse);
+          }
+        );
+      }
+    }
   }
+
+  componentDidMount() {}
 
   handleChangeSelectedClasse(event) {
     this.setState(
@@ -48,19 +76,27 @@ class GestionEleves extends Component {
     this.setState({
       addForm: true,
       updateForm: false,
-      eleve: { nom: '', prenom: '', classe: this.state.selectedClasse }
+      eleve: {
+        nom: '',
+        prenom: '',
+        classe: this.state.selectedClasse
+      },
+      selectedRow: null
     });
   };
 
   onCancelForm = () => {
     this.setState({
       addForm: false,
-      updateForm: false
+      updateForm: false,
+      selectedRow: null
     });
   };
 
   handleChangeNomEleve(event) {
-    const newEleve = { ...this.state.eleve };
+    const newEleve = {
+      ...this.state.eleve
+    };
     this.setState({
       eleve: {
         _id: newEleve._id,
@@ -72,7 +108,9 @@ class GestionEleves extends Component {
   }
 
   handleChangePrenomEleve(event) {
-    const newEleve = { ...this.state.eleve };
+    const newEleve = {
+      ...this.state.eleve
+    };
     this.setState({
       eleve: {
         _id: newEleve._id,
@@ -84,14 +122,17 @@ class GestionEleves extends Component {
   }
 
   handleChangeClasse(event) {
-    const newEleve = { ...this.state.eleve };
+    const newEleve = {
+      ...this.state.eleve
+    };
     this.setState({
       eleve: {
         _id: newEleve._id,
         nom: newEleve.nom,
         prenom: newEleve.prenom,
         classe: event.target.value
-      }
+      },
+      selectedRow: null
     });
   }
 
@@ -102,7 +143,12 @@ class GestionEleves extends Component {
         this.setState({
           addForm: false,
           updateForm: false,
-          eleve: { _id: null, nom: '', prenom: '', classe: '' }
+          eleve: {
+            _id: null,
+            nom: '',
+            prenom: '',
+            classe: ''
+          }
         });
       }
     } else {
@@ -111,22 +157,38 @@ class GestionEleves extends Component {
         this.setState({
           addForm: false,
           updateForm: false,
-          eleve: { _id: null, nom: '', prenom: '', classe: '' }
+          eleve: {
+            _id: null,
+            nom: '',
+            prenom: '',
+            classe: ''
+          }
         });
       }
     }
   };
 
   handleUpdate = obj => {
-    this.setState({
-      eleve: obj,
-      updateForm: true,
-      addForm: false
-    });
+    this.setState(
+      {
+        eleve: obj,
+        updateForm: true,
+        addForm: false
+      },
+      () => {
+        this.handleSelectRowChanged(obj);
+      }
+    );
   };
 
   handleDelete = eleve => {
     this.props.deleteEleve(eleve._id);
+  };
+
+  handleSelectRowChanged = obj => {
+    this.setState({
+      selectedRow: obj
+    });
   };
 
   render() {
@@ -186,7 +248,8 @@ class GestionEleves extends Component {
       let options = this.props.listClasses.map((c, i) => {
         return (
           <option value={c._id} key={i}>
-            {c.nom_classe}
+            {' '}
+            {c.nom_classe}{' '}
           </option>
         );
       });
@@ -198,8 +261,7 @@ class GestionEleves extends Component {
           id="classe"
           value={this.state.selectedClasse}
           onChange={event => this.handleChangeSelectedClasse(event)}>
-          <option value="">Classe</option>
-          {options}
+          <option value=""> Classe </option> {options}{' '}
         </select>
       );
     }
@@ -209,34 +271,31 @@ class GestionEleves extends Component {
       if (!this.props.loadingEleves) {
         if (this.props.listEleves.length > 0) {
           data = (
-            <Tableau
+            <EleveTableau
               onUpdate={this.handleUpdate}
               onDelete={this.handleDelete}
-              columns={this.state.elevesHeader}
               data={this.props.listEleves}
-              listKey={this.state.itemKey}
-              tableStyle={this.state.tableStyle}
-              rowStyle={this.state.rowStyle}
               consulterButton={this.state.consulterButton}
+              selectedRow={this.state.selectedRow}
             />
           );
         } else {
-          data = <p>Aucune donnée à afficher</p>;
+          data = <p> Aucune donnée à afficher </p>;
         }
       }
     } else {
-      data = <p>Sélectionnez une classe pour commencer</p>;
+      data = <p> Sélectionnez une classe pour commencer </p>;
     }
 
     return (
       <div className="container header">
-        <h2 className="page-header">
-          Gestion élèves
-          {addButon}
-        </h2>
-        {selectClasse}
-        <div className="col-sm-6 col-md-6 col-lg-6 col-xs-12">{data}</div>
-        <div className="col-sm-6 col-md-6 col-lg-6 col-xs-12">{eleveForm}</div>
+        <h2 className="page-header">Gestion élèves {addButon} </h2>{' '}
+        {selectClasse}{' '}
+        <div className="col-sm-6 col-md-6 col-lg-6 col-xs-12"> {data} </div>{' '}
+        <div className="col-sm-6 col-md-6 col-lg-6 col-xs-12">
+          {' '}
+          {eleveForm}{' '}
+        </div>{' '}
       </div>
     );
   }
@@ -285,4 +344,7 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(GestionEleves);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(GestionEleves);

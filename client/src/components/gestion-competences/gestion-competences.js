@@ -6,6 +6,7 @@ import * as competenceActionCreators from '../../store/actions/competence';
 import Aux from '../../hoc/Auxil/Auxil';
 import Button from '../UI/Table/Button/Button';
 import GestionCompetencesForm from '../gestion-form/gestion-competences-form';
+import SelectTreeTable from '../UI/SelectTreeTable/SelectTreeTable';
 
 class GestionCompetences extends Component {
   state = {
@@ -68,10 +69,12 @@ class GestionCompetences extends Component {
                 clicked={this.displayAddCompetenceForm}>
                 Ajouter
               </Button>
+              {/* <SelectTreeTable data={this.props.listCompetences} /> */}
+
               <CompetenceTableau
                 onUpdate={this.handleUpdate}
                 onDelete={this.handleDelete}
-                listBody={this.props.listCompetences}
+                data={this.props.listCompetences}
                 consulterButton={this.state.consulterButton}
               />
             </Aux>
@@ -114,4 +117,7 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(GestionCompetences);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(GestionCompetences);

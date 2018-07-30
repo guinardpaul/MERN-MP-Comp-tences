@@ -1,14 +1,20 @@
 import React from 'react';
 import Tableau from '../../UI/Table/Tableau';
 
-const domaineTableau = props => {
-  const domainesHeader = [
-    { header: 'Référence', accessor: 'ref_domaine' },
-    { header: 'Description', accessor: 'description_domaine' }
+const classeTableau = props => {
+  const classesHeader = [
+    {
+      header: 'Nom classe',
+      accessor: 'nom_classe'
+    },
+    {
+      header: 'Cycle',
+      accessor: 'cycle'
+    }
   ];
-  const tableStyle = 'table table-striped table-hover';
-  const rowStyle = [100, 100, 300];
-  const itemKey = ['ref_domaine', 'description_domaine'];
+  const tableStyle = 'table table-striped';
+  const rowStyle = [100, 100, 200];
+  const itemKey = ['nom_classe', 'cycle'];
 
   return (
     <Tableau
@@ -16,7 +22,7 @@ const domaineTableau = props => {
       onConsulter={props.onConsulter}
       onUpdate={props.onUpdate}
       onDelete={props.onDelete}
-      columns={domainesHeader}
+      columns={classesHeader}
       data={props.data}
       expandableList={props.expandableList}
       tableStyle={tableStyle}
@@ -27,4 +33,4 @@ const domaineTableau = props => {
   );
 };
 
-export default domaineTableau;
+export default classeTableau;

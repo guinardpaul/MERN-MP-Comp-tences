@@ -1,29 +1,25 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Tableau from '../../UI/Table/Tableau';
 
-class competenceTableau extends Component {
-  state = {
-    competencesHeader: [
-      { header: 'Référence', accessor: 'ref_ct' },
-      { header: 'Description', accessor: 'description_ct' }
-    ],
-    tableStyle: 'table table-striped',
-    rowStyle: [100, 100, 200]
-  };
+const competenceTableau = props => {
+  const competencesHeader = [
+    { header: 'Référence', accessor: 'ref_ct' },
+    { header: 'Description', accessor: 'description_ct' }
+  ];
+  const tableStyle = 'table table-striped';
+  const rowStyle = [100, 100, 200];
 
-  render() {
-    return (
-      <Tableau
-        onUpdate={this.props.onUpdate}
-        onDelete={this.props.onDelete}
-        columns={this.state.competencesHeader}
-        data={this.props.listBody}
-        tableStyle={this.state.tableStyle}
-        rowStyle={this.state.rowStyle}
-        btnStyle
-      />
-    );
-  }
-}
+  return (
+    <Tableau
+      onUpdate={props.onUpdate}
+      onDelete={props.onDelete}
+      columns={competencesHeader}
+      data={props.data}
+      tableStyle={tableStyle}
+      rowStyle={rowStyle}
+      btnStyle
+    />
+  );
+};
 
 export default competenceTableau;

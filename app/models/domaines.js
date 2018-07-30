@@ -19,7 +19,12 @@ const domainesSchema = new Schema({
     type: String,
     required: true,
     enum: ['Cycle 3', 'Cycle 4']
-  }
+  },
+  domaine: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Domaine',
+    required: true
+  },
 });
 
 module.exports = mongoose.model('Domaine', domainesSchema);

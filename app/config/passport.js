@@ -1,6 +1,6 @@
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
-var User = require('../models/users');
+var User = require('../mysql_models/user');
 
 module.exports = (passport) => {
 
@@ -10,7 +10,9 @@ module.exports = (passport) => {
   passport.use('local-login', new LocalStrategy({
     usernameField: 'email'
   }, (email, password, done) => {
-    User.findOne({ email: email }, (err, user) => {
+    User.findOne({
+      email: email
+    }, (err, user) => {
       if (err) return done(err);
 
       // le compte n'existe pas pour cet email
@@ -49,25 +51,20 @@ module.exports = (passport) => {
 
     process.nextTick(() => {
 
-      User.findOne({ email: email }, (err, user) => {
+      User.findOne({
+        email: email
+      }, (err, user) => {
         if (err) {
           return done(err);
         }
+        console.log(user);
         if (user) {
           return done(null, false, {
             success: false,
             message: 'Cet email est déjà utilisé pour un compte valide'
           });
         } else {
-
-          const newUser = new User({
-            nom: req.body.nom,
-            prenom: req.body.prenom,
-            email: email,
-            password: password
-          });
-
-          newUser.save((err, data) => {
+          User.create(req.body.nom, req.body.prenom, email, password, function (err, data) {
             if (err) {
               if (err.code === 11000) {
                 return done(null, false, {
@@ -102,14 +99,14 @@ module.exports = (passport) => {
                 message: err
               });
             } else {
-              return done(null, newUser, {
+              return done(null, data, {
                 success: true,
                 message: 'User registered',
-                obj: {
-                  nom: newUser.nom,
-                  prenom: newUser.prenom,
-                  email: newUser.email
-                }
+                // obj: {
+                //   nom: data.nom,
+                //   prenom: data.prenom,
+                //   email: data.email
+                // }
               });
             }
           });
@@ -120,5 +117,3 @@ module.exports = (passport) => {
 
   return passport;
 }
-
-
