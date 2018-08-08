@@ -7,6 +7,7 @@ import GestionDomaines from '../../components/gestion-competences/gestion-domain
 import GestionCompetences from '../../components/gestion-competences/gestion-competences';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import SelectTreeTable from '../../components/UI/SelectTreeTable/SelectTreeTable';
+import { ENUM_CYCLES } from '../../models/enums';
 
 class GestionDomainesCompetences extends Component {
   state = {
@@ -18,11 +19,11 @@ class GestionDomainesCompetences extends Component {
 
   buildTreeTableData = selectedCycle => {
     const treeTableData = [];
-    this.props.getAllDomainesByCycle(this.state.selectedCycle);
+    this.props.getAllDomainesByCycle(selectedCycle);
 
     console.log(this.props.loadingDomaine);
     this.props.listDomaines.forEach(domaine => {
-      this.props.getCompetencesByDomaine(domaine._id);
+      this.props.getCompetencesByDomaine(domaine.id);
       const domaineTree = {
         domaine: domaine,
         children: [this.props.listCompetences]
@@ -35,8 +36,29 @@ class GestionDomainesCompetences extends Component {
   };
 
   componentWillMount() {
+    this.props.getAllDomaines();
     this.props.getAllCompetences();
   }
+
+  filterList = selectedCycle => {
+    const domaines = [...this.props.listDomaines];
+    domaines.filter(d => d.cycle_id === selectedCycle);
+    console.log(
+      'domaines: ',
+      domaines.filter(d => d.cycle_id === selectedCycle)
+    );
+
+    let domaineFiltered = this.props.listDomaines.filter(
+      domaine => domaine.cycle_id === selectedCycle
+    );
+
+    console.log('this.props.listDomaines: ', this.props.listDomaines);
+    console.log('domaineFiltered: ', domaineFiltered);
+    let competencesFiltered = this.props.listCompetences.filter(
+      ct => ct.cycle_id === selectedCycle
+    );
+    console.log('competencesFiltered: ', competencesFiltered);
+  };
 
   buildData = () => {
     const treeTableData = [];
@@ -67,10 +89,12 @@ class GestionDomainesCompetences extends Component {
       },
       () => {
         if (this.state.selectedCycle !== '') {
-          this.props.getAllDomainesByCycle(this.state.selectedCycle);
-          setTimeout(() => {
-            this.buildData();
-          }, 3000);
+          this.filterList(this.state.selectedCycle);
+          // this.buildTreeTableData(this.state.selectedCycle);
+          // this.props.getAllDomainesByCycle(this.state.selectedCycle);
+          // setTimeout(() => {
+          //   this.buildData();
+          // }, 3000);
         }
       }
     );
@@ -85,20 +109,13 @@ class GestionDomainesCompetences extends Component {
   }
 
   render() {
-    const options = this.state.cycles.map((cycle, i) => {
+    const options = ENUM_CYCLES.map((cycle, i) => {
       return (
-        <option value={cycle} key={i}>
-          {cycle}
+        <option value={cycle.id} key={i}>
+          {cycle.literal}
         </option>
       );
     });
-
-    let gestionCompetences = null;
-    if (this.state.selectedDomaine !== '') {
-      gestionCompetences = (
-        <GestionCompetences selectedDomaine={this.state.selectedDomaine} />
-      );
-    }
 
     /*  const columns = [
       { header: 'Référence', accessor: 'ref_domaine' },
@@ -138,7 +155,13 @@ class GestionDomainesCompetences extends Component {
               listCompetences={this.props.listCompetences}
             />
           </div>
-          <div className="col-sm-6 col-md-6 col-lg-6">{gestionCompetences}</div>
+          <div className="col-sm-6 col-md-6 col-lg-6">
+            {this.state.selectedDomaine !== '' ? (
+              <GestionCompetences
+                selectedDomaine={this.state.selectedDomaine}
+              />
+            ) : null}
+          </div>
         </div>
       </div>
     );
@@ -192,6 +215,7 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(
-  GestionDomainesCompetences
-);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(GestionDomainesCompetences);

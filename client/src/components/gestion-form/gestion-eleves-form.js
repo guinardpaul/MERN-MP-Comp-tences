@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 class GestionElevesForm extends Component {
   state = {
-    eleve: { _id: null, nom: '', prenom: '', classe: '' },
+    eleve: { id: null, first_name: '', last_name: '', classe: '' },
     classes: []
   };
 
@@ -11,9 +11,9 @@ class GestionElevesForm extends Component {
     if (this.props.selectedClasse !== '') {
       this.setState({
         eleve: {
-          _id: this.props.eleve._id,
-          nom: this.props.eleve.nom,
-          prenom: this.props.eleve.prenom,
+          id: this.props.eleve.id,
+          first_name: this.props.eleve.first_name,
+          last_name: this.props.eleve.last_name,
           classe: this.props.selectedClasse
         },
         classes: this.props.listClasses
@@ -21,9 +21,9 @@ class GestionElevesForm extends Component {
     } else {
       this.setState({
         eleve: {
-          _id: this.props.eleve._id,
-          nom: this.props.eleve.nom,
-          prenom: this.props.eleve.prenom,
+          id: this.props.eleve.id,
+          first_name: this.props.eleve.first_name,
+          last_name: this.props.eleve.last_name,
           classe: this.props.eleve.classe
         },
         classes: this.props.listClasses
@@ -33,11 +33,11 @@ class GestionElevesForm extends Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     return (
-      nextProps.eleve.nom !== this.props.eleve.nom ||
-      nextProps.eleve.prenom !== this.props.eleve.prenom ||
+      nextProps.eleve.first_name !== this.props.eleve.first_name ||
+      nextProps.eleve.last_name !== this.props.eleve.last_name ||
       nextProps.eleve.classe !== this.props.eleve.classe ||
-      this.state.eleve.nom !== nextProps.eleve.nom ||
-      this.state.eleve.prenom !== nextProps.eleve.prenom ||
+      this.state.eleve.first_name !== nextProps.eleve.first_name ||
+      this.state.eleve.last_name !== nextProps.eleve.last_name ||
       this.state.eleve.classe !== nextProps.eleve.classe
     );
   }
@@ -46,9 +46,9 @@ class GestionElevesForm extends Component {
     // Si shouldComponentUpdate => true
     this.setState({
       eleve: {
-        _id: this.props.eleve._id,
-        nom: nextProps.eleve.nom,
-        prenom: nextProps.eleve.prenom,
+        id: this.props.eleve.id,
+        first_name: nextProps.eleve.first_name,
+        last_name: nextProps.eleve.last_name,
         classe: nextProps.eleve.classe
       }
     });
@@ -61,15 +61,15 @@ class GestionElevesForm extends Component {
   submitEleve = event => {
     event.preventDefault();
     if (
-      this.state.eleve.nom !== '' &&
-      this.state.eleve.prenom !== '' &&
+      this.state.eleve.first_name !== '' &&
+      this.state.eleve.last_name !== '' &&
       this.state.eleve.classe !== ''
     ) {
       this.props.onFormSubmit(this.state.eleve);
       this.setState({
         eleve: {
-          nom: '',
-          prenom: '',
+          first_name: '',
+          last_name: '',
           classe: ''
         }
       });
@@ -79,8 +79,8 @@ class GestionElevesForm extends Component {
   render() {
     let options = this.state.classes.map((c, i) => {
       return (
-        <option value={c._id} key={i}>
-          {c.nom_classe}
+        <option value={c.id} key={i}>
+          {c.name}
         </option>
       );
     });
@@ -94,28 +94,28 @@ class GestionElevesForm extends Component {
             <div className="panel-heading">{this.props.headingForm}</div>
             <div className="panel-body">
               <div className="form-group">
-                <label htmlFor="nom">Nom :</label>
+                <label htmlFor="first_name">first_name :</label>
                 <input
                   type="text"
                   className="form-control"
-                  name="nom"
-                  id="nom"
-                  value={this.state.eleve.nom}
-                  onChange={this.props.handleChangeNomEleve}
+                  name="first_name"
+                  id="first_name"
+                  value={this.state.eleve.first_name}
+                  onChange={this.props.handleChangefirst_nameEleve}
                   autoFocus
                   required
                 />
               </div>
 
               <div className="form-group">
-                <label htmlFor="prenom">Prénom :</label>
+                <label htmlFor="last_name">Préfirst_name :</label>
                 <input
                   type="text"
                   className="form-control"
-                  name="prenom"
-                  id="prenom"
-                  value={this.state.eleve.prenom}
-                  onChange={this.props.handleChangePrenomEleve}
+                  name="last_name"
+                  id="last_name"
+                  value={this.state.eleve.last_name}
+                  onChange={this.props.handleChangelast_nameEleve}
                   required
                 />
               </div>

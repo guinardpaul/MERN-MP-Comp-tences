@@ -1,6 +1,4 @@
-import React, {
-  Component
-} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Tableau from '../../components/UI/Table/Tableau';
 import ClasseTableau from '../../components/gestion-competences/gestion-tableau/classeTableau';
@@ -8,9 +6,7 @@ import GestionClassesForm from '../../components/gestion-form/gestion-classes-fo
 import './gestion.css';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import * as actionCreator from '../../store/actions/index';
-import {
-  connect
-} from 'react-redux';
+import { connect } from 'react-redux';
 
 class GestionClasses extends Component {
   state = {
@@ -31,7 +27,7 @@ class GestionClasses extends Component {
       addForm: true,
       updateForm: false,
       classe: {
-        nom_classe: '',
+        name: '',
         cycle: ''
       },
       selectedRow: null
@@ -59,7 +55,8 @@ class GestionClasses extends Component {
   };
 
   handleUpdate = obj => {
-    this.setState({
+    this.setState(
+      {
         classe: obj,
         updateForm: true,
         addForm: false
@@ -71,7 +68,7 @@ class GestionClasses extends Component {
   };
 
   handleDelete = obj => {
-    this.props.deleteClasse(obj._id);
+    this.props.deleteClasse(obj.id);
   };
 
   handleRedirectToEleveList = obj => {
@@ -81,7 +78,7 @@ class GestionClasses extends Component {
         selectedClasse: obj
       }
     });
-  }
+  };
 
   handleSelectRowChanged = obj => {
     this.setState({
@@ -103,8 +100,8 @@ class GestionClasses extends Component {
 
     this.setState({
       classe: {
-        _id: newState._id,
-        nom_classe: event.target.value,
+        id: newState.id,
+        name: event.target.value,
         cycle: newState.cycle
       }
     });
@@ -112,11 +109,11 @@ class GestionClasses extends Component {
 
   handleChangeCycle = event => {
     const newState = this.state.classe;
-
+    console.log(event.target.value);
     this.setState({
       classe: {
-        _id: newState._id,
-        nom_classe: newState.nom_classe,
+        id: newState.id,
+        name: newState.name,
         cycle: event.target.value
       }
     });
@@ -125,49 +122,31 @@ class GestionClasses extends Component {
   render() {
     let classeForm = null;
     if (this.state.addForm) {
-      classeForm = ( <
-        GestionClassesForm onFormSubmit = {
-          this.handleSubmit
-        }
-        styleForm = "panel-info"
-        headingForm = "Création classe"
-        buttonStyle = "btn btn-success"
-        buttonName = "Sauver"
-        classe = {
-          this.state.classe
-        }
-        cancelForm = {
-          this.onCancelForm
-        }
-        handleChangeNomClasse = {
-          event => this.handleChangeNomClasse(event)
-        }
-        handleChangeCycle = {
-          event => this.handleChangeCycle(event)
-        }
+      classeForm = (
+        <GestionClassesForm
+          onFormSubmit={this.handleSubmit}
+          styleForm="panel-info"
+          headingForm="Création classe"
+          buttonStyle="btn btn-success"
+          buttonName="Sauver"
+          classe={this.state.classe}
+          cancelForm={this.onCancelForm}
+          handleChangeNomClasse={event => this.handleChangeNomClasse(event)}
+          handleChangeCycle={event => this.handleChangeCycle(event)}
         />
       );
     } else if (this.state.updateForm) {
-      classeForm = ( <
-        GestionClassesForm onFormSubmit = {
-          this.handleSubmit
-        }
-        styleForm = "panel-warning"
-        headingForm = "Modification classe"
-        buttonStyle = "btn btn-warning"
-        buttonName = "Modifier"
-        classe = {
-          this.state.classe
-        }
-        cancelForm = {
-          this.onCancelForm
-        }
-        handleChangeNomClasse = {
-          event => this.handleChangeNomClasse(event)
-        }
-        handleChangeCycle = {
-          event => this.handleChangeCycle(event)
-        }
+      classeForm = (
+        <GestionClassesForm
+          onFormSubmit={this.handleSubmit}
+          styleForm="panel-warning"
+          headingForm="Modification classe"
+          buttonStyle="btn btn-warning"
+          buttonName="Modifier"
+          classe={this.state.classe}
+          cancelForm={this.onCancelForm}
+          handleChangeNomClasse={event => this.handleChangeNomClasse(event)}
+          handleChangeCycle={event => this.handleChangeCycle(event)}
         />
       );
     } else if (
@@ -177,67 +156,42 @@ class GestionClasses extends Component {
       classeForm = this.props.error.message;
     }
 
-    let data = < Spinner / > ;
+    let table = <Spinner />;
     if (!this.props.loading) {
       if (this.props.listClasses.length > 0) {
-        data = ( <
-          ClasseTableau onUpdate = {
-            this.handleUpdate
-          }
-          onDelete = {
-            this.handleDelete
-          }
-          onConsulter = {
-            this.handleRedirectToEleveList
-          }
-          data = {
-            this.props.listClasses
-          }
-          consulterButton = {
-            this.state.consulterButton
-          }
-          selectedRow = {
-            this.state.selectedRow
-          }
+        table = (
+          <ClasseTableau
+            onUpdate={this.handleUpdate}
+            onDelete={this.handleDelete}
+            onConsulter={this.handleRedirectToEleveList}
+            data={this.props.listClasses}
+            consulterButton={this.state.consulterButton}
+            selectedRow={this.state.selectedRow}
           />
         );
       } else {
-        data = < p > Aucune donnée à afficher < /p>;
+        table = <p> Aucune donnée à afficher </p>;
       }
     } else {
-      data = this.props.error.message;
+      table = this.props.error.message;
     }
 
-    return ( <
-      div className = "container header" >
-      <
-      h2 className = "page-header " >
-      Gestion classes {
-        ' '
-      } <
-      button className = "btn btn-primary btn-circle btn-lg margin"
-      onClick = {
-        this.displayAddForm
-      } >
-      <
-      span className = "glyphicon glyphicon-plus" / >
-      <
-      /button>{' '} < /
-      h2 > {
-        ' '
-      } <
-      div className = "col-sm-6 col-md-6 col-lg-6 col-xs-12" > {
-        data
-      } < /div>{' '} <
-      div className = "col-sm-6 col-md-6 col-lg-6 col-xs-12" > {
-        ' '
-      } {
-        classeForm
-      } {
-        ' '
-      } <
-      /div>{' '} < /
-      div >
+    return (
+      <div className="container header">
+        <h2 className="page-header ">
+          Gestion classes{' '}
+          <button
+            className="btn btn-primary btn-circle btn-lg margin"
+            onClick={this.displayAddForm}>
+            <span className="glyphicon glyphicon-plus" />
+          </button>{' '}
+        </h2>{' '}
+        <div className="col-sm-6 col-md-6 col-lg-6 col-xs-12"> {table} </div>{' '}
+        <div className="col-sm-6 col-md-6 col-lg-6 col-xs-12">
+          {' '}
+          {classeForm}{' '}
+        </div>{' '}
+      </div>
     );
   }
 }

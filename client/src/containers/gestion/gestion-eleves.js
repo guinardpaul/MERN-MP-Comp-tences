@@ -13,24 +13,11 @@ class GestionEleves extends Component {
   state = {
     selectedClasse: '',
     eleve: {
-      _id: null,
-      nom: '',
-      prenom: '',
+      id: null,
+      first_name: '',
+      last_name: '',
       classe: ''
     },
-    elevesHeader: [
-      {
-        header: 'Nom',
-        accessor: 'nom'
-      },
-      {
-        header: 'Prénom',
-        accessor: 'prenom'
-      }
-    ],
-    tableStyle: ['table-striped'],
-    rowStyle: [200, 150, 150],
-    itemKey: ['nom', 'prenom'],
     addForm: false,
     updateForm: false,
     consulterButton: false,
@@ -45,7 +32,7 @@ class GestionEleves extends Component {
       if (this.props.location.state.selectedClasse !== '') {
         this.setState(
           {
-            selectedClasse: this.props.location.state.selectedClasse._id
+            selectedClasse: this.props.location.state.selectedClasse.id
           },
           () => {
             this.props.getAllElevesByClasse(this.state.selectedClasse);
@@ -77,8 +64,8 @@ class GestionEleves extends Component {
       addForm: true,
       updateForm: false,
       eleve: {
-        nom: '',
-        prenom: '',
+        first_name: '',
+        last_name: '',
         classe: this.state.selectedClasse
       },
       selectedRow: null
@@ -93,29 +80,29 @@ class GestionEleves extends Component {
     });
   };
 
-  handleChangeNomEleve(event) {
+  handleChangefirst_nameEleve(event) {
     const newEleve = {
       ...this.state.eleve
     };
     this.setState({
       eleve: {
-        _id: newEleve._id,
-        nom: event.target.value,
-        prenom: newEleve.prenom,
+        id: newEleve.id,
+        first_name: event.target.value,
+        last_name: newEleve.last_name,
         classe: newEleve.classe
       }
     });
   }
 
-  handleChangePrenomEleve(event) {
+  handleChangelast_nameEleve(event) {
     const newEleve = {
       ...this.state.eleve
     };
     this.setState({
       eleve: {
-        _id: newEleve._id,
-        nom: newEleve.nom,
-        prenom: event.target.value,
+        id: newEleve.id,
+        first_name: newEleve.first_name,
+        last_name: event.target.value,
         classe: newEleve.classe
       }
     });
@@ -127,9 +114,9 @@ class GestionEleves extends Component {
     };
     this.setState({
       eleve: {
-        _id: newEleve._id,
-        nom: newEleve.nom,
-        prenom: newEleve.prenom,
+        id: newEleve.id,
+        first_name: newEleve.first_name,
+        last_name: newEleve.last_name,
         classe: event.target.value
       },
       selectedRow: null
@@ -137,16 +124,16 @@ class GestionEleves extends Component {
   }
 
   handleSubmit = eleve => {
-    if (this.state.addForm && this.state.eleve._id === undefined) {
+    if (this.state.addForm && this.state.eleve.id === undefined) {
       this.props.addEleve(eleve);
       if (!this.props.loading) {
         this.setState({
           addForm: false,
           updateForm: false,
           eleve: {
-            _id: null,
-            nom: '',
-            prenom: '',
+            id: null,
+            first_name: '',
+            last_name: '',
             classe: ''
           }
         });
@@ -158,9 +145,9 @@ class GestionEleves extends Component {
           addForm: false,
           updateForm: false,
           eleve: {
-            _id: null,
-            nom: '',
-            prenom: '',
+            id: null,
+            first_name: '',
+            last_name: '',
             classe: ''
           }
         });
@@ -182,7 +169,7 @@ class GestionEleves extends Component {
   };
 
   handleDelete = eleve => {
-    this.props.deleteEleve(eleve._id);
+    this.props.deleteEleve(eleve.id);
   };
 
   handleSelectRowChanged = obj => {
@@ -206,8 +193,12 @@ class GestionEleves extends Component {
           listClasses={this.props.listClasses}
           selectedClasse={this.state.selectedClasse}
           cancelForm={this.onCancelForm}
-          handleChangeNomEleve={event => this.handleChangeNomEleve(event)}
-          handleChangePrenomEleve={event => this.handleChangePrenomEleve(event)}
+          handleChangefirst_nameEleve={event =>
+            this.handleChangefirst_nameEleve(event)
+          }
+          handleChangelast_nameEleve={event =>
+            this.handleChangelast_nameEleve(event)
+          }
           handleChangeClasse={event => this.handleChangeClasse(event)}
         />
       );
@@ -224,8 +215,12 @@ class GestionEleves extends Component {
           listClasses={this.props.listClasses}
           selectedClasse={this.state.selectedClasse}
           cancelForm={this.onCancelForm}
-          handleChangeNomEleve={event => this.handleChangeNomEleve(event)}
-          handleChangePrenomEleve={event => this.handleChangePrenomEleve(event)}
+          handleChangefirst_nameEleve={event =>
+            this.handleChangefirst_nameEleve(event)
+          }
+          handleChangelast_nameEleve={event =>
+            this.handleChangelast_nameEleve(event)
+          }
           handleChangeClasse={event => this.handleChangeClasse(event)}
         />
       );
@@ -247,9 +242,9 @@ class GestionEleves extends Component {
     if (!this.props.loadingClasses) {
       let options = this.props.listClasses.map((c, i) => {
         return (
-          <option value={c._id} key={i}>
+          <option value={c.id} key={i}>
             {' '}
-            {c.nom_classe}{' '}
+            {c.name}{' '}
           </option>
         );
       });
@@ -306,10 +301,6 @@ GestionEleves.propTypes = {
   listClasses: PropTypes.array,
   eleve: PropTypes.object,
   selectedClasse: PropTypes.string,
-  elevesHeader: PropTypes.arrayOf(PropTypes.string),
-  tableStyle: PropTypes.arrayOf(PropTypes.string),
-  rowStyle: PropTypes.arrayOf(PropTypes.number),
-  itemKey: PropTypes.arrayOf(PropTypes.string),
   addForm: PropTypes.bool,
   updateForm: PropTypes.bool,
   consulterButton: PropTypes.bool,

@@ -3,8 +3,8 @@ import Tableau from '../../UI/Table/Tableau';
 
 const domaineTableau = props => {
   const domainesHeader = [
-    { header: 'Référence', accessor: 'ref_domaine' },
-    { header: 'Description', accessor: 'description_domaine' }
+    { header: 'Référence', accessor: 'ref' },
+    { header: 'Description', accessor: 'description' }
   ];
   const tableStyle = 'table table-striped table-hover';
   const rowStyle = [100, 100, 300];

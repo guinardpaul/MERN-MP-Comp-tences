@@ -3,8 +3,8 @@ import Tableau from '../../UI/Table/Tableau';
 
 const classeTableau = props => {
   const elevesHeader = [
-    { header: 'Nom', accessor: 'nom' },
-    { header: 'Prénom', accessor: 'prenom' }
+    { header: 'Nom', accessor: 'first_name' },
+    { header: 'Prénom', accessor: 'last_name' }
   ];
   const tableStyle = ['table-striped'];
   const rowStyle = [200, 150, 150];

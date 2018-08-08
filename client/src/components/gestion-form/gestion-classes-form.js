@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { ENUM_CYCLES } from '../../models/enums';
 
 class GestionClassesForm extends Component {
   state = {
-    classe: { _id: null, nom_classe: '', cycle: '' },
+    classe: { id: null, name: '', cycle: '' },
     cycles: ['Cycle 3', 'Cycle 4']
   };
 
   componentDidMount() {
     this.setState({
       classe: {
-        _id: this.props.classe._id,
-        nom_classe: this.props.classe.nom_classe,
+        id: this.props.classe.id,
+        name: this.props.classe.name,
         cycle: this.props.classe.cycle
       }
     });
@@ -19,9 +20,9 @@ class GestionClassesForm extends Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     return (
-      nextProps.classe.nom_classe !== this.props.classe.nom_classe ||
+      nextProps.classe.name !== this.props.classe.name ||
       nextProps.classe.cycle !== this.props.classe.cycle ||
-      this.state.classe.nom_classe !== nextProps.classe.nom_classe ||
+      this.state.classe.name !== nextProps.classe.name ||
       this.state.classe.cycle !== nextProps.classe.cycle
     );
   }
@@ -30,8 +31,8 @@ class GestionClassesForm extends Component {
     // Si shouldComponentUpdate => true
     this.setState({
       classe: {
-        _id: nextProps.classe._id,
-        nom_classe: nextProps.classe.nom_classe,
+        id: nextProps.classe.id,
+        name: nextProps.classe.name,
         cycle: nextProps.classe.cycle
       }
     });
@@ -43,19 +44,19 @@ class GestionClassesForm extends Component {
 
   addClasse = event => {
     event.preventDefault();
-    if (this.state.classe.nom_classe !== '' && this.state.classe.cycle !== '') {
+    if (this.state.classe.name !== '' && this.state.classe.cycle !== '') {
       this.props.onFormSubmit(this.state.classe);
       this.setState({
-        classe: { _id: null, nom_classe: '', cycle: '' }
+        classe: { id: null, name: '', cycle: '' }
       });
     }
   };
 
   render() {
-    let options = this.state.cycles.map((c, i) => {
+    let options = ENUM_CYCLES.map((c, i) => {
       return (
-        <option value={c} key={i}>
-          {c}
+        <option value={c.id} key={c.id}>
+          {c.literal}
         </option>
       );
     });
@@ -72,13 +73,13 @@ class GestionClassesForm extends Component {
             <div className="panel-heading">{this.props.headingForm}</div>
             <div className="panel-body">
               <div className="form-group">
-                <label htmlFor="nom_classe">Nom classe :</label>
+                <label htmlFor="name">Nom classe :</label>
                 <input
                   type="text"
                   className="form-control"
-                  name="nom_classe"
-                  id="nom_classe"
-                  value={this.state.classe.nom_classe}
+                  name="name"
+                  id="name"
+                  value={this.state.classe.name}
                   onChange={this.props.handleChangeNomClasse}
                   autoFocus
                   required

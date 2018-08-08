@@ -4,12 +4,12 @@ import Tableau from '../../UI/Table/Tableau';
 const classeTableau = props => {
   const classesHeader = [
     {
-      header: 'Nom classe',
-      accessor: 'nom_classe'
+      header: 'Nom',
+      accessor: 'name'
     },
     {
       header: 'Cycle',
-      accessor: 'cycle'
+      accessor: 'literal'
     }
   ];
   const tableStyle = 'table table-striped';

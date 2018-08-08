@@ -33,7 +33,7 @@ exports.getAll = function (done) {
 }
 
 exports.getByCycle = function (cycle, done) {
-  db.get().query('SELECT * FROM domaines WHERE cycle=? ORDER BY ref ASC', cycle, function (err, result) {
+  db.get().query('SELECT * FROM domaines WHERE cycle_id=? ORDER BY ref ASC', cycle, function (err, result) {
     console.log(result);
     if (err) return done(err);
     done(null, result);

@@ -1,12 +1,12 @@
 CREATE TABLE `enum_cycles` (
  `id` int(11) NOT NULL AUTO_INCREMENT,
- `name` varchar(45) NOT NULL,
+ `literal` varchar(45) NOT NULL,
  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `enum_trimestres` (
  `id` int(11) NOT NULL AUTO_INCREMENT,
- `name` varchar(45) NOT NULL,
+ `literal` varchar(45) NOT NULL,
  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
@@ -20,10 +20,10 @@ CREATE TABLE `enum_resultats` (
 CREATE TABLE `classes` (
  `id` int(11) NOT NULL AUTO_INCREMENT,
  `name` varchar(45) NOT NULL,
- `cycle` int(11) NOT NULL,
+ `cycle_id` int(11) NOT NULL,
  PRIMARY KEY (`id`),
- KEY `cycle_id` (`cycle`),
- CONSTRAINT `cycle_id` FOREIGN KEY (`cycle`) REFERENCES `enum_cycles` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+ KEY `cycle_id` (`cycle_id`),
+ CONSTRAINT `cycle_id` FOREIGN KEY (`cycle_id`) REFERENCES `enum_cycles` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `eleves` (
