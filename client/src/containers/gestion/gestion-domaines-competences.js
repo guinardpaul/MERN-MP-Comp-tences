@@ -14,25 +14,59 @@ class GestionDomainesCompetences extends Component {
     addDomaineForm: false,
     cycles: ['Cycle 3', 'Cycle 4'],
     selectedCycle: '',
-    selectedDomaine: ''
+    selectedDomaine: '',
+    listDomaines: []
   };
 
   buildTreeTableData = selectedCycle => {
     const treeTableData = [];
-    this.props.getAllDomainesByCycle(selectedCycle);
+    console.log('this.props.listDomaines: ', this.props.listDomaines);
+    const domaines = [...this.props.listDomaines].filter(
+      d => d.cycleid === parseInt(selectedCycle, 10) && d.ref !== 'null'
+    );
+    console.log('domaines: ', domaines);
 
-    console.log(this.props.loadingDomaine);
-    this.props.listDomaines.forEach(domaine => {
-      this.props.getCompetencesByDomaine(domaine.id);
-      const domaineTree = {
-        domaine: domaine,
-        children: [this.props.listCompetences]
-      };
-      console.log('domaineTree: ', domaineTree);
-      treeTableData.push(domaineTree);
+    domaines.forEach(d => {
+      const sous_domaines = [...this.props.listDomaines].filter(
+        sous_domaine =>
+          sous_domaine.cycleid === parseInt(selectedCycle, 10) &&
+          sous_domaine.ref === 'null' &&
+          sous_domaine.sous_domaineid === d.id
+      );
+      console.log('sous_domaines: ', sous_domaines);
+
+      // init toggle value
+      d['toggle'] = false;
+      if (sous_domaines.length > 0) {
+        d['toggle'] = true;
+      }
+      console.log('d: ', d);
+
+      // push le domaine
+      treeTableData.push(d);
+      // push sous_domaines
+      for (let i = 0; i < sous_domaines.length; i++) {
+        const element = sous_domaines[i];
+        element['toggled'] = false;
+        treeTableData.push(element);
+      }
     });
+    console.log('treeTableData: ', treeTableData);
 
-    console.log(treeTableData);
+    this.setState({
+      listDomaines: treeTableData
+    });
+    // this.props.listDomaines.forEach(domaine => {
+    //   this.props.getCompetencesByDomaine(domaine.id);
+    //   const domaineTree = {
+    //     domaine: domaine,
+    //     children: [this.props.listCompetences]
+    //   };
+    //   console.log('domaineTree: ', domaineTree);
+    //   treeTableData.push(domaineTree);
+    // });
+
+    // console.log(treeTableData);
   };
 
   componentWillMount() {
@@ -41,23 +75,13 @@ class GestionDomainesCompetences extends Component {
   }
 
   filterList = selectedCycle => {
-    const domaines = [...this.props.listDomaines];
-    domaines.filter(d => d.cycle_id === selectedCycle);
-    console.log(
-      'domaines: ',
-      domaines.filter(d => d.cycle_id === selectedCycle)
+    const domainesFiltered = [...this.props.listDomaines].filter(
+      d => d.cycleid === parseInt(selectedCycle, 10) && d.ref !== 'null'
     );
 
-    let domaineFiltered = this.props.listDomaines.filter(
-      domaine => domaine.cycle_id === selectedCycle
-    );
-
-    console.log('this.props.listDomaines: ', this.props.listDomaines);
-    console.log('domaineFiltered: ', domaineFiltered);
-    let competencesFiltered = this.props.listCompetences.filter(
-      ct => ct.cycle_id === selectedCycle
-    );
-    console.log('competencesFiltered: ', competencesFiltered);
+    this.setState({
+      listDomaines: domainesFiltered
+    });
   };
 
   buildData = () => {
@@ -66,7 +90,7 @@ class GestionDomainesCompetences extends Component {
       const domaineTree = {
         domaine: domaine,
         children: [
-          this.props.listCompetences.filter(ct => ct.domaine !== domaine._id)
+          this.props.listCompetences.filter(ct => ct.domaine !== domaine.id)
         ]
       };
       console.log('domaineTree: ', domaineTree);
@@ -101,68 +125,90 @@ class GestionDomainesCompetences extends Component {
   }
 
   selectDomaine(domaine) {
-    this.setState({ selectedDomaine: domaine }, () => {
-      if (domaine !== undefined) {
-        this.props.getCompetencesByDomaine(domaine._id);
+    this.setState(
+      {
+        selectedDomaine: domaine
+      },
+      () => {
+        if (domaine !== undefined) {
+          this.props.getCompetencesByDomaine(domaine.id);
+        }
+      }
+    );
+  }
+
+  toggleSousDomaines = domaineid => {
+    const treeTableData = [...this.state.listDomaines];
+    treeTableData.map(d => {
+      if (d.sous_domaineid === domaineid) {
+        d.toggled = !d.toggled;
       }
     });
-  }
+
+    this.setState({
+      listDomaines: treeTableData
+    });
+  };
 
   render() {
     const options = ENUM_CYCLES.map((cycle, i) => {
       return (
         <option value={cycle.id} key={i}>
-          {cycle.literal}
+          {' '}
+          {cycle.literal}{' '}
         </option>
       );
     });
 
     /*  const columns = [
-      { header: 'Référence', accessor: 'ref_domaine' },
-      { header: 'Description', accessor: 'description_domaine' }
-    ]; */
+        { header: 'Référence', accessor: 'ref_domaine' },
+        { header: 'Description', accessor: 'description_domaine' }
+      ]; */
 
     // let reactTableTest = <SelectTreeTable data={this.props.listCompetences} />;
 
     return (
       <div className="container header">
         <h2 className="page-header ">
-          Gestion Competences
+          Gestion Competences{' '}
           <button
             className="btn btn-primary btn-circle btn-lg margin"
             onClick={this.displayAddDomaineForm}>
             <span className="glyphicon glyphicon-plus" />
-          </button>
-        </h2>
+          </button>{' '}
+        </h2>{' '}
         <select
           className="form-control select-classe"
           name="cycle"
           id="cycle"
           value={this.state.selectedCycle}
           onChange={event => this.handleChangeSelectedCycle(event)}>
-          <option value="">Cycle</option>
-          {options}
-        </select>
+          <option value=""> Cycle </option> {options}{' '}
+        </select>{' '}
         {/* {this.props.listCompetences.length > 0 && !this.props.loadingCompetence
-          ? reactTableTest
-          : null} */}
+                ? reactTableTest
+                : null} */}{' '}
         <div className="row">
           <div className="col-sm-6 col-md-6 col-lg-6">
             <GestionDomaines
               selectedCycle={this.state.selectedCycle}
-              listDomaines={this.props.listDomaines}
+              listDomaines={this.state.listDomaines}
               selectDomaine={domaine => this.selectDomaine(domaine)}
               listCompetences={this.props.listCompetences}
-            />
-          </div>
+              toggleSousDomaines={domaineid =>
+                this.toggleSousDomaines(domaineid)
+              }
+            />{' '}
+          </div>{' '}
           <div className="col-sm-6 col-md-6 col-lg-6">
+            {' '}
             {this.state.selectedDomaine !== '' ? (
               <GestionCompetences
                 selectedDomaine={this.state.selectedDomaine}
               />
-            ) : null}
-          </div>
-        </div>
+            ) : null}{' '}
+          </div>{' '}
+        </div>{' '}
       </div>
     );
   }

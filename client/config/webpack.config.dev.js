@@ -109,15 +109,13 @@ module.exports = {
       {
         test: /\.(js|jsx|mjs)$/,
         enforce: 'pre',
-        use: [
-          {
-            options: {
-              formatter: eslintFormatter,
-              eslintPath: require.resolve('eslint')
-            },
-            loader: require.resolve('eslint-loader')
-          }
-        ],
+        use: [{
+          options: {
+            formatter: eslintFormatter,
+            eslintPath: require.resolve('eslint')
+          },
+          loader: require.resolve('eslint-loader')
+        }],
         include: paths.appSrc
       },
       {
@@ -145,7 +143,8 @@ module.exports = {
               // This is a feature of `babel-loader` for webpack (not Babel itself).
               // It enables caching results in ./node_modules/.cache/babel-loader/
               // directory for faster rebuilds.
-              cacheDirectory: true
+              cacheDirectory: true,
+              plugins: ['react-hot-loader/babel'],
             }
           },
           // "postcss" loader applies autoprefixer to our CSS.

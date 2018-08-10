@@ -8,7 +8,6 @@ const domaineTableau = props => {
   ];
   const tableStyle = 'table table-striped table-hover';
   const rowStyle = [100, 100, 300];
-  const itemKey = ['ref_domaine', 'description_domaine'];
 
   return (
     <Tableau

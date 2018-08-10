@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import * as domaineActionCreators from '../../store/actions/domaine';
 import * as competenceActionCreators from '../../store/actions/competence';
 import Aux from '../../hoc/Auxil/Auxil';
+import { Collapse } from 'react-bootstrap';
 
 class GestionDomaines extends Component {
   state = {
@@ -51,10 +52,76 @@ class GestionDomaines extends Component {
   };
 
   render() {
+    // let previousId = 0;
     let domaineTable;
     if (this.props.selectedCycle !== '') {
       if (this.props.listDomaines.length > 0) {
         domaineTable = (
+          // <table>
+          //   <thead>
+          //     <tr>
+          //       <th>#</th>
+          //       <th>Ref</th>
+          //       <th>Description</th>
+          //       <th>Sous Domaine Id</th>
+          //     </tr>
+          //   </thead>
+          //   <tbody>
+          //     {this.props.listDomaines.map(d => {
+          //       console.log('previousId: ', previousId);
+          //       const toggleBtn = (
+          //         <button
+          //           className="btn btn-success"
+          //           onClick={() => this.props.toggleSousDomaines(d.id)}>
+          //           +
+          //         </button>
+          //       );
+          //       if (d.ref !== 'null') {
+          //         return (
+          //           <tr>
+          //             <td>{d.toggle ? toggleBtn : null}</td>
+          //             <td>{d.ref}</td>
+          //             <td>{d.description}</td>
+          //             <td>{d.sous_domaine_id}</td>
+          //           </tr>
+          //         );
+          //       } else if (previousId === d.sous_domaine_id) {
+          //         return (
+          //           <Collapse in={d.toggled}>
+          //             <tr>
+          //               <td>{d.ref}</td>
+          //               <td>{d.description}</td>
+          //               <td>{d.sous_domaine_id}</td>
+          //             </tr>
+          //           </Collapse>
+          //         );
+          //       } else {
+          //         previousId = d.sous_domaine_id;
+          //         return (
+          //           <Collapse in={d.toggled}>
+          //             <table>
+          //               <thead>
+          //                 <tr>
+          //                   <th>Ref</th>
+          //                   <th>Description</th>
+          //                   <th>Sous Domaine Id</th>
+          //                 </tr>
+          //               </thead>
+          //               <tbody>
+          //                 <tr>
+          //                   <td>{d.ref}</td>
+          //                   <td>{d.description}</td>
+          //                   <td>{d.sous_domaine_id}</td>
+          //                 </tr>
+          //               </tbody>
+          //             </table>
+          //           </Collapse>
+          //         );
+          //       }
+          //     })}
+          //   </tbody>
+          // </table>
+
           <DomaineTableau
             onConsulter={this.handleSelectDomaine}
             consulterButton={this.state.consulterButton}
