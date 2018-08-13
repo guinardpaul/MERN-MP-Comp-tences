@@ -15,8 +15,14 @@ class GestionDomainesCompetences extends Component {
     cycles: ['Cycle 3', 'Cycle 4'],
     selectedCycle: '',
     selectedDomaine: '',
-    listDomaines: []
+    listDomaines: [],
+    listSousDomainesCompetences: []
   };
+
+  componentWillMount() {
+    this.props.getAllDomaines();
+    this.props.getAllCompetences();
+  }
 
   buildTreeTableData = selectedCycle => {
     const treeTableData = [];
@@ -31,7 +37,7 @@ class GestionDomainesCompetences extends Component {
         sous_domaine =>
           sous_domaine.cycleid === parseInt(selectedCycle, 10) &&
           sous_domaine.ref === 'null' &&
-          sous_domaine.sous_domaineid === d.id
+          sous_domaine.sous_domaine_id === d.id
       );
       console.log('sous_domaines: ', sous_domaines);
 
@@ -69,34 +75,41 @@ class GestionDomainesCompetences extends Component {
     // console.log(treeTableData);
   };
 
-  componentWillMount() {
-    this.props.getAllDomaines();
-    this.props.getAllCompetences();
-  }
-
   filterList = selectedCycle => {
     const domainesFiltered = [...this.props.listDomaines].filter(
-      d => d.cycleid === parseInt(selectedCycle, 10) && d.ref !== 'null'
+      d => d.cycle_id === parseInt(selectedCycle, 10) && d.ref !== 'null'
     );
+    console.log('domainesFiltered: ', domainesFiltered);
 
     this.setState({
       listDomaines: domainesFiltered
     });
   };
 
-  buildData = () => {
+  buildData = selectedDomaine => {
     const treeTableData = [];
-    this.props.listDomaines.forEach(domaine => {
-      const domaineTree = {
-        domaine: domaine,
-        children: [
-          this.props.listCompetences.filter(ct => ct.domaine !== domaine.id)
-        ]
-      };
-      console.log('domaineTree: ', domaineTree);
-      treeTableData.push(domaineTree);
-    });
-    console.log(treeTableData);
+    // On filtre les sous_domaines
+    const sous_domaine_list = [...this.props.listDomaines].filter(
+      d => d.sous_domaine_id === selectedDomaine.id
+    );
+    if (sous_domaine_list.length > 0) {
+      for (let i = 0; i < sous_domaine_list.length; i++) {
+        const competences = [...this.props.listCompetences].filter(
+          c => c.domaine_id === sous_domaine_list[i].id
+        );
+        treeTableData.push(sous_domaine_list[i]);
+        competences.forEach(ct => {
+          treeTableData.push(ct);
+        });
+      }
+    } else {
+      const competences = [...this.props.listCompetences].filter(
+        c => c.domaine_id === selectedDomaine.id
+      );
+      competences.forEach(ct => treeTableData.push(ct));
+    }
+    console.log('treeTableData: ', treeTableData);
+    return treeTableData;
   };
 
   displayAddDomaineForm = () => {
@@ -125,9 +138,12 @@ class GestionDomainesCompetences extends Component {
   }
 
   selectDomaine(domaine) {
+    const listSousDomainesCompetences = this.buildData(domaine);
+    console.log('listSousDomainesCompetences: ', listSousDomainesCompetences);
     this.setState(
       {
-        selectedDomaine: domaine
+        selectedDomaine: domaine,
+        listSousDomainesCompetences: listSousDomainesCompetences
       },
       () => {
         if (domaine !== undefined) {
@@ -140,7 +156,7 @@ class GestionDomainesCompetences extends Component {
   toggleSousDomaines = domaineid => {
     const treeTableData = [...this.state.listDomaines];
     treeTableData.map(d => {
-      if (d.sous_domaineid === domaineid) {
+      if (d.sous_domaine_id === domaineid) {
         d.toggled = !d.toggled;
       }
     });
@@ -194,7 +210,7 @@ class GestionDomainesCompetences extends Component {
               selectedCycle={this.state.selectedCycle}
               listDomaines={this.state.listDomaines}
               selectDomaine={domaine => this.selectDomaine(domaine)}
-              listCompetences={this.props.listCompetences}
+              listCompetences={this.state.listCompetences}
               toggleSousDomaines={domaineid =>
                 this.toggleSousDomaines(domaineid)
               }
@@ -204,6 +220,9 @@ class GestionDomainesCompetences extends Component {
             {' '}
             {this.state.selectedDomaine !== '' ? (
               <GestionCompetences
+                listSousDomainesCompetences={
+                  this.state.listSousDomainesCompetences
+                }
                 selectedDomaine={this.state.selectedDomaine}
               />
             ) : null}{' '}

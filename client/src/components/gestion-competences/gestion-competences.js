@@ -61,7 +61,7 @@ class GestionCompetences extends Component {
           />
         );
       } else {
-        if (this.props.listCompetences.length > 0) {
+        if (this.props.listSousDomainesCompetences.length > 0) {
           competence = (
             <Aux>
               <Button
@@ -74,7 +74,7 @@ class GestionCompetences extends Component {
               <CompetenceTableau
                 onUpdate={this.handleUpdate}
                 onDelete={this.handleDelete}
-                data={this.props.listCompetences}
+                data={this.props.listSousDomainesCompetences}
                 consulterButton={this.state.consulterButton}
               />
             </Aux>
@@ -117,7 +117,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(GestionCompetences);
+export default GestionCompetences;
