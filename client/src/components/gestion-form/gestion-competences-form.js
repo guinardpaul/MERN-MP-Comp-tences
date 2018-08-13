@@ -5,11 +5,10 @@ import Button from '../UI/Table/Button/Button';
 class GestionCompetencesForm extends Component {
   state = {
     competence: {
-      _id: null,
-      ref_ct: '',
-      description_ct: '',
-      domaine: '',
-      sous_domaine: ''
+      id: null,
+      ref: '',
+      description: '',
+      domaine_id: '',
     },
     selectedDomaine: ''
   };
@@ -17,23 +16,22 @@ class GestionCompetencesForm extends Component {
   componentDidMount() {
     this.setState({
       competence: {
-        _id: this.props.competence._id,
-        ref_ct: this.props.competence.ref_ct,
-        description_ct: this.props.competence.description_ct,
-        domaine: this.props.competence.domaine,
-        sous_domaine: this.props.competence.sous_domaine
+        id: this.props.competence.id,
+        ref: this.props.competence.ref,
+        description: this.props.competence.description,
+        domaine_id: this.props.competence.domaine_id
       }
     });
   }
 
   shouldComponentUpdate(nextProps, nextState) {
     return (
-      nextProps.competence.ref_ct !== this.props.competence.ref_ct ||
-      nextProps.competence.description_ct !==
-        this.props.competence.description_ct ||
-      this.state.competence.ref_ct !== nextProps.competence.ref_ct ||
-      this.state.competence.description_ct !==
-        nextProps.competence.description_ct
+      nextProps.competence.ref !== this.props.competence.ref ||
+      nextProps.competence.description !==
+      this.props.competence.description ||
+      this.state.competence.ref !== nextProps.competence.ref ||
+      this.state.competence.description !==
+      nextProps.competence.description
     );
   }
 
@@ -41,11 +39,10 @@ class GestionCompetencesForm extends Component {
     // Si shouldComponentUpdate => true
     this.setState({
       competence: {
-        _id: nextProps.competence._id,
-        ref_ct: nextProps.competence.ref_ct,
-        description_ct: nextProps.competence.description_ct,
-        domaine: nextProps.competence.domaine,
-        sous_domaine: nextProps.competence.sous_domaine
+        id: nextProps.competence.id,
+        ref: nextProps.competence.ref,
+        description: nextProps.competence.description,
+        domaine_id: nextProps.competence.domaine_id
       }
     });
   }
@@ -57,17 +54,16 @@ class GestionCompetencesForm extends Component {
   addCompetence = event => {
     event.preventDefault();
     if (
-      this.state.competence.ref_ct !== '' &&
-      this.state.competence.description_ct !== ''
+      this.state.competence.ref !== '' &&
+      this.state.competence.description !== ''
     ) {
       this.props.onFormSubmit(this.state.competence);
       this.setState({
         competence: {
-          _id: null,
-          ref_ct: '',
-          description_ct: '',
-          domaine: '',
-          sous_domaine: ''
+          id: null,
+          ref: '',
+          description: '',
+          domaine_id: ''
         }
       });
     }
@@ -85,10 +81,10 @@ class GestionCompetencesForm extends Component {
                 <input
                   type="text"
                   className="form-control"
-                  name="ref_ct"
-                  id="ref_ct"
-                  value={this.props.competence.ref_ct}
-                  onChange={this.props.handleChangeRefCT}
+                  name="ref"
+                  id="ref"
+                  value={this.props.competence.ref}
+                  onChange={this.props.handleChangeRef}
                   autoFocus
                   required
                 />
@@ -99,10 +95,10 @@ class GestionCompetencesForm extends Component {
                 <textarea
                   type="text"
                   className="form-control"
-                  name="ref_ct"
-                  id="ref_ct"
-                  value={this.props.competence.description_ct}
-                  onChange={this.props.handleChangeDescriptionCT}
+                  name="description"
+                  id="description"
+                  value={this.props.competence.description}
+                  onChange={this.props.handleChangeDescription}
                   required
                 />
               </div>
@@ -112,12 +108,12 @@ class GestionCompetencesForm extends Component {
                 <textarea
                   type="text"
                   className="form-control"
-                  name="ref_ct"
-                  id="ref_ct"
+                  name="domaine_id"
+                  id="domaine_id"
                   value={
-                    this.props.selectedDomaine.ref_domaine +
+                    this.props.selectedDomaine.ref +
                     ' - ' +
-                    this.props.selectedDomaine.description_domaine
+                    this.props.selectedDomaine.description
                   }
                   disabled
                   required

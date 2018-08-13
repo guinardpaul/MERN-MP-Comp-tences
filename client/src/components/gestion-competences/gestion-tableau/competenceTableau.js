@@ -17,7 +17,8 @@ const competenceTableau = props => {
       data={props.data}
       tableStyle={tableStyle}
       rowStyle={rowStyle}
-      btnStyle
+      btnStyleVertical
+      caption="Sous-Domaines & Compétences"
     />
   );
 };

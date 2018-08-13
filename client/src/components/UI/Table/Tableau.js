@@ -1,5 +1,6 @@
 import React from 'react';
 import TableRow from './TableRow';
+import './Tableau.css';
 
 const tableau = props => {
   const cssClasses = [...props.tableStyle, 'table'];
@@ -22,7 +23,7 @@ const tableau = props => {
         onDelete={props.onDelete}
         consulterButton={props.consulterButton}
         onConsulter={props.onConsulter}
-        btnStyle={props.btnStyle}
+        btnStyleVertical={props.btnStyleVertical}
         selectedRow={selectedRow}
       />
     );
@@ -30,6 +31,7 @@ const tableau = props => {
 
   return (
     <table className={cssClasses.join(' ')}>
+      <caption className="caption"><h4>{props.caption}</h4></caption>
       <thead>
         <tr>
           {headers}

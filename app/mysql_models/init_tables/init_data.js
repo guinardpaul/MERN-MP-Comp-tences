@@ -2,20 +2,20 @@ var data = {
   tables: {
     enum_cycles: [{
       id: 1,
-      name: "Cycle 3"
+      literal: "Cycle 3"
     }, {
       id: 2,
-      name: "Cycle 4"
+      literal: "Cycle 4"
     }],
     enum_trimestres: [{
       id: 1,
-      name: "Trimestre 1"
+      literal: "Trimestre 1"
     }, {
       id: 2,
-      name: "Trimestre 2"
+      literal: "Trimestre 2"
     }, {
       id: 3,
-      name: "Trimestre 3"
+      literal: "Trimestre 3"
     }],
     enum_resultats: [{
       id: 1,
@@ -37,57 +37,57 @@ var data = {
     classes: [{
         id: 1,
         name: "6_G5",
-        cycle: 1
+        cycle_id: 1
       },
       {
         id: 2,
         name: "6_G4",
-        cycle: 1
+        cycle_id: 1
       },
       {
         id: 3,
         name: "6_G3",
-        cycle: 1
+        cycle_id: 1
       },
       {
         id: 4,
         name: "6_G2",
-        cycle: 1
+        cycle_id: 1
       },
       {
         id: 5,
         name: "6_G1",
-        cycle: 1
+        cycle_id: 1
       },
       {
         id: 6,
         name: "5_G3",
-        cycle: 2
+        cycle_id: 2
       },
       {
         id: 7,
         name: "5_G4",
-        cycle: 2
+        cycle_id: 2
       },
       {
         id: 8,
         name: "301",
-        cycle: 2
+        cycle_id: 2
       },
       {
         id: 9,
         name: "302",
-        cycle: 2
+        cycle_id: 2
       },
       {
         id: 10,
         name: "303",
-        cycle: 2
+        cycle_id: 2
       },
       {
         id: 11,
         name: "304",
-        cycle: 2
+        cycle_id: 2
       }
     ],
     eleves: [{

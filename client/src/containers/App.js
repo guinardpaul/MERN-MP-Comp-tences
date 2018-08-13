@@ -20,6 +20,11 @@ class App extends Component {
             path="/gestion-competences"
             component={GestionDomainesCompetences}
           />
+          {/* Remplacer par les bons components. */}
+          <Route
+            path="/gestion-evaluations"
+            component={Login}
+          />
           <Route path="/resultats-competences" component={Login} />
           <Route path="/login" component={Login} />
           <Route path="/register" component={Register} />

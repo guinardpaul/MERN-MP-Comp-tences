@@ -17,7 +17,7 @@ class NavBar extends Component {
               <span className="icon-bar" />
             </button>
             <NavLink to="/" exact className="navbar-brand">
-              MP-CT
+              Notes & Compétences
             </NavLink>
           </div>
           <div className="collapse navbar-collapse" id="myNavbar">
@@ -27,7 +27,7 @@ class NavBar extends Component {
                   activeStyle={{ backgroundColor: 'white' }}
                   to="/"
                   exact>
-                  Home
+                  Accueil
                 </NavLink>
               </li>
               {/*  Gestion dropdown  */}
@@ -41,14 +41,19 @@ class NavBar extends Component {
                 </NavLink>
                 <ul className="dropdown-menu">
                   <li>
-                    <NavLink to="gestion-classes">Gestion classes</NavLink>
+                    <NavLink to="gestion-classes">Classes</NavLink>
                   </li>
                   <li>
-                    <NavLink to="gestion-eleves">Gestion élèves</NavLink>
+                    <NavLink to="gestion-eleves">Elèves</NavLink>
                   </li>
                   <li>
                     <NavLink to="gestion-competences">
-                      Gestion compétences
+                      Compétences
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink to="gestion-evaluations">
+                      Evaluations
                     </NavLink>
                   </li>
                 </ul>

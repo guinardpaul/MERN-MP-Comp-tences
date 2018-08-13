@@ -21,8 +21,9 @@ const classeTableau = props => {
       expandableList={props.expandableList}
       tableStyle={tableStyle}
       rowStyle={rowStyle}
-      btnStyle={props.btnStyle}
+      btnStyleVertical={props.btnStyleVertical}
       selectedRow={props.selectedRow}
+      caption="Elèves"
     />
   );
 };

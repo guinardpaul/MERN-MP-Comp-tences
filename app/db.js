@@ -16,7 +16,7 @@ exports.connect = function (mode, done) {
   state.pool = mysql.createPool({
     host: 'localhost',
     user: 'root',
-    password: '',
+    password: 'root',
     database: mode === exports.MODE_PRODUCTION ? PRODUCTION_DB : DEV_DB
   });
 

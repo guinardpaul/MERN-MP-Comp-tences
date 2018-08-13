@@ -4,8 +4,7 @@ import { ENUM_CYCLES } from '../../models/enums';
 
 class GestionClassesForm extends Component {
   state = {
-    classe: { id: null, name: '', cycle: '' },
-    cycles: ['Cycle 3', 'Cycle 4']
+    classe: { id: null, name: '', cycle: '' }
   };
 
   componentDidMount() {

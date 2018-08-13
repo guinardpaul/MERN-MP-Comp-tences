@@ -2,3 +2,7 @@
   color: blue;
   font-style: italic;
 }
+
+.caption {
+  text-align: center;
+}

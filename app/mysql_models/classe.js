@@ -25,7 +25,7 @@ exports.delete = function (id, done) {
 }
 
 exports.getAll = function (done) {
-  db.get().query('SELECT c.id, c.name, e.literal FROM classes c INNER JOIN enum_cycles e on e.id=c.cycle ORDER BY c.name ASC ', function (err, result) {
+  db.get().query('SELECT c.id, c.name, e.literal FROM classes c INNER JOIN enum_cycles e on e.id=c.cycle_id ORDER BY c.name ASC ', function (err, result) {
     console.log(result);
     if (err) return done(err);
     done(null, result);

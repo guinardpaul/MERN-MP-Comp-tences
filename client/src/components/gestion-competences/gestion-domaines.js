@@ -5,43 +5,19 @@ import { connect } from 'react-redux';
 import * as domaineActionCreators from '../../store/actions/domaine';
 import * as competenceActionCreators from '../../store/actions/competence';
 import Aux from '../../hoc/Auxil/Auxil';
-import { Collapse } from 'react-bootstrap';
+import Modal from '../UI/Modal/Modal';
+import DomaineForm from '../gestion-form/domaine-form';
 
 class GestionDomaines extends Component {
   state = {
-    addDomaineForm: false,
-    cycles: ['Cycle 3', 'Cycle 4'],
-    selectedCycle: '',
-    selectedRow: null
+    optionsDomaine: []
   };
 
-  displayAddDomaineForm = () => {
+  componentDidMount() {
     this.setState({
-      addDomaineForm: true,
-      selectedRow: null
-    });
-  };
-
-  handleChangeSelectedCycle(event) {
-    this.setState(
-      {
-        selectedCycle: event.target.value,
-        selectedRow: null
-      },
-      () => {
-        if (this.state.selectedCycle !== '') {
-          this.props.getAllDomainesByCycle(this.state.selectedCycle);
-        }
-      }
-    );
+      optionsDomaine: [...this.props.optionsDomaine]
+    }, () => console.log(this.props.optionsDomaine));
   }
-
-  handleSelectDomaine = obj => {
-    this.props.selectDomaine(obj);
-    this.setState({
-      selectedRow: obj
-    });
-  };
 
   handleUpdate = domaine => {
     console.log('domaine: ', domaine);
@@ -51,86 +27,31 @@ class GestionDomaines extends Component {
     console.log('domaine: ', domaine);
   };
 
+  onCancelForm = () => { }
+  handleChangeRef = () => { }
+  handleChangeDescription = () => { }
+  handleChangeCycle = (event) => {
+    const domaineOptions = [...this.state.optionsDomaine].filter(d => d.cycle_id === parseInt(event.target.value, 10));
+    this.setState({
+      optionsDomaine: domaineOptions
+    });
+  };
+
+  handleChangeSousDomaine = () => { }
+
   render() {
-    // let previousId = 0;
     let domaineTable;
     if (this.props.selectedCycle !== '') {
       if (this.props.listDomaines.length > 0) {
         domaineTable = (
-          // <table>
-          //   <thead>
-          //     <tr>
-          //       <th>#</th>
-          //       <th>Ref</th>
-          //       <th>Description</th>
-          //       <th>Sous Domaine Id</th>
-          //     </tr>
-          //   </thead>
-          //   <tbody>
-          //     {this.props.listDomaines.map(d => {
-          //       console.log('previousId: ', previousId);
-          //       const toggleBtn = (
-          //         <button
-          //           className="btn btn-success"
-          //           onClick={() => this.props.toggleSousDomaines(d.id)}>
-          //           +
-          //         </button>
-          //       );
-          //       if (d.ref !== 'null') {
-          //         return (
-          //           <tr>
-          //             <td>{d.toggle ? toggleBtn : null}</td>
-          //             <td>{d.ref}</td>
-          //             <td>{d.description}</td>
-          //             <td>{d.sous_domaine_id}</td>
-          //           </tr>
-          //         );
-          //       } else if (previousId === d.sous_domaine_id) {
-          //         return (
-          //           <Collapse in={d.toggled}>
-          //             <tr>
-          //               <td>{d.ref}</td>
-          //               <td>{d.description}</td>
-          //               <td>{d.sous_domaine_id}</td>
-          //             </tr>
-          //           </Collapse>
-          //         );
-          //       } else {
-          //         previousId = d.sous_domaine_id;
-          //         return (
-          //           <Collapse in={d.toggled}>
-          //             <table>
-          //               <thead>
-          //                 <tr>
-          //                   <th>Ref</th>
-          //                   <th>Description</th>
-          //                   <th>Sous Domaine Id</th>
-          //                 </tr>
-          //               </thead>
-          //               <tbody>
-          //                 <tr>
-          //                   <td>{d.ref}</td>
-          //                   <td>{d.description}</td>
-          //                   <td>{d.sous_domaine_id}</td>
-          //                 </tr>
-          //               </tbody>
-          //             </table>
-          //           </Collapse>
-          //         );
-          //       }
-          //     })}
-          //   </tbody>
-          // </table>
-
           <DomaineTableau
-            onConsulter={this.handleSelectDomaine}
+            onConsulter={(obj) => this.props.onSelectDomaine(obj)}
             consulterButton={this.state.consulterButton}
             onUpdate={this.handleUpdate}
             onDelete={this.handleDelete}
             data={this.props.listDomaines}
-            expandableList={this.props.listCompetences}
-            btnStyle
-            selectedRow={this.state.selectedRow}
+            btnStyleVertical
+            selectedRow={this.props.selectedRow}
           />
         );
       } else {
@@ -138,12 +59,44 @@ class GestionDomaines extends Component {
       }
     }
 
-    return <Aux className="container">{domaineTable}</Aux>;
+    let formInfo = { styleForm: '', headingForm: '', buttonStyle: '', buttonName: '' };
+    let headingForm = '';
+    if (this.props.showDomaineForm) {
+      headingForm = 'Domaine';
+    } else if (this.props.showSousDomaineForm) {
+      headingForm = 'Sous-domaine';
+    }
+
+    if (this.props.update) {
+      formInfo = { styleForm: 'panel panel-warning', headingForm: 'Modifier ' + headingForm, buttonStyle: 'btn btn-warning', buttonName: 'Modifier' };
+    } else {
+      formInfo = { styleForm: 'panel panel-success', headingForm: 'Ajouter ' + headingForm, buttonStyle: 'btn btn-success', buttonName: 'Créer' };
+    }
+
+    return (
+      <Aux className="container">
+        <Modal modalClosed={this.props.cancelDomaineForm} show={this.props.showDomaineForm || this.props.showSousDomaineForm}>
+          <DomaineForm
+            addSousDomaine={this.props.showSousDomaineForm}
+            styleForm={formInfo.styleForm}
+            headingForm={formInfo.headingForm}
+            handleChangeRef={this.handleChangeRef}
+            handleChangeDescription={this.handleChangeDescription}
+            handleChangeCycle={this.handleChangeCycle}
+            handleChangeSousDomaine={this.handleChangeSousDomaine}
+            buttonStyle={formInfo.buttonStyle}
+            buttonName={formInfo.buttonName}
+            cancelForm={this.onCancelForm}
+            optionsDomaine={this.state.optionsDomaine}
+          />
+        </Modal>
+        {domaineTable}
+      </Aux>
+    );
   }
 }
 
 GestionDomaines.propTypes = {
-  addDomaineForm: PropTypes.bool,
   cycles: PropTypes.arrayOf(PropTypes.string),
   selectedCycle: PropTypes.string,
   isLoaded: PropTypes.bool,

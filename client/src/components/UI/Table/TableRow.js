@@ -30,7 +30,7 @@ const tableRow = props => {
   const deleteBtnCss = ['btn', 'btn-sm', 'btn-danger'];
 
   let buttons = null;
-  if (props.btnStyle) {
+  if (props.btnStyleVertical) {
     buttons = (
       <div className="btn-group-vertical">
         {addButton}
