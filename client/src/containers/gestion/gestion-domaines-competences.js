@@ -9,6 +9,7 @@ import Spinner from '../../components/UI/Spinner/Spinner';
 import SelectTreeTable from '../../components/UI/SelectTreeTable/SelectTreeTable';
 import { ENUM_CYCLES } from '../../models/enums';
 import Popover from '../../components/UI/Popover/Popover';
+import Aux from '../../hoc/Auxil/Auxil';
 
 class GestionDomainesCompetences extends Component {
   state = {
@@ -73,8 +74,8 @@ class GestionDomainesCompetences extends Component {
     this.setState({
       domaineForm: false,
       sousDomaineForm: true
-    })
-  }
+    });
+  };
 
   handleChangeSelectedCycle(event) {
     this.setState(
@@ -93,11 +94,10 @@ class GestionDomainesCompetences extends Component {
   onSelectDomaine(domaine) {
     const listSousDomainesCompetences = this.buildData(domaine);
 
-    this.setState(
-      {
-        selectedDomaine: domaine,
-        listSousDomainesCompetences: listSousDomainesCompetences
-      });
+    this.setState({
+      selectedDomaine: domaine,
+      listSousDomainesCompetences: listSousDomainesCompetences
+    });
   }
 
   cancelDomaineForm = () => {
@@ -105,7 +105,11 @@ class GestionDomainesCompetences extends Component {
       domaineForm: false,
       sousDomaineForm: false
     });
-  }
+  };
+
+  onUpdate = obj => {};
+
+  onDelete = obj => {};
 
   render() {
     const options = ENUM_CYCLES.map((cycle, i) => {
@@ -118,22 +122,7 @@ class GestionDomainesCompetences extends Component {
 
     return (
       <div className="container header">
-        <h2 className="page-header ">
-          Gestion Competences{' '}
-          <Popover
-            popupTitle="Créer un ..."
-            placement="right"
-            buttonTitle={<span className="glyphicon glyphicon-plus" />}
-            buttonStyle="btn btn-primary btn-circle btn-lg margin">
-            <button className="btn btn-primary" onClick={this.displayDomaineForm}>Domaine</button>
-            <button className="btn btn-primary" onClick={this.displaySousDomaineForm}>Sous-domaine</button>
-          </Popover>
-          {/* <button
-            className="btn btn-primary btn-circle btn-lg margin"
-            onClick={this.displayAddDomaineForm}>
-            <span className="glyphicon glyphicon-plus" />
-          </button> */}
-        </h2>
+        <h2 className="page-header ">Gestion Competences</h2>
 
         <select
           className="form-control select-classe"
@@ -146,19 +135,32 @@ class GestionDomainesCompetences extends Component {
         </select>
 
         <div className="row">
-          <div className="col-sm-6 col-md-6 col-lg-6">
-            <GestionDomaines
-              selectedCycle={this.state.selectedCycle}
-              listDomaines={this.state.listDomaines}
-              onSelectDomaine={domaine => this.onSelectDomaine(domaine)}
-              selectedRow={this.state.selectedDomaine}
-              showDomaineForm={this.state.domaineForm}
-              showSousDomaineForm={this.state.sousDomaineForm}
-              update={this.state.updateData}
-              cancelDomaineForm={this.cancelDomaineForm}
-              optionsDomaine={this.props.listDomaines}
-            />
-          </div>
+          {this.state.selectedCycle !== '' ? (
+            this.props.listDomaines.length > 0 ? (
+              <div className="col-sm-6 col-md-6 col-lg-6">
+                <GestionDomaines
+                  onUpdate={this.onUpdate}
+                  onDelete={this.onDelete}
+                  selectedCycle={this.state.selectedCycle}
+                  listDomaines={this.state.listDomaines}
+                  onSelectDomaine={domaine => this.onSelectDomaine(domaine)}
+                  selectedRow={this.state.selectedDomaine}
+                  displayDomaineForm={this.displayDomaineForm}
+                  displaySousDomaineForm={this.displaySousDomaineForm}
+                  showDomaineForm={this.state.domaineForm}
+                  showSousDomaineForm={this.state.sousDomaineForm}
+                  update={this.state.updateData}
+                  cancelDomaineForm={this.cancelDomaineForm}
+                  optionsDomaine={this.props.listDomaines}
+                />
+              </div>
+            ) : (
+              <p>Chargement...</p>
+            )
+          ) : (
+            <p>Sélectionner un cycle pour commencer.</p>
+          )}
+
           <div className="col-sm-6 col-md-6 col-lg-6">
             {this.state.selectedDomaine !== '' ? (
               <GestionCompetences
@@ -226,3 +228,113 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(GestionDomainesCompetences);
+// class GestionDomainesCompetences extends Component {
+//   constructor() {
+//     super();
+
+//     this.state = {
+//       data: [
+//         {
+//           id: 1,
+//           date: '2014-04-18',
+//           total: 121.0,
+//           status: 'Shipped',
+//           name: 'A',
+//           points: 5,
+//           percent: 50
+//         },
+//         {
+//           id: 2,
+//           date: '2014-04-21',
+//           total: 121.0,
+//           status: 'Not Shipped',
+//           name: 'B',
+//           points: 10,
+//           percent: 60
+//         },
+//         {
+//           id: 3,
+//           date: '2014-08-09',
+//           total: 121.0,
+//           status: 'Not Shipped',
+//           name: 'C',
+//           points: 15,
+//           percent: 70
+//         },
+//         {
+//           id: 4,
+//           date: '2014-04-24',
+//           total: 121.0,
+//           status: 'Shipped',
+//           name: 'D',
+//           points: 20,
+//           percent: 80
+//         },
+//         {
+//           id: 5,
+//           date: '2014-04-26',
+//           total: 121.0,
+//           status: 'Shipped',
+//           name: 'E',
+//           points: 25,
+//           percent: 90
+//         }
+//       ],
+//       expandedRows: []
+//     };
+//   }
+
+//   handleRowClick(rowId) {
+//     const currentExpandedRows = this.state.expandedRows;
+//     const isRowCurrentlyExpanded = currentExpandedRows.includes(rowId);
+
+//     const newExpandedRows = isRowCurrentlyExpanded
+//       ? currentExpandedRows.filter(id => id !== rowId)
+//       : currentExpandedRows.concat(rowId);
+
+//     this.setState({ expandedRows: newExpandedRows });
+//   }
+
+//   renderItem(item) {
+//     const clickCallback = () => this.handleRowClick(item.id);
+//     const itemRows = [
+//       <tr onClick={clickCallback} key={'row-data-' + item.id}>
+//         <td>{item.date}</td>
+//         <td>{item.total}</td>
+//         <td>{item.status}</td>
+//       </tr>
+//     ];
+
+//     if (this.state.expandedRows.includes(item.id)) {
+//       itemRows.push(
+//         <tr key={'row-expanded-' + item.id}>
+//           <td>{item.name}</td>
+//           <td>{item.points}</td>
+//           <td>{item.percent}</td>
+//         </tr>
+//       );
+//     }
+
+//     return itemRows;
+//   }
+
+//   render() {
+//     let allItemRows = [];
+
+//     this.state.data.forEach(item => {
+//       const perItemRows = this.renderItem(item);
+//       allItemRows = allItemRows.concat(perItemRows);
+//     });
+
+//     return (
+//       <Aux>
+//         <br />
+//         <br />
+//         <br />
+//         <table className="table table-hover">{allItemRows}</table>
+//       </Aux>
+//     );
+//   }
+// }
+
+// export default GestionDomainesCompetences;

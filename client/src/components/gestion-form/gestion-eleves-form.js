@@ -94,28 +94,28 @@ class GestionElevesForm extends Component {
             <div className="panel-heading">{this.props.headingForm}</div>
             <div className="panel-body">
               <div className="form-group">
-                <label htmlFor="first_name">first_name :</label>
+                <label htmlFor="first_name">Nom :</label>
                 <input
                   type="text"
                   className="form-control"
                   name="first_name"
                   id="first_name"
                   value={this.state.eleve.first_name}
-                  onChange={this.props.handleChangefirst_nameEleve}
+                  onChange={this.props.handleChangefirstName}
                   autoFocus
                   required
                 />
               </div>
 
               <div className="form-group">
-                <label htmlFor="last_name">Préfirst_name :</label>
+                <label htmlFor="last_name">Prénom :</label>
                 <input
                   type="text"
                   className="form-control"
                   name="last_name"
                   id="last_name"
                   value={this.state.eleve.last_name}
-                  onChange={this.props.handleChangelast_nameEleve}
+                  onChange={this.props.handleChangelastName}
                   required
                 />
               </div>

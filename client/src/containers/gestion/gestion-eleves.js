@@ -80,7 +80,7 @@ class GestionEleves extends Component {
     });
   };
 
-  handleChangefirst_nameEleve(event) {
+  handleChangefirstName(event) {
     const newEleve = {
       ...this.state.eleve
     };
@@ -94,7 +94,7 @@ class GestionEleves extends Component {
     });
   }
 
-  handleChangelast_nameEleve(event) {
+  handleChangelastName(event) {
     const newEleve = {
       ...this.state.eleve
     };
@@ -193,12 +193,8 @@ class GestionEleves extends Component {
           listClasses={this.props.listClasses}
           selectedClasse={this.state.selectedClasse}
           cancelForm={this.onCancelForm}
-          handleChangefirst_nameEleve={event =>
-            this.handleChangefirst_nameEleve(event)
-          }
-          handleChangelast_nameEleve={event =>
-            this.handleChangelast_nameEleve(event)
-          }
+          handleChangefirstName={event => this.handleChangefirstName(event)}
+          handleChangelastName={event => this.handleChangelastName(event)}
           handleChangeClasse={event => this.handleChangeClasse(event)}
         />
       );

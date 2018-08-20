@@ -6,7 +6,7 @@ yarn-debug.log*
 yarn-error.log*
 
 # Project folder
-/MP-CT
+#/MP-CT
 
 # Auth Secret
 secret.js
