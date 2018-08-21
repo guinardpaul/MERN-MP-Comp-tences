@@ -8,17 +8,19 @@ class GestionCompetencesForm extends Component {
       id: null,
       ref: '',
       description: '',
-      domaine_id: '',
+      cycle_id: '',
+      domaine_id: 0
     },
     selectedDomaine: ''
   };
 
-  componentDidMount() {
+  componentWillMount() {
     this.setState({
       competence: {
         id: this.props.competence.id,
         ref: this.props.competence.ref,
         description: this.props.competence.description,
+        cycle_id: this.props.competence.cycle_id,
         domaine_id: this.props.competence.domaine_id
       }
     });
@@ -27,11 +29,11 @@ class GestionCompetencesForm extends Component {
   shouldComponentUpdate(nextProps, nextState) {
     return (
       nextProps.competence.ref !== this.props.competence.ref ||
-      nextProps.competence.description !==
-      this.props.competence.description ||
+      nextProps.competence.description !== this.props.competence.description ||
+      nextProps.competence.domaine_id !== this.props.competence.domaine_id ||
       this.state.competence.ref !== nextProps.competence.ref ||
-      this.state.competence.description !==
-      nextProps.competence.description
+      this.state.competence.description !== nextProps.competence.description ||
+      this.state.competence.domaine_id !== nextProps.competence.domaine_id
     );
   }
 
@@ -42,6 +44,7 @@ class GestionCompetencesForm extends Component {
         id: nextProps.competence.id,
         ref: nextProps.competence.ref,
         description: nextProps.competence.description,
+        cycle_id: nextProps.competence.cycle_id,
         domaine_id: nextProps.competence.domaine_id
       }
     });
@@ -52,10 +55,12 @@ class GestionCompetencesForm extends Component {
   }
 
   addCompetence = event => {
+    console.log(this.state.competence);
     event.preventDefault();
     if (
       this.state.competence.ref !== '' &&
-      this.state.competence.description !== ''
+      this.state.competence.description !== '' &&
+      this.state.competence.domaine_id !== 0
     ) {
       this.props.onFormSubmit(this.state.competence);
       this.setState({
@@ -63,13 +68,15 @@ class GestionCompetencesForm extends Component {
           id: null,
           ref: '',
           description: '',
-          domaine_id: ''
+          cycle_id: '',
+          domaine_id: 0
         }
       });
     }
   };
 
   render() {
+    console.log(this.state.competence);
     return (
       <div className="panel-group">
         <form className="form-horizontal" onSubmit={this.addCompetence}>
@@ -83,7 +90,7 @@ class GestionCompetencesForm extends Component {
                   className="form-control"
                   name="ref"
                   id="ref"
-                  value={this.props.competence.ref}
+                  value={this.state.competence.ref}
                   onChange={this.props.handleChangeRef}
                   autoFocus
                   required
@@ -97,28 +104,38 @@ class GestionCompetencesForm extends Component {
                   className="form-control"
                   name="description"
                   id="description"
-                  value={this.props.competence.description}
+                  value={this.state.competence.description}
                   onChange={this.props.handleChangeDescription}
                   required
                 />
               </div>
 
               <div className="form-group">
-                <label>Domaine</label>
-                <textarea
-                  type="text"
+                <select
                   className="form-control"
                   name="domaine_id"
                   id="domaine_id"
-                  value={
-                    this.props.selectedDomaine.ref +
-                    ' - ' +
-                    this.props.selectedDomaine.description
-                  }
-                  disabled
-                  required
-                />
+                  value={this.state.competence.domaine_id}
+                  onChange={this.props.handleChangeDomaineID}
+                  required>
+                  <option value="0">Domaine</option>
+                  {this.props.listDomaines
+                    .filter(
+                      item =>
+                        item.cycle_id === parseInt(this.props.selectedCycle, 10)
+                    )
+                    .map(d => {
+                      return (
+                        <option key={d.id} value={d.id}>
+                          {d.ref !== 'null'
+                            ? d.ref + ' - ' + d.description
+                            : d.description}
+                        </option>
+                      );
+                    })}
+                </select>
               </div>
+
               <div className="form-group">
                 <Button
                   cssClasses={['btn', 'btn-success']}
@@ -141,6 +158,9 @@ class GestionCompetencesForm extends Component {
 }
 
 GestionCompetencesForm.propTypes = {
+  selectedCycle: PropTypes.string,
+  listDomaines: PropTypes.arrayOf(PropTypes.object),
+  competence: PropTypes.object,
   classe: PropTypes.object,
   cycles: PropTypes.arrayOf(PropTypes.string)
 };
