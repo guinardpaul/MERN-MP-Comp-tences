@@ -84,28 +84,28 @@ class GestionCompetencesForm extends Component {
             <div className="panel-heading">{this.props.headingForm}</div>
             <div className="panel-body">
               <div className="form-group">
-                <label htmlFor="ref_ct">Référence</label>
+                <label htmlFor="ref_ct">Réf :</label>
                 <input
                   type="text"
                   className="form-control"
                   name="ref"
                   id="ref"
                   value={this.state.competence.ref}
-                  onChange={this.props.handleChangeRef}
+                  onChange={this.props.handleChangeRefCT}
                   autoFocus
                   required
                 />
               </div>
 
               <div className="form-group">
-                <label>Description</label>
+                <label>Description :</label>
                 <textarea
                   type="text"
                   className="form-control"
                   name="description"
                   id="description"
                   value={this.state.competence.description}
-                  onChange={this.props.handleChangeDescription}
+                  onChange={this.props.handleChangeDescriptionCT}
                   required
                 />
               </div>
@@ -129,7 +129,7 @@ class GestionCompetencesForm extends Component {
                         <option key={d.id} value={d.id}>
                           {d.ref !== 'null'
                             ? d.ref + ' - ' + d.description
-                            : d.description}
+                            : 'Sous-domaine ' + d.description}
                         </option>
                       );
                     })}
@@ -137,17 +137,14 @@ class GestionCompetencesForm extends Component {
               </div>
 
               <div className="form-group">
-                <Button
-                  cssClasses={['btn', 'btn-success']}
-                  clicked={this.addComptence}
-                  typeSubmit>
-                  Ajouter
-                </Button>
-                <Button
-                  cssClasses={['btn', 'btn-default']}
-                  clicked={this.props.cancelForm}>
+                <button type="submit" className={this.props.buttonStyle}>
+                  {this.props.buttonName}
+                </button>
+                <button
+                  onClick={this.props.cancelForm}
+                  className="btn btn-default">
                   Annuler
-                </Button>
+                </button>
               </div>
             </div>
           </div>

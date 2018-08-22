@@ -17,26 +17,50 @@ class TreeTable extends Component {
   }
 
   renderItem(item) {
-    const expandButton = this.state.expandedRows.includes(item.id) ? '-' : '+';
+    const expandButtonCss = ['btn', 'btn-sm'];
+    let expandButtonTitle = this.state.expandedRows.includes(item.id)
+      ? '-'
+      : '+';
+    let expandButtonCssItem = this.state.expandedRows.includes(item.id)
+      ? ['btn', 'btn-sm', 'btn-secondary']
+      : ['btn', 'btn-sm', 'btn-info'];
+
+    if (this.state.expandedRows.includes(item.id)) {
+      expandButtonTitle = '-';
+      expandButtonCss.push('btn-secondary');
+    } else {
+      expandButtonTitle = '+';
+      expandButtonCss.push('btn-info');
+    }
+
+    const cssBtn = 'btn btn-sm';
+
     let actionsButton;
     this.props.editionMode
       ? (actionsButton = (
-          <div>
-            <button onClick={() => this.props.handleUpdate(item)}>
+          <div className="btn-group-vertical">
+            <button
+              className={cssBtn + ' btn-warning'}
+              onClick={() => this.props.handleUpdate(item)}>
               Modifier
             </button>
-            <button onClick={() => this.props.handleDelete(item)}>
+            <button
+              className={cssBtn + ' btn-danger'}
+              onClick={() => this.props.handleDelete(item)}>
               Supprimer
             </button>
           </div>
         ))
       : (actionsButton = '');
+
     const clickCallback = () => this.handleRowClick(item.id);
     const itemRows = [
       <tr key={item.id + item.ref}>
         <td>
-          <button className="btn btn-sm btn-info" onClick={clickCallback}>
-            {expandButton}
+          <button
+            className={expandButtonCssItem.join(' ')}
+            onClick={clickCallback}>
+            {expandButtonTitle}
           </button>
         </td>
         <td>{item.ref}</td>
@@ -55,17 +79,21 @@ class TreeTable extends Component {
           let actionsButton;
           this.props.editionMode
             ? (actionsButton = (
-                <div>
-                  <button onClick={() => this.props.handleUpdate(d)}>
+                <div className="btn-group-vertical">
+                  <button
+                    className={cssBtn + ' btn-warning'}
+                    onClick={() => this.props.handleUpdate(d)}>
                     Modifier
                   </button>
-                  <button onClick={() => this.props.handleDelete(d)}>
+                  <button
+                    className={cssBtn + ' btn-danger'}
+                    onClick={() => this.props.handleDelete(d)}>
                     Supprimer
                   </button>
                 </div>
               ))
             : (actionsButton = '');
-          const expandButton = this.state.expandedRows.includes(d.id)
+          const expandButtonTitle = this.state.expandedRows.includes(d.id)
             ? '-'
             : '+';
           itemRows.push(
@@ -74,7 +102,7 @@ class TreeTable extends Component {
                 <button
                   className="btn btn-sm btn-info"
                   onClick={clickSousDomaineCallback}>
-                  {expandButton}
+                  {expandButtonTitle}
                 </button>
               </td>
               <td />
@@ -92,11 +120,15 @@ class TreeTable extends Component {
                 let actionsButton;
                 this.props.editionMode
                   ? (actionsButton = (
-                      <div>
-                        <button onClick={() => this.props.handleUpdate(ct)}>
+                      <div className="btn-group-vertical">
+                        <button
+                          className={cssBtn + ' btn-warning'}
+                          onClick={() => this.props.handleUpdate(ct)}>
                           Modifier
                         </button>
-                        <button onClick={() => this.props.handleDelete(ct)}>
+                        <button
+                          className={cssBtn + ' btn-danger'}
+                          onClick={() => this.props.handleDelete(ct)}>
                           Supprimer
                         </button>
                       </div>
@@ -122,11 +154,15 @@ class TreeTable extends Component {
           let actionsButton;
           this.props.editionMode
             ? (actionsButton = (
-                <div>
-                  <button onClick={() => this.props.handleUpdate(ct)}>
+                <div className="btn-group-vertical">
+                  <button
+                    className={cssBtn + ' btn-warning'}
+                    onClick={() => this.props.handleUpdate(ct)}>
                     Modifier
                   </button>
-                  <button onClick={() => this.props.handleDelete(ct)}>
+                  <button
+                    className={cssBtn + ' btn-danger'}
+                    onClick={() => this.props.handleDelete(ct)}>
                     Supprimer
                   </button>
                 </div>

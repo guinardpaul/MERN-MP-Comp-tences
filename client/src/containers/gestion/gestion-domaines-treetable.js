@@ -25,9 +25,15 @@ class GestionDomainesTreeTable extends Component {
     selectedCycle: '',
     data: [],
     expandedRows: [],
-    domaine: {},
+    domaine: {
+      id: 0,
+      ref: '',
+      description: '',
+      cycle_id: '',
+      sous_domaine_id: null
+    },
     competence: {
-      id: null,
+      id: 0,
       ref: '',
       description: '',
       cycle_id: '',
@@ -54,7 +60,14 @@ class GestionDomainesTreeTable extends Component {
     this.setState({
       domaineForm: true,
       sousDomaineForm: false,
-      competenceForm: false
+      competenceForm: false,
+      domaine: {
+        id: 0,
+        ref: '',
+        description: '',
+        cycle_id: parseInt(this.state.selectedCycle, 10),
+        sous_domaine_id: null
+      }
     });
   };
 
@@ -62,7 +75,14 @@ class GestionDomainesTreeTable extends Component {
     this.setState({
       domaineForm: false,
       sousDomaineForm: true,
-      competenceForm: false
+      competenceForm: false,
+      domaine: {
+        id: 0,
+        ref: '',
+        description: '',
+        cycle_id: parseInt(this.state.selectedCycle, 10),
+        sous_domaine_id: 0
+      }
     });
   };
 
@@ -70,7 +90,14 @@ class GestionDomainesTreeTable extends Component {
     this.setState({
       domaineForm: false,
       sousDomaineForm: false,
-      competenceForm: true
+      competenceForm: true,
+      competence: {
+        id: 0,
+        ref: '',
+        description: '',
+        cycle_id: parseInt(this.state.selectedCycle, 10),
+        domaine_id: 0
+      }
     });
   };
 
@@ -87,32 +114,63 @@ class GestionDomainesTreeTable extends Component {
     );
   }
 
-  cancelForm = () => {
-    this.setState({
-      domaineForm: false,
-      sousDomaineForm: false,
-      competenceForm: false
-    });
-  };
-
   handleChangeRef = event => {
-    const prevState = [...this.state.competence];
+    const prevState = { ...this.state.domaine };
     this.setState({
-      competence: [...prevState, { ref: event.target.value }]
+      domaine: {
+        ...prevState,
+        ref: event.target.value
+      }
     });
   };
 
   handleChangeDescription = event => {
-    const prevState = [...this.state.competence];
+    const prevState = { ...this.state.domaine };
     this.setState({
-      competence: [...prevState, { description: event.target.value }]
+      domaine: {
+        ...prevState,
+        description: event.target.value
+      }
+    });
+  };
+
+  handleChangeSousDomaineID = event => {
+    const prevState = { ...this.state.domaine };
+    this.setState({
+      domaine: {
+        ...prevState,
+        sous_domaine_id: parseInt(event.target.value, 10)
+      }
+    });
+  };
+
+  handleChangeRefCT = event => {
+    const prevState = { ...this.state.competence };
+    this.setState({
+      competence: {
+        ...prevState,
+        ref: event.target.value
+      }
+    });
+  };
+
+  handleChangeDescriptionCT = event => {
+    const prevState = { ...this.state.competence };
+    this.setState({
+      competence: {
+        ...prevState,
+        description: event.target.value
+      }
     });
   };
 
   handleChangeDomaineID = event => {
-    const prevState = [...this.state.competence];
+    const prevState = { ...this.state.competence };
     this.setState({
-      competence: [...prevState, { domaine_id: event.target.value }]
+      competence: {
+        ...prevState,
+        domaine_id: parseInt(event.target.value, 10)
+      }
     });
   };
 
@@ -122,6 +180,22 @@ class GestionDomainesTreeTable extends Component {
 
   handleDelete = obj => {
     console.log('obj deleted: ', obj);
+  };
+
+  addDomaine() {
+    console.log(this.state.domaine);
+  }
+
+  addCompetence() {
+    console.log(this.state.competence);
+  }
+
+  cancelForm = () => {
+    this.setState({
+      domaineForm: false,
+      sousDomaineForm: false,
+      competenceForm: false
+    });
   };
 
   getFormInfo() {
@@ -155,7 +229,9 @@ class GestionDomainesTreeTable extends Component {
   }
 
   toggleEditMode = () => {
-    this.setState({ editionMode: !this.state.editionMode });
+    this.setState({
+      editionMode: !this.state.editionMode
+    });
   };
 
   render() {
@@ -166,6 +242,8 @@ class GestionDomainesTreeTable extends Component {
         </option>
       );
     });
+    console.log(this.state.domaine);
+    console.log(this.state.competence);
 
     let formInfo = this.getFormInfo();
 
@@ -188,7 +266,7 @@ class GestionDomainesTreeTable extends Component {
                 <button
                   className="btn btn-primary"
                   onClick={this.displaySousDomaineForm}>
-                  Sous-domaine
+                  Sous - domaine
                 </button>
                 <button
                   className="btn btn-primary"
@@ -196,21 +274,18 @@ class GestionDomainesTreeTable extends Component {
                   Compétence
                 </button>
               </Popover>
-              <button onClick={this.toggleEditMode}>Mode édition</button>
+              <button onClick={this.toggleEditMode}> Mode édition </button>
             </Aux>
           ) : null}
         </h2>
-
         <select
           className="form-control select-classe"
           name="cycle"
           id="cycle"
           value={this.state.selectedCycle}
           onChange={event => this.handleChangeSelectedCycle(event)}>
-          <option value="">Cycle</option>
-          {options}
+          <option value=""> Cycle </option> {options}
         </select>
-
         <Modal
           modalClosed={this.cancelForm}
           show={
@@ -221,7 +296,7 @@ class GestionDomainesTreeTable extends Component {
           {!this.state.competenceForm ? (
             <DomaineForm
               domaine={this.state.domaine}
-              addSousDomaine={this.props.showSousDomaineForm}
+              sousDomaineForm={this.state.sousDomaineForm}
               styleForm={formInfo.styleForm}
               headingForm={formInfo.headingForm}
               handleChangeRef={event => this.handleChangeRef(event)}
@@ -229,28 +304,32 @@ class GestionDomainesTreeTable extends Component {
                 this.handleChangeDescription(event)
               }
               handleChangeCycle={event => this.handleChangeCycle(event)}
-              handleChangeSousDomaine={event =>
-                this.handleChangeSousDomaine(event)
+              handleChangeSousDomaineID={event =>
+                this.handleChangeSousDomaineID(event)
               }
               buttonStyle={formInfo.buttonStyle}
               buttonName={formInfo.buttonName}
-              cancelForm={this.onCancelForm}
-              optionsDomaine={this.state.optionsDomaine}
+              onFormSubmit={this.addDomaine}
+              cancelForm={this.cancelForm}
+              optionsDomaine={this.state.data}
             />
           ) : (
             <GestionCompetencesForm
+              styleForm={formInfo.styleForm}
+              headingForm={formInfo.headingForm}
+              buttonStyle={formInfo.buttonStyle}
+              buttonName={formInfo.buttonName}
               competence={this.state.competence}
               selectedCycle={this.state.selectedCycle}
               listDomaines={this.props.listDomaines}
-              handleChangeRef={this.handleChangeRef}
-              handleChangeDescription={this.handleChangeDescription}
+              handleChangeRefCT={this.handleChangeRefCT}
+              handleChangeDescriptionCT={this.handleChangeDescriptionCT}
               handleChangeDomaineID={this.handleChangeDomaineID}
               onFormSubmit={this.addCompetence}
               cancelForm={this.cancelForm}
             />
           )}
         </Modal>
-
         {this.state.selectedCycle !== '' ? (
           <TreeTable
             data={this.state.data}
@@ -261,7 +340,7 @@ class GestionDomainesTreeTable extends Component {
             editionMode={this.state.editionMode}
           />
         ) : (
-          <p>Sélectionner un cycle pour commencer</p>
+          <p> Sélectionner un cycle pour commencer </p>
         )}
       </div>
     );

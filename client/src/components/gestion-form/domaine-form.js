@@ -52,8 +52,10 @@ class DomaineForm extends Component {
     });
   }
 
-  addDomaine = () => {
+  addDomaine = event => {
     // Vérification si on ajoute un domaine ou un sous-domaine
+    event.preventDefault();
+    this.props.onFormSubmit(this.state.domaine);
   };
 
   render() {
@@ -87,7 +89,7 @@ class DomaineForm extends Component {
 
               <div className="form-group">
                 <label htmlFor="description">Description :</label>
-                <input
+                <textarea
                   type="text"
                   className="form-control"
                   name="description"
@@ -98,7 +100,7 @@ class DomaineForm extends Component {
                 />
               </div>
 
-              <div className="form-group">
+              {/*} <div className="form-group">
                 <select
                   className="form-control"
                   name="cycle"
@@ -109,16 +111,17 @@ class DomaineForm extends Component {
                   <option value="0">Cycles</option>
                   {optionsCycle}
                 </select>
-              </div>
+              </div>*/}
+
               {/* Ajout de la liste des domaines existant et filtre en fonction du cycle sélectionné */}
-              {this.props.addSousDomaine ? (
+              {this.props.sousDomaineForm ? (
                 <div className="form-group">
                   <select
                     className="form-control"
                     name="sous_domaine_id"
                     id="sous_domaine_id"
                     value={this.state.domaine.sous_domaine_id}
-                    onChange={this.props.handleChangeSousDomaine}
+                    onChange={this.props.handleChangeSousDomaineID}
                     required>
                     <option value="0">Domaine</option>
                     {this.props.optionsDomaine.map(domaine => {
