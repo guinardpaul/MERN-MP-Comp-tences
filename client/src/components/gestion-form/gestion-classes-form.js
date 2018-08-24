@@ -4,7 +4,7 @@ import { ENUM_CYCLES } from '../../models/enums';
 
 class GestionClassesForm extends Component {
   state = {
-    classe: { id: null, name: '', cycle: '' }
+    classe: { id: null, name: '', cycle_id: '' }
   };
 
   componentDidMount() {
@@ -12,7 +12,7 @@ class GestionClassesForm extends Component {
       classe: {
         id: this.props.classe.id,
         name: this.props.classe.name,
-        cycle: this.props.classe.cycle
+        cycle_id: this.props.classe.cycle_id
       }
     });
   }
@@ -20,9 +20,9 @@ class GestionClassesForm extends Component {
   shouldComponentUpdate(nextProps, nextState) {
     return (
       nextProps.classe.name !== this.props.classe.name ||
-      nextProps.classe.cycle !== this.props.classe.cycle ||
+      nextProps.classe.cycle_id !== this.props.classe.cycle_id ||
       this.state.classe.name !== nextProps.classe.name ||
-      this.state.classe.cycle !== nextProps.classe.cycle
+      this.state.classe.cycle_id !== nextProps.classe.cycle_id
     );
   }
 
@@ -32,7 +32,7 @@ class GestionClassesForm extends Component {
       classe: {
         id: nextProps.classe.id,
         name: nextProps.classe.name,
-        cycle: nextProps.classe.cycle
+        cycle_id: nextProps.classe.cycle_id
       }
     });
   }
@@ -43,10 +43,10 @@ class GestionClassesForm extends Component {
 
   addClasse = event => {
     event.preventDefault();
-    if (this.state.classe.name !== '' && this.state.classe.cycle !== '') {
+    if (this.state.classe.name !== '' && this.state.classe.cycle_id !== '') {
       this.props.onFormSubmit(this.state.classe);
       this.setState({
-        classe: { id: null, name: '', cycle: '' }
+        classe: { id: null, name: '', cycle_id: '' }
       });
     }
   };
@@ -88,9 +88,9 @@ class GestionClassesForm extends Component {
               <div className="form-group">
                 <select
                   className="form-control"
-                  name="cycle"
-                  id="cycle"
-                  value={this.state.classe.cycle}
+                  name="cycle_id"
+                  id="cycle_id"
+                  value={this.state.classe.cycle_id}
                   onChange={this.props.handleChangeCycle}
                   required>
                   <option value="">Cycles</option>

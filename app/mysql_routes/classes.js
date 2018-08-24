@@ -2,14 +2,14 @@ const Classe = require('../mysql_models/classe');
 
 module.exports = router => {
   router.post('/classes', (req, res, next) => {
-    Classe.create(req.body.name, req.body.cycle, (err, classe) => {
+    Classe.create(req.body.name, req.body.cycle_id, (err, classe) => {
       if (err) return next(err);
       return res.status(201).json(classe);
     });
   });
 
   router.put('/classes/:id', (req, res, next) => {
-    Classe.update(req.params.id, req.body.name, req.body.cycle, (err, classe) => {
+    Classe.update(req.params.id, req.body.name, req.body.cycle_id, (err, classe) => {
       if (err) return next(err);
       return res.status(201).json(classe);
     });
@@ -18,7 +18,7 @@ module.exports = router => {
   router.delete('/classes/:id', (req, res, next) => {
     Classe.delete(req.params.id, (err, classe) => {
       if (err) return next(err);
-      return res.status(201).json(classe);
+      return res.status(200).json(classe);
     });
   });
 
@@ -29,8 +29,8 @@ module.exports = router => {
     })
   })
 
-  router.get('/classes/cycle/:cycle', (req, res, next) => {
-    Classe.getByCycle(req.params.cycle, (err, classes) => {
+  router.get('/classes/cycle_id/:cycle_id', (req, res, next) => {
+    Classe.getByCycle(req.params.cycle_id, (err, classes) => {
       if (err) return next(err);
       return res.status(200).json(classes);
     })

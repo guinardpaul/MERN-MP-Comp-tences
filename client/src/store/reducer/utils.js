@@ -16,7 +16,7 @@ export const AddElemToArray = (previousArray, obj) => {
 export const updateArray = (previousArray, obj) => {
   const updatedArray = [...previousArray];
   updatedArray.forEach((elem, i) => {
-    if (elem._id === obj._id) {
+    if (elem.id === obj.id) {
       updatedArray[i] = obj;
     }
   });
@@ -29,6 +29,6 @@ export const updateArray = (previousArray, obj) => {
  * @param {number} obj_id object ID
  */
 export const removeElemToArray = (previousArray, obj_id) => {
-  const updatedArray = previousArray.filter(c => c._id !== obj_id);
+  const updatedArray = previousArray.filter(c => c.id !== obj_id);
   return updatedArray;
 };

@@ -122,7 +122,7 @@ export const updateEleveAsync = eleve => {
   return dispatch => {
     dispatch(loading());
     axios
-      .put('/eleves/' + eleve._id, eleve)
+      .put('/eleves/' + eleve.id, eleve)
       .then(res => {
         dispatch(updateEleve(res.data));
       })

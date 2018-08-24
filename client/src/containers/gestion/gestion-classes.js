@@ -28,13 +28,14 @@ class GestionClasses extends Component {
       updateForm: false,
       classe: {
         name: '',
-        cycle: ''
+        cycle_id: ''
       },
       selectedRow: null
     });
   };
 
   handleSubmit = obj => {
+    console.log('obj: ', obj);
     if (this.state.addForm) {
       this.props.addClasse(obj);
       if (!this.props.loading) {
@@ -102,7 +103,7 @@ class GestionClasses extends Component {
       classe: {
         id: newState.id,
         name: event.target.value,
-        cycle: newState.cycle
+        cycle_id: newState.cycle_id
       }
     });
   };
@@ -114,7 +115,7 @@ class GestionClasses extends Component {
       classe: {
         id: newState.id,
         name: newState.name,
-        cycle: event.target.value
+        cycle_id: parseInt(event.target.value, 10)
       }
     });
   };
@@ -157,6 +158,7 @@ class GestionClasses extends Component {
     }
 
     let table = <Spinner />;
+    // Loading for addClasse and getAllClasses identique. Besoin de les découpler pour que la vérification soit bonne.
     if (!this.props.loading) {
       if (this.props.listClasses.length > 0) {
         table = (
@@ -170,27 +172,24 @@ class GestionClasses extends Component {
           />
         );
       } else {
-        table = <p> Aucune donnée à afficher </p>;
+        table = <p>Aucune donnée à afficher.</p>;
       }
     } else {
-      table = this.props.error.message;
+      table = <p>Erreur lors de la récupération des Classes au serveur.</p>;
     }
 
     return (
       <div className="container header">
         <h2 className="page-header ">
-          Gestion classes{' '}
+          Gestion classes
           <button
             className="btn btn-primary btn-circle btn-lg margin"
             onClick={this.displayAddForm}>
             <span className="glyphicon glyphicon-plus" />
-          </button>{' '}
-        </h2>{' '}
-        <div className="col-sm-6 col-md-6 col-lg-6 col-xs-12"> {table} </div>{' '}
-        <div className="col-sm-6 col-md-6 col-lg-6 col-xs-12">
-          {' '}
-          {classeForm}{' '}
-        </div>{' '}
+          </button>
+        </h2>
+        <div className="col-sm-6 col-md-6 col-lg-6 col-xs-12">{table}</div>
+        <div className="col-sm-6 col-md-6 col-lg-6 col-xs-12">{classeForm}</div>
       </div>
     );
   }

@@ -122,7 +122,7 @@ export const updateDomaineAsync = domaine => {
   return dispatch => {
     dispatch(loading());
     axios
-      .put('/domaines/' + domaine._id, domaine)
+      .put('/domaines/' + domaine.id, domaine)
       .then(res => {
         dispatch(updateDomaine(res.data));
       })

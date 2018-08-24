@@ -7,7 +7,7 @@ import GestionDomaines from '../../components/gestion-competences/gestion-domain
 import GestionCompetences from '../../components/gestion-competences/gestion-competences';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import SelectTreeTable from '../../components/UI/SelectTreeTable/SelectTreeTable';
-import { ENUM_CYCLES } from '../../models/enums';
+import { ENUM_CYCLES, ENUM_DOMAINE_COMPETENCE_VALUE } from '../../models/enums';
 import Popover from '../../components/UI/Popover/Popover';
 import Aux from '../../hoc/Auxil/Auxil';
 import TreeTable from '../../components/UI/TreeTable/TreeTable';
@@ -174,11 +174,42 @@ class GestionDomainesTreeTable extends Component {
     });
   };
 
-  handleUpdate = obj => {
-    console.log('obj updated: ', obj);
+  handleUpdate = (obj, typeObj) => {
+    switch (typeObj) {
+      case ENUM_DOMAINE_COMPETENCE_VALUE[0]:
+        this.setState({
+          domaine: obj,
+          updateData: true,
+          domaineForm: true
+        });
+        break;
+      case ENUM_DOMAINE_COMPETENCE_VALUE[1]:
+        this.setState({
+          domaine: obj,
+          updateData: true,
+          sousDomaineForm: true
+        });
+        break;
+      case ENUM_DOMAINE_COMPETENCE_VALUE[2]:
+        this.setState({
+          competence: obj,
+          updateData: true,
+          competenceForm: true
+        });
+        break;
+
+      default:
+        console.log(
+          'Erreur sur le typeObj ' +
+            typeObj +
+            '. Cette objet ne correspond à aucune valeur de ENUM_DOMAINE_COMPETENCE_VALUE.'
+        );
+        break;
+    }
   };
 
-  handleDelete = obj => {
+  handleDelete = (obj, typeObj) => {
+    console.log('typeObj: ', typeObj);
     console.log('obj deleted: ', obj);
   };
 

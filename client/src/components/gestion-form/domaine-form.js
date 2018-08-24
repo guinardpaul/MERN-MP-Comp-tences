@@ -59,33 +59,27 @@ class DomaineForm extends Component {
   };
 
   render() {
-    const optionsCycle = ENUM_CYCLES.map(cycle => {
-      return (
-        <option key={cycle.id} value={cycle.id}>
-          {cycle.literal}
-        </option>
-      );
-    });
-
     return (
       <div className="panel-group">
         <form className="form-horizontal" onSubmit={this.addDomaine}>
           <div className={this.props.styleForm}>
             <div className="panel-heading">{this.props.headingForm}</div>
             <div className="panel-body">
-              <div className="form-group">
-                <label htmlFor="ref">Ref :</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="ref"
-                  id="ref"
-                  value={this.state.domaine.ref}
-                  onChange={this.props.handleChangeRef}
-                  autoFocus
-                  required
-                />
-              </div>
+              {!this.props.sousDomaineForm ? (
+                <div className="form-group">
+                  <label htmlFor="ref">Ref :</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    name="ref"
+                    id="ref"
+                    value={this.state.domaine.ref}
+                    onChange={this.props.handleChangeRef}
+                    autoFocus
+                    required
+                  />
+                </div>
+              ) : null}
 
               <div className="form-group">
                 <label htmlFor="description">Description :</label>

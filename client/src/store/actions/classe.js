@@ -102,7 +102,7 @@ export const updateClasseAsync = classe => {
   return dispatch => {
     dispatch(loading());
     axios
-      .put('/classes/' + classe._id, classe)
+      .put('/classes/' + classe.id, classe)
       .then(res => {
         dispatch(updateClasse(res.data));
       })
@@ -139,6 +139,7 @@ export const deleteClasseAsync = id_classe => {
     axios
       .delete('/classes/' + id_classe)
       .then(res => {
+        console.log('res: ', res);
         dispatch(deleteClasse(id_classe));
       })
       .catch(err => {

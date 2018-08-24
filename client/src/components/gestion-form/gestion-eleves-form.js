@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 class GestionElevesForm extends Component {
   state = {
-    eleve: { id: null, first_name: '', last_name: '', classe: '' },
+    eleve: { id: null, first_name: '', last_name: '', classe_id: '' },
     classes: []
   };
 
@@ -24,7 +24,7 @@ class GestionElevesForm extends Component {
           id: this.props.eleve.id,
           first_name: this.props.eleve.first_name,
           last_name: this.props.eleve.last_name,
-          classe: this.props.eleve.classe
+          classe: this.props.eleve.classe_id
         },
         classes: this.props.listClasses
       });
@@ -38,7 +38,7 @@ class GestionElevesForm extends Component {
       nextProps.eleve.classe !== this.props.eleve.classe ||
       this.state.eleve.first_name !== nextProps.eleve.first_name ||
       this.state.eleve.last_name !== nextProps.eleve.last_name ||
-      this.state.eleve.classe !== nextProps.eleve.classe
+      this.state.eleve.classe_id !== nextProps.eleve.classe_id
     );
   }
 
@@ -49,7 +49,7 @@ class GestionElevesForm extends Component {
         id: this.props.eleve.id,
         first_name: nextProps.eleve.first_name,
         last_name: nextProps.eleve.last_name,
-        classe: nextProps.eleve.classe
+        classe: nextProps.eleve.classe_id
       }
     });
   }
@@ -123,9 +123,9 @@ class GestionElevesForm extends Component {
               <div className="form-group">
                 <select
                   className="form-control"
-                  name="classe"
-                  id="classe"
-                  value={this.state.eleve.classe}
+                  name="classe_id"
+                  id="classe_id"
+                  value={this.state.eleve.classe_id}
                   onChange={this.props.handleChangeClasse}
                   required
                   disabled={this.props.addForm}>

@@ -2,14 +2,14 @@ const Eleve = require('../mysql_models/eleve');
 
 module.exports = router => {
   router.post('/eleves', (req, res, next) => {
-    Eleve.create(req.body.name, req.body.cycle, (err, Eleve) => {
+    Eleve.create(req.body.name, req.body.cycle_id, (err, Eleve) => {
       if (err) return next(err);
       return res.status(201).json(Eleve);
     });
   });
 
   router.put('/eleves/:id', (req, res, next) => {
-    Eleve.update(req.params.id, req.body.name, req.body.cycle, (err, Eleve) => {
+    Eleve.update(req.params.id, req.body.name, req.body.cycle_id, (err, Eleve) => {
       if (err) return next(err);
       return res.status(201).json(Eleve);
     });

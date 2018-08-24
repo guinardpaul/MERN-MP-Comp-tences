@@ -1,9 +1,54 @@
 import React, { Component } from 'react';
+import { ENUM_DOMAINE_COMPETENCE_VALUE } from '../../../models/enums';
 
 class TreeTable extends Component {
   state = {
     expandedRows: []
   };
+
+  handleUpdate(obj) {
+    let typeObj = '';
+
+    if (obj.hasOwnProperty('sous_domaine_id')) {
+      if (obj.sous_domaine_id === null || obj.sous_domaine_id === undefined) {
+        console.log('[Domaine] updated: ', obj);
+        typeObj = ENUM_DOMAINE_COMPETENCE_VALUE[0];
+      } else {
+        console.log('[Sous-Domaine] updated: ', obj);
+        typeObj = ENUM_DOMAINE_COMPETENCE_VALUE[1];
+      }
+    } else if (obj.hasOwnProperty('domaine_id')) {
+      console.log('[Competence] updated: ', obj);
+      typeObj = ENUM_DOMAINE_COMPETENCE_VALUE[2];
+    } else {
+      console.log('[Domaine] updated: ', obj);
+      typeObj = ENUM_DOMAINE_COMPETENCE_VALUE[0];
+    }
+
+    this.props.handleUpdate(obj, typeObj);
+  }
+
+  handleDelete(obj) {
+    let typeObj = '';
+
+    if (obj.hasOwnProperty('sous_domaine_id')) {
+      if (obj.sous_domaine_id === null || obj.sous_domaine_id === undefined) {
+        console.log('[Domaine] updated: ', obj);
+        typeObj = 'Domaine';
+      } else {
+        console.log('[Sous-Domaine] updated: ', obj);
+        typeObj = 'Sous-domaine';
+      }
+    } else if (obj.hasOwnProperty('domaine_id')) {
+      console.log('[Competence] updated: ', obj);
+      typeObj = 'Competence';
+    } else {
+      console.log('[Domaine] updated: ', obj);
+      typeObj = 'Domaine';
+    }
+
+    this.props.handleDelete(obj, typeObj);
+  }
 
   handleRowClick(rowId) {
     const currentExpandedRows = this.state.expandedRows;
@@ -41,12 +86,12 @@ class TreeTable extends Component {
           <div className="btn-group-vertical">
             <button
               className={cssBtn + ' btn-warning'}
-              onClick={() => this.props.handleUpdate(item)}>
+              onClick={() => this.handleUpdate(item)}>
               Modifier
             </button>
             <button
               className={cssBtn + ' btn-danger'}
-              onClick={() => this.props.handleDelete(item)}>
+              onClick={() => this.handleDelete(item)}>
               Supprimer
             </button>
           </div>
@@ -82,12 +127,12 @@ class TreeTable extends Component {
                 <div className="btn-group-vertical">
                   <button
                     className={cssBtn + ' btn-warning'}
-                    onClick={() => this.props.handleUpdate(d)}>
+                    onClick={() => this.handleUpdate(d)}>
                     Modifier
                   </button>
                   <button
                     className={cssBtn + ' btn-danger'}
-                    onClick={() => this.props.handleDelete(d)}>
+                    onClick={() => this.handleDelete(d)}>
                     Supprimer
                   </button>
                 </div>
@@ -123,12 +168,12 @@ class TreeTable extends Component {
                       <div className="btn-group-vertical">
                         <button
                           className={cssBtn + ' btn-warning'}
-                          onClick={() => this.props.handleUpdate(ct)}>
+                          onClick={() => this.handleUpdate(ct)}>
                           Modifier
                         </button>
                         <button
                           className={cssBtn + ' btn-danger'}
-                          onClick={() => this.props.handleDelete(ct)}>
+                          onClick={() => this.handleDelete(ct)}>
                           Supprimer
                         </button>
                       </div>
@@ -157,12 +202,12 @@ class TreeTable extends Component {
                 <div className="btn-group-vertical">
                   <button
                     className={cssBtn + ' btn-warning'}
-                    onClick={() => this.props.handleUpdate(ct)}>
+                    onClick={() => this.handleUpdate(ct)}>
                     Modifier
                   </button>
                   <button
                     className={cssBtn + ' btn-danger'}
-                    onClick={() => this.props.handleDelete(ct)}>
+                    onClick={() => this.handleDelete(ct)}>
                     Supprimer
                   </button>
                 </div>

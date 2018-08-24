@@ -2,14 +2,14 @@ const Domaine = require('../mysql_models/domaine');
 
 module.exports = router => {
   router.post('/domaines', (req, res, next) => {
-    Domaine.create(req.body.name, req.body.cycle, (err, domaine) => {
+    Domaine.create(req.body.name, req.body.cycle_id, (err, domaine) => {
       if (err) return next(err);
       return res.status(201).json(domaine);
     });
   });
 
   router.put('/domaines/:id', (req, res, next) => {
-    Domaine.update(req.params.id, req.body.name, req.body.cycle, (err, domaine) => {
+    Domaine.update(req.params.id, req.body.name, req.body.cycle_id, (err, domaine) => {
       if (err) return next(err);
       return res.status(201).json(domaine);
     });
@@ -29,8 +29,8 @@ module.exports = router => {
     })
   })
 
-  router.get('/domaines/cycle/:cycle', (req, res, next) => {
-    Domaine.getByCycle(req.params.cycle, (err, domaines) => {
+  router.get('/domaines/cycle_id/:cycle_id', (req, res, next) => {
+    Domaine.getByCycle(req.params.cycle_id, (err, domaines) => {
       if (err) return next(err);
       return res.status(200).json(domaines);
     })

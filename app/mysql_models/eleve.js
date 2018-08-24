@@ -2,7 +2,8 @@ const db = require('../db');
 
 exports.create = function (first_name, last_name, classe_id, done) {
   const values = [first_name, last_name, classe_id];
-  db.get().query('INSERT INTO eleves (first_name, last_name, classe_id) VALUES (?, ?)', values, function (err, result) {
+  db.get().query('INSERT INTO eleves (first_name, last_name, classe_id) VALUES (?, ?, ?)', values, function (err, result) {
+    console.log('result: ', result);
     if (err) return done(err);
     done(null, result.insertId);
   })

@@ -16,7 +16,7 @@ class GestionEleves extends Component {
       id: null,
       first_name: '',
       last_name: '',
-      classe: ''
+      classe_id: ''
     },
     addForm: false,
     updateForm: false,
@@ -66,7 +66,7 @@ class GestionEleves extends Component {
       eleve: {
         first_name: '',
         last_name: '',
-        classe: this.state.selectedClasse
+        classe_id: this.state.selectedClasse
       },
       selectedRow: null
     });
@@ -89,7 +89,7 @@ class GestionEleves extends Component {
         id: newEleve.id,
         first_name: event.target.value,
         last_name: newEleve.last_name,
-        classe: newEleve.classe
+        classe_id: newEleve.classe_id
       }
     });
   }
@@ -103,7 +103,7 @@ class GestionEleves extends Component {
         id: newEleve.id,
         first_name: newEleve.first_name,
         last_name: event.target.value,
-        classe: newEleve.classe
+        classe_id: newEleve.classe_id
       }
     });
   }
@@ -117,7 +117,7 @@ class GestionEleves extends Component {
         id: newEleve.id,
         first_name: newEleve.first_name,
         last_name: newEleve.last_name,
-        classe: event.target.value
+        classe_id: parseInt(event.target.value, 10)
       },
       selectedRow: null
     });
@@ -134,7 +134,7 @@ class GestionEleves extends Component {
             id: null,
             first_name: '',
             last_name: '',
-            classe: ''
+            classe_id: ''
           }
         });
       }
@@ -148,7 +148,7 @@ class GestionEleves extends Component {
             id: null,
             first_name: '',
             last_name: '',
-            classe: ''
+            classe_id: ''
           }
         });
       }
@@ -211,12 +211,8 @@ class GestionEleves extends Component {
           listClasses={this.props.listClasses}
           selectedClasse={this.state.selectedClasse}
           cancelForm={this.onCancelForm}
-          handleChangefirst_nameEleve={event =>
-            this.handleChangefirst_nameEleve(event)
-          }
-          handleChangelast_nameEleve={event =>
-            this.handleChangelast_nameEleve(event)
-          }
+          handleChangefirstName={event => this.handleChangefirstName(event)}
+          handleChangelastName={event => this.handleChangelastName(event)}
           handleChangeClasse={event => this.handleChangeClasse(event)}
         />
       );
@@ -233,14 +229,13 @@ class GestionEleves extends Component {
       );
     }
 
-    // Select classe
+    // Select classe_id
     let selectClasse = <Spinner />;
     if (!this.props.loadingClasses) {
       let options = this.props.listClasses.map((c, i) => {
         return (
           <option value={c.id} key={i}>
-            {' '}
-            {c.name}{' '}
+            {c.name}
           </option>
         );
       });
@@ -248,11 +243,11 @@ class GestionEleves extends Component {
       selectClasse = (
         <select
           className="form-control select-classe"
-          name="classe"
-          id="classe"
+          name="classe_id"
+          id="classe_id"
           value={this.state.selectedClasse}
           onChange={event => this.handleChangeSelectedClasse(event)}>
-          <option value=""> Classe </option> {options}{' '}
+          <option value=""> Classe </option> {options}
         </select>
       );
     }
@@ -280,13 +275,10 @@ class GestionEleves extends Component {
 
     return (
       <div className="container header">
-        <h2 className="page-header">Gestion élèves {addButon} </h2>{' '}
-        {selectClasse}{' '}
-        <div className="col-sm-6 col-md-6 col-lg-6 col-xs-12"> {data} </div>{' '}
-        <div className="col-sm-6 col-md-6 col-lg-6 col-xs-12">
-          {' '}
-          {eleveForm}{' '}
-        </div>{' '}
+        <h2 className="page-header">Gestion élèves {addButon} </h2>
+        {selectClasse}
+        <div className="col-sm-6 col-md-6 col-lg-6 col-xs-12"> {data} </div>
+        <div className="col-sm-6 col-md-6 col-lg-6 col-xs-12">{eleveForm}</div>
       </div>
     );
   }

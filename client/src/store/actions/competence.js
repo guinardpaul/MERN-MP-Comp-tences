@@ -122,7 +122,7 @@ export const updateCompetenceAsync = competence => {
   return dispatch => {
     dispatch(loading());
     axios
-      .put('/competences/' + competence._id, competence)
+      .put('/competences/' + competence.id, competence)
       .then(res => {
         dispatch(updateCompetence(res.data));
       })
