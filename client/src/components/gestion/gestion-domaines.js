@@ -1,21 +1,21 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import DomaineTableau from './gestion-tableau/domaineTableau';
-import { connect } from 'react-redux';
-import * as domaineActionCreators from '../../store/actions/domaine';
-import * as competenceActionCreators from '../../store/actions/competence';
-import Aux from '../../hoc/Auxil/Auxil';
-import Modal from '../UI/Modal/Modal';
-import DomaineForm from '../gestion-form/domaine-form';
-import Popover from '../UI/Popover/Popover';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import DomaineTableau from "./gestion-tableau/domaineTableau";
+import { connect } from "react-redux";
+import * as domaineActionCreators from "../../store/actions/domaine";
+import * as competenceActionCreators from "../../store/actions/competence";
+import Aux from "../../hoc/Auxil/Auxil";
+import Modal from "../UI/Modal/Modal";
+import DomaineForm from "./gestion-form/domaine-form";
+import Popover from "../UI/Popover/Popover";
 
 class GestionDomaines extends Component {
   state = {
     optionsDomaine: [],
     domaine: {
       id: 0,
-      ref: '',
-      description: '',
+      ref: "",
+      description: "",
       cycle_id: 0,
       sous_domaine_id: 0
     }
@@ -31,11 +31,11 @@ class GestionDomaines extends Component {
   }
 
   handleUpdate = domaine => {
-    console.log('domaine: ', domaine);
+    console.log("domaine: ", domaine);
   };
 
   handleDelete = domaine => {
-    console.log('domaine: ', domaine);
+    console.log("domaine: ", domaine);
   };
 
   onCancelForm = () => {
@@ -43,8 +43,8 @@ class GestionDomaines extends Component {
       {
         domaine: {
           id: 0,
-          ref: '',
-          description: '',
+          ref: "",
+          description: "",
           cycle_id: 0,
           sous_domaine_id: 0
         }
@@ -105,7 +105,7 @@ class GestionDomaines extends Component {
 
   render() {
     let domaineTable;
-    if (this.props.selectedCycle !== '') {
+    if (this.props.selectedCycle !== "") {
       if (this.props.listDomaines.length > 0) {
         domaineTable = (
           <DomaineTableau
@@ -124,57 +124,61 @@ class GestionDomaines extends Component {
     }
 
     let formInfo = {
-      styleForm: '',
-      headingForm: '',
-      buttonStyle: '',
-      buttonName: ''
+      styleForm: "",
+      headingForm: "",
+      buttonStyle: "",
+      buttonName: ""
     };
-    let headingForm = '';
+    let headingForm = "";
     if (this.props.showDomaineForm) {
-      headingForm = 'Domaine';
+      headingForm = "Domaine";
     } else if (this.props.showSousDomaineForm) {
-      headingForm = 'Sous-domaine';
+      headingForm = "Sous-domaine";
     }
 
     if (this.props.update) {
       formInfo = {
-        styleForm: 'panel panel-warning',
-        headingForm: 'Modifier ' + headingForm,
-        buttonStyle: 'btn btn-warning',
-        buttonName: 'Modifier'
+        styleForm: "panel panel-warning",
+        headingForm: "Modifier " + headingForm,
+        buttonStyle: "btn btn-warning",
+        buttonName: "Modifier"
       };
     } else {
       formInfo = {
-        styleForm: 'panel panel-success',
-        headingForm: 'Ajouter ' + headingForm,
-        buttonStyle: 'btn btn-success',
-        buttonName: 'Créer'
+        styleForm: "panel panel-success",
+        headingForm: "Ajouter " + headingForm,
+        buttonStyle: "btn btn-success",
+        buttonName: "Créer"
       };
     }
 
     return (
       <Aux className="container">
-        {this.props.selectedCycle !== '' ? (
+        {this.props.selectedCycle !== "" ? (
           <Popover
             popupTitle="Créer un ..."
             placement="right"
             buttonTitle={<span className="glyphicon glyphicon-plus" />}
-            buttonStyle="btn btn-primary btn-circle btn-lg margin">
+            buttonStyle="btn btn-primary btn-circle btn-lg margin"
+          >
             <button
               className="btn btn-primary"
-              onClick={this.props.displayDomaineForm}>
+              onClick={this.props.displayDomaineForm}
+            >
               Domaine
             </button>
             <button
               className="btn btn-primary"
-              onClick={this.props.displaySousDomaineForm}>
+              onClick={this.props.displaySousDomaineForm}
+            >
               Sous-domaine
             </button>
           </Popover>
         ) : null}
         <Modal
           modalClosed={this.props.cancelDomaineForm}
-          show={this.props.showDomaineForm || this.props.showSousDomaineForm}>
+          show={this.props.showDomaineForm || this.props.showSousDomaineForm}
+        >
           <DomaineForm
             domaine={this.state.domaine}
             addSousDomaine={this.props.showSousDomaineForm}

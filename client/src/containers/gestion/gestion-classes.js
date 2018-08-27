@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import Tableau from '../../components/UI/Table/Tableau';
-import ClasseTableau from '../../components/gestion-competences/gestion-tableau/classeTableau';
-import GestionClassesForm from '../../components/gestion-form/gestion-classes-form';
-import './gestion.css';
-import Spinner from '../../components/UI/Spinner/Spinner';
-import * as actionCreator from '../../store/actions/index';
-import { connect } from 'react-redux';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import Tableau from "../../components/UI/Table/Tableau";
+import ClasseTableau from "../../components/gestion/gestion-tableau/classeTableau";
+import GestionClassesForm from "../../components/gestion/gestion-form/gestion-classes-form";
+import "./gestion.css";
+import Spinner from "../../components/UI/Spinner/Spinner";
+import * as actionCreator from "../../store/actions/index";
+import { connect } from "react-redux";
 
 class GestionClasses extends Component {
   state = {
@@ -27,15 +27,15 @@ class GestionClasses extends Component {
       addForm: true,
       updateForm: false,
       classe: {
-        name: '',
-        cycle_id: ''
+        name: "",
+        cycle_id: ""
       },
       selectedRow: null
     });
   };
 
   handleSubmit = obj => {
-    console.log('obj: ', obj);
+    console.log("obj: ", obj);
     if (this.state.addForm) {
       this.props.addClasse(obj);
       if (!this.props.loading) {
@@ -74,7 +74,7 @@ class GestionClasses extends Component {
 
   handleRedirectToEleveList = obj => {
     this.props.history.push({
-      pathname: '/gestion-eleves',
+      pathname: "/gestion-eleves",
       state: {
         selectedClasse: obj
       }
@@ -184,7 +184,8 @@ class GestionClasses extends Component {
           Gestion classes
           <button
             className="btn btn-primary btn-circle btn-lg margin"
-            onClick={this.displayAddForm}>
+            onClick={this.displayAddForm}
+          >
             <span className="glyphicon glyphicon-plus" />
           </button>
         </h2>

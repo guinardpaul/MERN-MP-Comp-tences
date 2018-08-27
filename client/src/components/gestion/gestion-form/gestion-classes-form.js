@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { ENUM_CYCLES } from '../../models/enums';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { ENUM_CYCLES } from "../../../models/enums";
 
 class GestionClassesForm extends Component {
   state = {
-    classe: { id: null, name: '', cycle_id: '' }
+    classe: { id: null, name: "", cycle_id: "" }
   };
 
   componentDidMount() {
@@ -43,10 +43,10 @@ class GestionClassesForm extends Component {
 
   addClasse = event => {
     event.preventDefault();
-    if (this.state.classe.name !== '' && this.state.classe.cycle_id !== '') {
+    if (this.state.classe.name !== "" && this.state.classe.cycle_id !== "") {
       this.props.onFormSubmit(this.state.classe);
       this.setState({
-        classe: { id: null, name: '', cycle_id: '' }
+        classe: { id: null, name: "", cycle_id: "" }
       });
     }
   };
@@ -92,7 +92,8 @@ class GestionClassesForm extends Component {
                   id="cycle_id"
                   value={this.state.classe.cycle_id}
                   onChange={this.props.handleChangeCycle}
-                  required>
+                  required
+                >
                   <option value="">Cycles</option>
                   {options}
                 </select>
@@ -104,7 +105,8 @@ class GestionClassesForm extends Component {
                 </button>
                 <button
                   onClick={this.props.cancelForm}
-                  className="btn btn-default">
+                  className="btn btn-default"
+                >
                   Annuler
                 </button>
               </div>

@@ -1,23 +1,23 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import * as domaineActionCreators from '../../store/actions/domaine';
-import * as competenceActionCreators from '../../store/actions/competence';
-import GestionDomaines from '../../components/gestion-competences/gestion-domaines';
-import GestionCompetences from '../../components/gestion-competences/gestion-competences';
-import Spinner from '../../components/UI/Spinner/Spinner';
-import SelectTreeTable from '../../components/UI/SelectTreeTable/SelectTreeTable';
-import { ENUM_CYCLES } from '../../models/enums';
-import Popover from '../../components/UI/Popover/Popover';
-import Aux from '../../hoc/Auxil/Auxil';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import * as domaineActionCreators from "../../store/actions/domaine";
+import * as competenceActionCreators from "../../store/actions/competence";
+import GestionDomaines from "../../components/gestion/gestion-domaines";
+import GestionCompetences from "../../components/gestion/gestion-competences";
+import Spinner from "../../components/UI/Spinner/Spinner";
+import SelectTreeTable from "../../components/UI/SelectTreeTable/SelectTreeTable";
+import { ENUM_CYCLES } from "../../models/enums";
+import Popover from "../../components/UI/Popover/Popover";
+import Aux from "../../hoc/Auxil/Auxil";
 
 class GestionDomainesCompetences extends Component {
   state = {
     domaineForm: false,
     sousDomaineForm: false,
     updateData: false,
-    selectedCycle: '',
-    selectedDomaine: '',
+    selectedCycle: "",
+    selectedDomaine: "",
     listDomaines: [],
     listSousDomainesCompetences: []
   };
@@ -29,7 +29,7 @@ class GestionDomainesCompetences extends Component {
 
   filterList = selectedCycle => {
     const domainesFiltered = [...this.props.listDomaines].filter(
-      d => d.cycle_id === parseInt(selectedCycle, 10) && d.ref !== 'null'
+      d => d.cycle_id === parseInt(selectedCycle, 10) && d.ref !== "null"
     );
 
     this.setState({
@@ -81,10 +81,10 @@ class GestionDomainesCompetences extends Component {
     this.setState(
       {
         selectedCycle: event.target.value,
-        selectedDomaine: ''
+        selectedDomaine: ""
       },
       () => {
-        if (this.state.selectedCycle !== '') {
+        if (this.state.selectedCycle !== "") {
           this.filterList(this.state.selectedCycle);
         }
       }
@@ -129,13 +129,14 @@ class GestionDomainesCompetences extends Component {
           name="cycle"
           id="cycle"
           value={this.state.selectedCycle}
-          onChange={event => this.handleChangeSelectedCycle(event)}>
+          onChange={event => this.handleChangeSelectedCycle(event)}
+        >
           <option value="">Cycle</option>
           {options}
         </select>
 
         <div className="row">
-          {this.state.selectedCycle !== '' ? (
+          {this.state.selectedCycle !== "" ? (
             this.props.listDomaines.length > 0 ? (
               <div className="col-sm-6 col-md-6 col-lg-6">
                 <GestionDomaines
@@ -162,7 +163,7 @@ class GestionDomainesCompetences extends Component {
           )}
 
           <div className="col-sm-6 col-md-6 col-lg-6">
-            {this.state.selectedDomaine !== '' ? (
+            {this.state.selectedDomaine !== "" ? (
               <GestionCompetences
                 listSousDomainesCompetences={
                   this.state.listSousDomainesCompetences

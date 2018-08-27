@@ -1,19 +1,19 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import * as domaineActionCreators from '../../store/actions/domaine';
-import * as competenceActionCreators from '../../store/actions/competence';
-import GestionDomaines from '../../components/gestion-competences/gestion-domaines';
-import GestionCompetences from '../../components/gestion-competences/gestion-competences';
-import Spinner from '../../components/UI/Spinner/Spinner';
-import SelectTreeTable from '../../components/UI/SelectTreeTable/SelectTreeTable';
-import { ENUM_CYCLES, ENUM_DOMAINE_COMPETENCE_VALUE } from '../../models/enums';
-import Popover from '../../components/UI/Popover/Popover';
-import Aux from '../../hoc/Auxil/Auxil';
-import TreeTable from '../../components/UI/TreeTable/TreeTable';
-import Modal from '../../components/UI/Modal/Modal';
-import DomaineForm from '../../components/gestion-form/domaine-form';
-import GestionCompetencesForm from '../../components/gestion-form/gestion-competences-form';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import * as domaineActionCreators from "../../store/actions/domaine";
+import * as competenceActionCreators from "../../store/actions/competence";
+import GestionDomaines from "../../components/gestion/gestion-domaines";
+import GestionCompetences from "../../components/gestion/gestion-competences";
+import Spinner from "../../components/UI/Spinner/Spinner";
+import SelectTreeTable from "../../components/UI/SelectTreeTable/SelectTreeTable";
+import { ENUM_CYCLES, ENUM_DOMAINE_COMPETENCE_VALUE } from "../../models/enums";
+import Popover from "../../components/UI/Popover/Popover";
+import Aux from "../../hoc/Auxil/Auxil";
+import TreeTable from "../../components/UI/TreeTable/TreeTable";
+import Modal from "../../components/UI/Modal/Modal";
+import DomaineForm from "../../components/gestion/gestion-form/domaine-form";
+import GestionCompetencesForm from "../../components/gestion/gestion-form/gestion-competences-form";
 
 class GestionDomainesTreeTable extends Component {
   state = {
@@ -22,21 +22,21 @@ class GestionDomainesTreeTable extends Component {
     competenceForm: false,
     updateData: false,
     editionMode: false,
-    selectedCycle: '',
+    selectedCycle: "",
     data: [],
     expandedRows: [],
     domaine: {
       id: 0,
-      ref: '',
-      description: '',
-      cycle_id: '',
+      ref: "",
+      description: "",
+      cycle_id: "",
       sous_domaine_id: null
     },
     competence: {
       id: 0,
-      ref: '',
-      description: '',
-      cycle_id: '',
+      ref: "",
+      description: "",
+      cycle_id: "",
       domaine_id: 0
     }
   };
@@ -48,7 +48,7 @@ class GestionDomainesTreeTable extends Component {
 
   filterList = selectedCycle => {
     const domainesFiltered = [...this.props.listDomaines].filter(
-      d => d.cycle_id === parseInt(selectedCycle, 10) && d.ref !== 'null'
+      d => d.cycle_id === parseInt(selectedCycle, 10) && d.ref !== "null"
     );
 
     this.setState({
@@ -63,8 +63,8 @@ class GestionDomainesTreeTable extends Component {
       competenceForm: false,
       domaine: {
         id: 0,
-        ref: '',
-        description: '',
+        ref: "",
+        description: "",
         cycle_id: parseInt(this.state.selectedCycle, 10),
         sous_domaine_id: null
       }
@@ -78,8 +78,8 @@ class GestionDomainesTreeTable extends Component {
       competenceForm: false,
       domaine: {
         id: 0,
-        ref: '',
-        description: '',
+        ref: "",
+        description: "",
         cycle_id: parseInt(this.state.selectedCycle, 10),
         sous_domaine_id: 0
       }
@@ -93,8 +93,8 @@ class GestionDomainesTreeTable extends Component {
       competenceForm: true,
       competence: {
         id: 0,
-        ref: '',
-        description: '',
+        ref: "",
+        description: "",
         cycle_id: parseInt(this.state.selectedCycle, 10),
         domaine_id: 0
       }
@@ -107,7 +107,7 @@ class GestionDomainesTreeTable extends Component {
         selectedCycle: event.target.value
       },
       () => {
-        if (this.state.selectedCycle !== '') {
+        if (this.state.selectedCycle !== "") {
           this.filterList(this.state.selectedCycle);
         }
       }
@@ -200,17 +200,17 @@ class GestionDomainesTreeTable extends Component {
 
       default:
         console.log(
-          'Erreur sur le typeObj ' +
+          "Erreur sur le typeObj " +
             typeObj +
-            '. Cette objet ne correspond à aucune valeur de ENUM_DOMAINE_COMPETENCE_VALUE.'
+            ". Cette objet ne correspond à aucune valeur de ENUM_DOMAINE_COMPETENCE_VALUE."
         );
         break;
     }
   };
 
   handleDelete = (obj, typeObj) => {
-    console.log('typeObj: ', typeObj);
-    console.log('obj deleted: ', obj);
+    console.log("typeObj: ", typeObj);
+    console.log("obj deleted: ", obj);
   };
 
   addDomaine() {
@@ -231,28 +231,28 @@ class GestionDomainesTreeTable extends Component {
 
   getFormInfo() {
     let formInfo = {};
-    let headingForm = '';
+    let headingForm = "";
     if (this.state.domaineForm) {
-      headingForm = 'Domaine';
+      headingForm = "Domaine";
     } else if (this.state.sousDomaineForm) {
-      headingForm = 'Sous-domaine';
+      headingForm = "Sous-domaine";
     } else if (this.state.competenceForm) {
-      headingForm = 'Compétence';
+      headingForm = "Compétence";
     }
 
     if (this.state.updateData) {
       formInfo = {
-        styleForm: 'panel panel-warning',
-        headingForm: 'Modifier ' + headingForm,
-        buttonStyle: 'btn btn-warning',
-        buttonName: 'Modifier'
+        styleForm: "panel panel-warning",
+        headingForm: "Modifier " + headingForm,
+        buttonStyle: "btn btn-warning",
+        buttonName: "Modifier"
       };
     } else {
       formInfo = {
-        styleForm: 'panel panel-success',
-        headingForm: 'Ajouter ' + headingForm,
-        buttonStyle: 'btn btn-success',
-        buttonName: 'Créer'
+        styleForm: "panel panel-success",
+        headingForm: "Ajouter " + headingForm,
+        buttonStyle: "btn btn-success",
+        buttonName: "Créer"
       };
     }
 
@@ -282,26 +282,30 @@ class GestionDomainesTreeTable extends Component {
       <div className="container header">
         <h2 className="page-header ">
           Gestion Domaines / Competences
-          {this.state.selectedCycle !== '' ? (
+          {this.state.selectedCycle !== "" ? (
             <Aux>
               <Popover
                 popupTitle="Créer un ..."
                 placement="right"
                 buttonTitle={<span className="glyphicon glyphicon-plus" />}
-                buttonStyle="btn btn-primary btn-circle btn-lg margin">
+                buttonStyle="btn btn-primary btn-circle btn-lg margin"
+              >
                 <button
                   className="btn btn-primary"
-                  onClick={this.displayDomaineForm}>
+                  onClick={this.displayDomaineForm}
+                >
                   Domaine
                 </button>
                 <button
                   className="btn btn-primary"
-                  onClick={this.displaySousDomaineForm}>
+                  onClick={this.displaySousDomaineForm}
+                >
                   Sous - domaine
                 </button>
                 <button
                   className="btn btn-primary"
-                  onClick={this.displayCompetenceForm}>
+                  onClick={this.displayCompetenceForm}
+                >
                   Compétence
                 </button>
               </Popover>
@@ -314,7 +318,8 @@ class GestionDomainesTreeTable extends Component {
           name="cycle"
           id="cycle"
           value={this.state.selectedCycle}
-          onChange={event => this.handleChangeSelectedCycle(event)}>
+          onChange={event => this.handleChangeSelectedCycle(event)}
+        >
           <option value=""> Cycle </option> {options}
         </select>
         <Modal
@@ -323,7 +328,8 @@ class GestionDomainesTreeTable extends Component {
             this.state.domaineForm ||
             this.state.sousDomaineForm ||
             this.state.competenceForm
-          }>
+          }
+        >
           {!this.state.competenceForm ? (
             <DomaineForm
               domaine={this.state.domaine}
@@ -361,7 +367,7 @@ class GestionDomainesTreeTable extends Component {
             />
           )}
         </Modal>
-        {this.state.selectedCycle !== '' ? (
+        {this.state.selectedCycle !== "" ? (
           <TreeTable
             data={this.state.data}
             listDomaines={this.props.listDomaines}

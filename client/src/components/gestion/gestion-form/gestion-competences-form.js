@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Button from '../UI/Table/Button/Button';
+import Button from '../../UI/Table/Button/Button';
 
 class GestionCompetencesForm extends Component {
   state = {

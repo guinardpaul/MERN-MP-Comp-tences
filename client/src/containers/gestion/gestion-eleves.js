@@ -1,22 +1,22 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import EleveTableau from '../../components/gestion-competences/gestion-tableau/eleveTableau';
-import GestionElevesForm from '../../components/gestion-form/gestion-eleves-form';
-import './gestion.css';
-import Spinner from '../../components/UI/Spinner/Spinner';
-import { connect } from 'react-redux';
-import * as actionCreator from '../../store/actions/eleve';
-import { getAllClassesAsync } from '../../store/actions/classe';
-import Select from '../../components/UI/Select/select';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import EleveTableau from "../../components/gestion/gestion-tableau/eleveTableau";
+import GestionElevesForm from "../../components/gestion/gestion-form/gestion-eleves-form";
+import "./gestion.css";
+import Spinner from "../../components/UI/Spinner/Spinner";
+import { connect } from "react-redux";
+import * as actionCreator from "../../store/actions/eleve";
+import { getAllClassesAsync } from "../../store/actions/classe";
+import Select from "../../components/UI/Select/select";
 
 class GestionEleves extends Component {
   state = {
-    selectedClasse: '',
+    selectedClasse: "",
     eleve: {
       id: null,
-      first_name: '',
-      last_name: '',
-      classe_id: ''
+      first_name: "",
+      last_name: "",
+      classe_id: ""
     },
     addForm: false,
     updateForm: false,
@@ -29,7 +29,7 @@ class GestionEleves extends Component {
     this.props.getAllClasses();
     // On recupere la liste des eleves si une classe est sélectionné
     if (this.props.location.state !== undefined) {
-      if (this.props.location.state.selectedClasse !== '') {
+      if (this.props.location.state.selectedClasse !== "") {
         this.setState(
           {
             selectedClasse: this.props.location.state.selectedClasse.id
@@ -52,7 +52,7 @@ class GestionEleves extends Component {
         updateForm: false
       },
       () => {
-        if (this.state.selectedClasse !== '') {
+        if (this.state.selectedClasse !== "") {
           this.props.getAllElevesByClasse(this.state.selectedClasse);
         }
       }
@@ -64,8 +64,8 @@ class GestionEleves extends Component {
       addForm: true,
       updateForm: false,
       eleve: {
-        first_name: '',
-        last_name: '',
+        first_name: "",
+        last_name: "",
         classe_id: parseInt(this.state.selectedClasse, 10)
       },
       selectedRow: null
@@ -124,7 +124,7 @@ class GestionEleves extends Component {
   }
 
   handleSubmit = eleve => {
-    console.log('eleve: ', eleve);
+    console.log("eleve: ", eleve);
     if (this.state.addForm && this.state.eleve.id === undefined) {
       this.props.addEleve(eleve);
       if (!this.props.loading) {
@@ -133,9 +133,9 @@ class GestionEleves extends Component {
           updateForm: false,
           eleve: {
             id: null,
-            first_name: '',
-            last_name: '',
-            classe_id: ''
+            first_name: "",
+            last_name: "",
+            classe_id: ""
           }
         });
       }
@@ -147,9 +147,9 @@ class GestionEleves extends Component {
           updateForm: false,
           eleve: {
             id: null,
-            first_name: '',
-            last_name: '',
-            classe_id: ''
+            first_name: "",
+            last_name: "",
+            classe_id: ""
           }
         });
       }
@@ -220,11 +220,12 @@ class GestionEleves extends Component {
     }
 
     let addButon = null;
-    if (this.state.selectedClasse !== '') {
+    if (this.state.selectedClasse !== "") {
       addButon = (
         <button
           className="btn btn-primary btn-circle btn-lg margin"
-          onClick={this.displayAddForm}>
+          onClick={this.displayAddForm}
+        >
           <span className="glyphicon glyphicon-plus" />
         </button>
       );
@@ -240,21 +241,22 @@ class GestionEleves extends Component {
           </option>
         );
       });
-      const cssClasses = ['form-control', 'select-classe'];
+      const cssClasses = ["form-control", "select-classe"];
       selectClasse = (
         <select
           className="form-control select-classe"
           name="classe_id"
           id="classe_id"
           value={this.state.selectedClasse}
-          onChange={event => this.handleChangeSelectedClasse(event)}>
+          onChange={event => this.handleChangeSelectedClasse(event)}
+        >
           <option value=""> Classe </option> {options}
         </select>
       );
     }
 
     let data = <Spinner />;
-    if (this.state.selectedClasse !== '') {
+    if (this.state.selectedClasse !== "") {
       if (!this.props.loadingEleves) {
         if (this.props.listEleves.length > 0) {
           data = (

@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { ENUM_CYCLES } from '../../models/enums';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { ENUM_CYCLES } from "../../../models/enums";
 
 /**
  * Possibilité d'ajouter un domaine ou un sous_domaine => avec ou sans input pour sous_domaine_id
@@ -9,8 +9,8 @@ class DomaineForm extends Component {
   state = {
     domaine: {
       id: 0,
-      ref: '',
-      description: '',
+      ref: "",
+      description: "",
       cycle_id: 0,
       sous_domaine_id: 0
     }
@@ -116,7 +116,8 @@ class DomaineForm extends Component {
                     id="sous_domaine_id"
                     value={this.state.domaine.sous_domaine_id}
                     onChange={this.props.handleChangeSousDomaineID}
-                    required>
+                    required
+                  >
                     <option value="0">Domaine</option>
                     {this.props.optionsDomaine.map(domaine => {
                       return (
@@ -135,7 +136,8 @@ class DomaineForm extends Component {
                 </button>
                 <button
                   onClick={this.props.cancelForm}
-                  className="btn btn-default">
+                  className="btn btn-default"
+                >
                   Annuler
                 </button>
               </div>

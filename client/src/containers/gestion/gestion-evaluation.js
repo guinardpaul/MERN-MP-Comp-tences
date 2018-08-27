@@ -1,16 +1,16 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import './gestion.css';
-import * as actionCreator from '../../store/actions/evaluation';
-import { getAllClassesAsync } from '../../store/actions/classe';
-import { getEnumTrimestresAsync } from '../../store/actions/enums';
-import EvaluationTableau from '../../components/gestion-competences/gestion-tableau/evaluationTableau';
-import EvaluationForm from '../../components/gestion-form/evaluation-form';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import "./gestion.css";
+import * as actionCreator from "../../store/actions/evaluation";
+import { getAllClassesAsync } from "../../store/actions/classe";
+import { getEnumTrimestresAsync } from "../../store/actions/enums";
+import EvaluationTableau from "../../components/gestion/gestion-tableau/evaluationTableau";
+import EvaluationForm from "../../components/gestion/gestion-form/evaluation-form";
 
 class GestionEvaluation extends Component {
   state = {
-    selectedClasse: '',
+    selectedClasse: "",
     listEvaluations: [],
     evaluation: {},
     addForm: false,
@@ -32,7 +32,7 @@ class GestionEvaluation extends Component {
         updateForm: false
       },
       () => {
-        if (this.state.selectedClasse !== '') {
+        if (this.state.selectedClasse !== "") {
           this.filterList(this.state.selectedClasse);
         }
       }
@@ -107,10 +107,11 @@ class GestionEvaluation extends Component {
       <div className="container header">
         <h2 className="page-header">
           Gestion évaluations
-          {this.state.selectedClasse !== '' ? (
+          {this.state.selectedClasse !== "" ? (
             <button
               className="btn btn-primary btn-circle btn-lg margin"
-              onClick={this.displayAddForm}>
+              onClick={this.displayAddForm}
+            >
               <span className="glyphicon glyphicon-plus" />
             </button>
           ) : null}
@@ -120,12 +121,13 @@ class GestionEvaluation extends Component {
           name="classe_id"
           id="classe_id"
           value={this.state.selectedClasse}
-          onChange={event => this.handleChangeSelectedClasse(event)}>
+          onChange={event => this.handleChangeSelectedClasse(event)}
+        >
           <option value="">Classe</option>
           {options}
         </select>
         <div className="col-sm-6 col-md-6 col-lg-6 col-xs-12">
-          {this.state.selectedClasse !== '' ? (
+          {this.state.selectedClasse !== "" ? (
             <EvaluationTableau
               data={this.state.listEvaluations}
               selectedRow={this.state.selectedRow}
