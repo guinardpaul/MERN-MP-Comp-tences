@@ -51,3 +51,20 @@ export const UPDATE_COMPETENCE_ERROR =
   'Erreur durant la modification de la compétence. Réessayez plus tard.';
 export const DELETE_COMPETENCE_ERROR =
   'Erreur durant la suppression de la compétence. Réessayez plus tard.';
+
+// EVALUATIONS ERROR MESSAGES
+export const GET_ALL_EVALUATIONS_ERROR =
+  'Erreur durant la récupération de la liste des évaluations. Réessayez plus tard.';
+export const GET_ONE_EVALUATIONS_ERROR =
+  "Erreur durant la récupération de l'évaluation. Réessayez plus tard.";
+export const ADD_EVALUATION_ERROR =
+  "Erreur durant la création de l'évaluation. Réessayez plus tard.";
+export const UPDATE_EVALUATION_ERROR =
+  "Erreur durant la modification de l'évaluation. Réessayez plus tard.";
+export const DELETE_EVALUATION_ERROR =
+  "Erreur durant la suppression de l'évaluation. Réessayez plus tard.";
+
+// ENUMS ERROR MESSAGES
+export const GET_ENUM_TRIMESTRES_ERROR = 'Erreur durant la récupération de enums trimestre. Réessayez plus tard.';
+export const GET_ENUM_CYCLES_ERROR = 'Erreur durant la récupération de enums cycles. Réessayez plus tard.';
+export const GET_ENUM_RESULTATS_ERROR = 'Erreur durant la récupération de enums resultats. Réessayez plus tard.';

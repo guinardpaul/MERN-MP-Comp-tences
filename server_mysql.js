@@ -34,6 +34,8 @@ const classe = require('./app/mysql_routes/classes')(router);
 const eleve = require('./app/mysql_routes/eleves')(router);
 const competence = require('./app/mysql_routes/competences')(router);
 const domaine = require('./app/mysql_routes/domaines')(router);
+const evaluation = require('./app/mysql_routes/evaluations')(router);
+const enums = require('./app/mysql_routes/enums')(router);
 
 // MIDDLEWARE
 // log into console (dev)
@@ -66,6 +68,8 @@ app.use('/api', classe);
 app.use('/api', eleve);
 app.use('/api', competence);
 app.use('/api', domaine);
+app.use('/api', evaluation);
+app.use('/api/enums', enums);
 
 // allow to refresh page
 // send back to dist/index.html

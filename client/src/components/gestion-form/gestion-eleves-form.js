@@ -14,7 +14,7 @@ class GestionElevesForm extends Component {
           id: this.props.eleve.id,
           first_name: this.props.eleve.first_name,
           last_name: this.props.eleve.last_name,
-          classe: this.props.selectedClasse
+          classe_id: this.props.selectedClasse
         },
         classes: this.props.listClasses
       });
@@ -24,7 +24,7 @@ class GestionElevesForm extends Component {
           id: this.props.eleve.id,
           first_name: this.props.eleve.first_name,
           last_name: this.props.eleve.last_name,
-          classe: this.props.eleve.classe_id
+          classe_id: this.props.eleve.classe_id
         },
         classes: this.props.listClasses
       });
@@ -33,9 +33,11 @@ class GestionElevesForm extends Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     return (
+      nextProps.eleve.id !== this.props.eleve.id ||
       nextProps.eleve.first_name !== this.props.eleve.first_name ||
       nextProps.eleve.last_name !== this.props.eleve.last_name ||
-      nextProps.eleve.classe !== this.props.eleve.classe ||
+      nextProps.eleve.classe_id !== this.props.eleve.classe_id ||
+      this.state.eleve.id !== this.props.eleve.id ||
       this.state.eleve.first_name !== nextProps.eleve.first_name ||
       this.state.eleve.last_name !== nextProps.eleve.last_name ||
       this.state.eleve.classe_id !== nextProps.eleve.classe_id
@@ -46,10 +48,10 @@ class GestionElevesForm extends Component {
     // Si shouldComponentUpdate => true
     this.setState({
       eleve: {
-        id: this.props.eleve.id,
+        id: nextProps.eleve.id,
         first_name: nextProps.eleve.first_name,
         last_name: nextProps.eleve.last_name,
-        classe: nextProps.eleve.classe_id
+        classe_id: nextProps.eleve.classe_id
       }
     });
   }
@@ -70,7 +72,7 @@ class GestionElevesForm extends Component {
         eleve: {
           first_name: '',
           last_name: '',
-          classe: ''
+          classe_id: ''
         }
       });
     }

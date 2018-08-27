@@ -8,6 +8,7 @@ import Register from '../components/authentication/register';
 import Layout from '../hoc/Layout/Layout';
 import { hot } from 'react-hot-loader';
 import gestionDomainesTreetable from './gestion/gestion-domaines-treetable';
+import GestionEvaluation from './gestion/gestion-evaluation';
 
 class App extends Component {
   render() {
@@ -22,7 +23,7 @@ class App extends Component {
             component={gestionDomainesTreetable}
           />
           {/* Remplacer par les bons components. */}
-          <Route path="/gestion-evaluations" component={Login} />
+          <Route path="/gestion-evaluations" component={GestionEvaluation} />
           <Route path="/resultats-competences" component={Login} />
           <Route path="/login" component={Login} />
           <Route path="/register" component={Register} />

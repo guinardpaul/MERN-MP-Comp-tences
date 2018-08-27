@@ -5,14 +5,16 @@ export {
   getElevesByClasseAsync,
   getOneEleveAsync,
   updateEleveAsync
-} from './eleve';
+}
+from './eleve';
 export {
   addClasseAsync,
   deleteClasseAsync,
   getOneClasse,
   updateClasseAsync,
   getAllClassesAsync
-} from './classe';
+}
+from './classe';
 export {
   addCompetenceAsync,
   deleteCompetenceAsync,
@@ -20,11 +22,26 @@ export {
   getAllCompetencesByDomaineAsync,
   getOneCompetenceAsync,
   updateCompetenceAsync
-} from './competence';
+}
+from './competence';
 export {
   addDomaineAsync,
   deleteDomaineAsync,
   getAllDomainesAsync,
   getOneDomaineAsync,
   updateDomaineAsync
-} from './domaine';
+}
+from './domaine';
+export {
+  getAllEvaluationsAsync,
+  addEvaluationAsync,
+  updateEvaluationAsync,
+  deleteEvaluationAsync
+}
+from './evaluation';
+export {
+  getEnumCyclesAsync,
+  getEnumResultatsAsync,
+  getEnumTrimestresAsync
+}
+from './enums';

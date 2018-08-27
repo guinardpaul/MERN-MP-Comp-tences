@@ -11,12 +11,16 @@ import ClasseReducer from './store/reducer/classe.reducer';
 import EleveReducer from './store/reducer/eleve.reducer';
 import DomaineReducer from './store/reducer/domaine.reducer';
 import CompetenceReducer from './store/reducer/competence.reducer';
+import EvaluationReducer from './store/reducer/evaluation.reducer';
+import EnumReducer from './store/reducer/enum.reducer';
 
 const rootReducer = combineReducers({
   classe: ClasseReducer,
   eleve: EleveReducer,
   domaine: DomaineReducer,
-  competence: CompetenceReducer
+  competence: CompetenceReducer,
+  evaluation: EvaluationReducer,
+  enums: EnumReducer
 });
 
 const logger = store => {

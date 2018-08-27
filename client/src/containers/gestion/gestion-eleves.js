@@ -66,7 +66,7 @@ class GestionEleves extends Component {
       eleve: {
         first_name: '',
         last_name: '',
-        classe_id: this.state.selectedClasse
+        classe_id: parseInt(this.state.selectedClasse, 10)
       },
       selectedRow: null
     });
@@ -124,6 +124,7 @@ class GestionEleves extends Component {
   }
 
   handleSubmit = eleve => {
+    console.log('eleve: ', eleve);
     if (this.state.addForm && this.state.eleve.id === undefined) {
       this.props.addEleve(eleve);
       if (!this.props.loading) {
