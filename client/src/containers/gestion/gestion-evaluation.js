@@ -1,18 +1,29 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import "./gestion.css";
-import * as actionCreator from "../../store/actions/evaluation";
-import { getAllClassesAsync } from "../../store/actions/classe";
-import { getEnumTrimestresAsync } from "../../store/actions/enums";
-import EvaluationTableau from "../../components/gestion/gestion-tableau/evaluationTableau";
-import EvaluationForm from "../../components/gestion/gestion-form/evaluation-form";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import './gestion.css';
+import * as actionCreator from '../../store/actions/evaluation';
+import { getAllClassesAsync } from '../../store/actions/classe';
+import { getEnumTrimestresAsync } from '../../store/actions/enums';
+import { getAllCompetencesAsync } from '../../store/actions/competence';
+import EvaluationTableau from '../../components/gestion/gestion-tableau/evaluationTableau';
+import EvaluationForm from '../../components/gestion/gestion-form/evaluation-form';
 
 class GestionEvaluation extends Component {
   state = {
-    selectedClasse: "",
+    selectedClasse: '',
+    selectedCycle: '',
     listEvaluations: [],
-    evaluation: {},
+    listCompetences: [],
+    selectedCompetences: [],
+    evaluation: {
+      id: null,
+      description: '',
+      created_at: '',
+      classe_id: null,
+      cycle_id: null,
+      trimestre_id: ''
+    },
     addForm: false,
     updateForm: false,
     selectedRow: null
@@ -21,18 +32,33 @@ class GestionEvaluation extends Component {
   componentWillMount() {
     this.props.getAllClasses();
     this.props.getAllEvaluations();
+    this.props.getAllCompetences();
     this.props.getEnumTrimestre();
   }
 
   handleChangeSelectedClasse(event) {
+    let cycle_id = 0;
+    this.props.listClasses.forEach(c => {
+      if (c.id === parseInt(event.target.value, 10)) {
+        cycle_id = c.cycle_id;
+      }
+    });
+
+    const competenceFiltered = [...this.props.listCompetences].filter(
+      ct => ct.cycle_id === cycle_id
+    );
+
     this.setState(
       {
         selectedClasse: event.target.value,
+        selectedCycle: cycle_id,
+        listCompetences: competenceFiltered,
         addForm: false,
         updateForm: false
       },
       () => {
-        if (this.state.selectedClasse !== "") {
+        console.log(this.state.listCompetences);
+        if (this.state.selectedClasse !== '') {
           this.filterList(this.state.selectedClasse);
         }
       }
@@ -43,21 +69,95 @@ class GestionEvaluation extends Component {
     this.setState({
       listEvaluations: this.props.listEvaluations.filter(
         e => e.classe_id === parseInt(selectedClasse, 10)
-      )
+      ),
+      selectedClasse: selectedClasse,
+      evaluation: {
+        id: null,
+        description: '',
+        created_at: '',
+        classe_id: parseInt(selectedClasse, 10),
+        cycle_id: this.state.selectedCycle,
+        trimestre_id: ''
+      }
     });
   };
 
   displayAddForm = () => {
-    this.setState({ addForm: true, updateForm: false, evaluation: {} });
+    this.setState({
+      addForm: true,
+      updateForm: false,
+      evaluation: {
+        id: null,
+        description: '',
+        created_at: '',
+        classe_id: parseInt(this.state.selectedClasse, 10),
+        cycle_id: this.state.selectedCycle,
+        trimestre_id: ''
+      }
+    });
   };
 
   handleUpdate = obj => {};
   handleDelete = obj => {};
 
-  handleChangeDescription = event => {};
-  handleChangeCreatedAt = event => {};
-  handleChangeTrimestre = event => {};
-  onCancelForm = () => {};
+  handleChangeDescription = event => {
+    const prevState = { ...this.state.evaluation };
+    this.setState({
+      evaluation: {
+        ...prevState,
+        description: event.target.value
+      }
+    });
+  };
+
+  handleChangeCreatedAt = event => {
+    const prevState = { ...this.state.evaluation };
+    this.setState({
+      evaluation: {
+        ...prevState,
+        created_at: event.target.value
+      }
+    });
+  };
+
+  handleChangeTrimestre = event => {
+    const prevState = { ...this.state.evaluation };
+    this.setState({
+      evaluation: {
+        ...prevState,
+        trimestre_id: parseInt(event.target.value, 10)
+      }
+    });
+  };
+
+  handleChangeCompetence = event => {
+    const prevState = [...this.state.selectedCompetences];
+    this.setState(
+      {
+        selectedCompetences: [...prevState, event.target.value]
+      },
+      () => console.log(this.state.selectedCompetences)
+    );
+  };
+
+  handleSubmit = obj => {
+    console.log('obj:', obj);
+  };
+
+  onCancelForm = () => {
+    this.setState({
+      evaluation: {
+        id: null,
+        description: '',
+        created_at: '',
+        classe_id: parseInt(this.state.selectedClasse, 10),
+        cycle_id: this.state.selectedCycle,
+        trimestre_id: ''
+      },
+      addForm: false,
+      updateForm: false
+    });
+  };
 
   render() {
     const options = this.props.listClasses.map((c, i) => {
@@ -77,12 +177,15 @@ class GestionEvaluation extends Component {
           headingForm="Création Evaluation"
           buttonStyle="btn btn-info"
           buttonName="Créer"
-          eleve={this.state.eleve}
+          evaluation={this.state.evaluation}
           enumTrimestres={this.props.enumTrimestres}
+          listCompetences={this.state.listCompetences}
+          selectedCompetences={this.state.selectedCompetences}
           cancelForm={this.onCancelForm}
           handleChangeDescription={event => this.handleChangeDescription(event)}
           handleChangeCreatedAt={event => this.handleChangeCreatedAt(event)}
           handleChangeTrimestre={event => this.handleChangeTrimestre(event)}
+          handleChangeCompetence={event => this.handleChangeCompetence(event)}
         />
       );
     } else if (this.state.updateForm) {
@@ -93,12 +196,15 @@ class GestionEvaluation extends Component {
           headingForm="Modification Evaluation"
           buttonStyle="btn btn-warning"
           buttonName="Modifier"
-          eleve={this.state.eleve}
+          evaluation={this.state.evaluation}
           enumTrimestres={this.props.enumTrimestres}
+          listCompetences={this.state.listCompetences}
+          selectedCompetences={this.state.selectedCompetences}
           cancelForm={this.onCancelForm}
           handleChangeDescription={event => this.handleChangeDescription(event)}
           handleChangeCreatedAt={event => this.handleChangeCreatedAt(event)}
           handleChangeTrimestre={event => this.handleChangeTrimestre(event)}
+          handleChangeCompetence={event => this.handleChangeCompetence(event)}
         />
       );
     }
@@ -107,11 +213,10 @@ class GestionEvaluation extends Component {
       <div className="container header">
         <h2 className="page-header">
           Gestion évaluations
-          {this.state.selectedClasse !== "" ? (
+          {this.state.selectedClasse !== '' ? (
             <button
               className="btn btn-primary btn-circle btn-lg margin"
-              onClick={this.displayAddForm}
-            >
+              onClick={this.displayAddForm}>
               <span className="glyphicon glyphicon-plus" />
             </button>
           ) : null}
@@ -121,13 +226,12 @@ class GestionEvaluation extends Component {
           name="classe_id"
           id="classe_id"
           value={this.state.selectedClasse}
-          onChange={event => this.handleChangeSelectedClasse(event)}
-        >
+          onChange={event => this.handleChangeSelectedClasse(event)}>
           <option value="">Classe</option>
           {options}
         </select>
         <div className="col-sm-6 col-md-6 col-lg-6 col-xs-12">
-          {this.state.selectedClasse !== "" ? (
+          {this.state.selectedClasse !== '' ? (
             <EvaluationTableau
               data={this.state.listEvaluations}
               selectedRow={this.state.selectedRow}
@@ -148,7 +252,8 @@ const mapStateToProps = state => {
     loadingEvaluation: state.evaluation.loading,
     error: state.evaluation.error,
     listClasses: state.classe.listClasses,
-    enumTrimestres: state.enums.enumTrimestres
+    enumTrimestres: state.enums.enumTrimestres,
+    listCompetences: state.competence.listCompetences
   };
 };
 
@@ -157,6 +262,7 @@ const mapDispatchToProps = dispatch => {
     getAllClasses: () => dispatch(getAllClassesAsync()),
     getEnumTrimestre: () => dispatch(getEnumTrimestresAsync()),
     getAllEvaluations: () => dispatch(actionCreator.getAllEvaluationsAsync()),
+    getAllCompetences: () => dispatch(getAllCompetencesAsync()),
     addEvaluation: evaluation =>
       dispatch(actionCreator.addEvaluationAsync(evaluation)),
     updateEvaluation: evaluation =>

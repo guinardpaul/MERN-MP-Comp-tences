@@ -24,7 +24,7 @@ exports.delete = function (id, done) {
 }
 
 exports.getAll = function (done) {
-  db.get().query('SELECT e.description, e.created_at, cl.name, cy.literal as cycle_literal, t.literal as trimestre_literal FROM evaluations e INNER JOIN classes cl ON e.classe_id=cl.id INNER JOIN enum_trimestres t ON t.id=e.trimestre_id INNER JOIN enum_cycles cy ON cy.id=e.cycle_id', function (err, result) {
+  db.get().query('SELECT e.id, e.description, e.created_at, e.classe_id, cl.name, cy.literal as cycle_literal, t.literal as trimestre_literal FROM evaluations e INNER JOIN classes cl ON e.classe_id=cl.id INNER JOIN enum_trimestres t ON t.id=e.trimestre_id INNER JOIN enum_cycles cy ON cy.id=e.cycle_id', function (err, result) {
     if (err) return done(err);
     done(null, result);
   });

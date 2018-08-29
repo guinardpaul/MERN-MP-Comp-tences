@@ -3,17 +3,63 @@ import PropTypes from 'prop-types';
 
 class EvaluationForm extends Component {
   state = {
-    evaluation: {}
+    selectedCompetences: [],
+    evaluation: {
+      id: null,
+      description: '',
+      created_at: '',
+      classe_id: null,
+      cycle_id: null,
+      trimestre_id: ''
+    }
   };
 
-  componentWillMount() {
+  componentDidMount() {
     this.setState({
-      evaluation: { ...this.props.evaluation }
+      evaluation: { ...this.props.evaluation },
+      selectedCompetences: this.props.selectedCompetences
+    });
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return (
+      nextProps.evaluation.description !== this.props.evaluation.description ||
+      nextProps.evaluation.created_at !== this.props.evaluation.created_at ||
+      nextProps.evaluation.trimestre_id !==
+        this.props.evaluation.trimestre_id ||
+      nextProps.evaluation.classe_id !== this.props.evaluation.classe_id ||
+      nextProps.evaluation.cycle_id !== this.props.evaluation.cycle_id ||
+      nextProps.selectedCompetences !== this.props.selectedCompetences ||
+      this.state.evaluation.description !== nextProps.evaluation.description ||
+      this.state.evaluation.created_at !== nextProps.evaluation.created_at ||
+      this.state.evaluation.trimestre_id !==
+        nextProps.evaluation.trimestre_id ||
+      this.state.evaluation.classe_id !== nextProps.evaluation.classe_id ||
+      this.state.evaluation.cycle_id !== nextProps.evaluation.cycle_id ||
+      this.state.selectedCompetences !== nextProps.selectedCompetences ||
+      nextProps.headingForm !== this.props.headingForm ||
+      nextProps.styleForm !== this.props.styleForm
+    );
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    // Si shouldComponentUpdate => true
+    this.setState({
+      evaluation: {
+        id: nextProps.evaluation.id,
+        description: nextProps.evaluation.description,
+        created_at: nextProps.evaluation.created_at,
+        trimestre_id: nextProps.evaluation.trimestre_id,
+        classe_id: nextProps.evaluation.classe_id,
+        cycle_id: nextProps.evaluation.cycle_id
+      },
+      selectedCompetences: nextProps.selectedCompetences
     });
   }
 
   submit = event => {
     event.preventDefault();
+    this.props.onFormSubmit(this.state.evaluation);
   };
 
   render() {
@@ -66,10 +112,29 @@ class EvaluationForm extends Component {
                   name="trimestre_id"
                   id="trimestre_id"
                   value={this.state.evaluation.trimestre_id}
-                  onChange={this.props.handleChangeClasse}
+                  onChange={this.props.handleChangeTrimestre}
                   required>
                   <option value="">Trimestre</option>
                   {options}
+                </select>
+              </div>
+
+              <div className="form-group">
+                <select
+                  className="form-control"
+                  multiple="multiple"
+                  name="competence"
+                  id="competence"
+                  value={this.state.selectedCompetences}
+                  onChange={this.props.handleChangeCompetence}
+                  required>
+                  {this.props.listCompetences.map(ct => {
+                    return (
+                      <option value={ct.id} key={ct.id}>
+                        {ct.ref + ' - ' + ct.description}
+                      </option>
+                    );
+                  })}
                 </select>
               </div>
 

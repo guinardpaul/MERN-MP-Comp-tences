@@ -487,7 +487,28 @@ var data = {
         "cycle_id": 1,
         "domaine_id": 8
       }
-    ]
+    ],
+    evaluations: [{
+      "id": 1,
+      "description": "Première évaluation test_1",
+      "created_at": Date.now(),
+      "classe_id": 1,
+      "cycle_id": 1,
+      "trimestre_id": 1
+    }],
+    evaluations_competences: [{
+      "id": 1,
+      "evaluation_id": 1,
+      "competence_id": 1
+    }, {
+      "id": 2,
+      "evaluation_id": 1,
+      "competence_id": 2
+    }, {
+      "id": 3,
+      "evaluation_id": 1,
+      "competence_id": 3
+    }]
   },
 };
 

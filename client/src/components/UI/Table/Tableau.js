@@ -14,6 +14,7 @@ const tableau = props => {
     if (obj === props.selectedRow) {
       selectedRow = true;
     }
+
     return (
       <TableRow
         key={obj.id}
@@ -31,7 +32,9 @@ const tableau = props => {
 
   return (
     <table className={cssClasses.join(' ')}>
-      <caption className="caption"><h4>{props.caption}</h4></caption>
+      <caption className="caption">
+        <h4>{props.caption}</h4>
+      </caption>
       <thead>
         <tr>
           {headers}
