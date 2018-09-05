@@ -26,7 +26,6 @@ exports.delete = function (id, done) {
 
 exports.getAll = function (done) {
   db.get().query('SELECT * FROM competences ORDER BY ref ASC', function (err, result) {
-    console.log(result);
     if (err) return done(err);
     done(null, result);
   })

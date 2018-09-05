@@ -16,8 +16,8 @@ class EvaluationForm extends Component {
 
   componentDidMount() {
     this.setState({
-      evaluation: { ...this.props.evaluation },
-      selectedCompetences: this.props.selectedCompetences
+      evaluation: { ...this.props.evaluation }
+      // selectedCompetences: this.props.selectedCompetences
     });
   }
 
@@ -29,16 +29,15 @@ class EvaluationForm extends Component {
         this.props.evaluation.trimestre_id ||
       nextProps.evaluation.classe_id !== this.props.evaluation.classe_id ||
       nextProps.evaluation.cycle_id !== this.props.evaluation.cycle_id ||
-      nextProps.selectedCompetences !== this.props.selectedCompetences ||
       this.state.evaluation.description !== nextProps.evaluation.description ||
       this.state.evaluation.created_at !== nextProps.evaluation.created_at ||
       this.state.evaluation.trimestre_id !==
         nextProps.evaluation.trimestre_id ||
       this.state.evaluation.classe_id !== nextProps.evaluation.classe_id ||
       this.state.evaluation.cycle_id !== nextProps.evaluation.cycle_id ||
-      this.state.selectedCompetences !== nextProps.selectedCompetences ||
       nextProps.headingForm !== this.props.headingForm ||
-      nextProps.styleForm !== this.props.styleForm
+      nextProps.styleForm !== this.props.styleForm ||
+      nextState.selectedCompetences !== this.state.selectedCompetences
     );
   }
 
@@ -53,13 +52,30 @@ class EvaluationForm extends Component {
         classe_id: nextProps.evaluation.classe_id,
         cycle_id: nextProps.evaluation.cycle_id
       },
-      selectedCompetences: nextProps.selectedCompetences
+      selectedCompetences: nextState.selectedCompetences
     });
   }
+
+  handleChangeCompetence = event => {
+    const selectedComp = parseInt(event.target.value, 10);
+    const prevState = [...this.state.selectedCompetences];
+    if (prevState.includes(selectedComp)) {
+      prevState.splice(prevState.indexOf(selectedComp));
+    } else {
+      prevState.push(selectedComp);
+    }
+    this.setState(
+      {
+        selectedCompetences: prevState
+      },
+      () => console.log(this.state.selectedCompetences)
+    );
+  };
 
   submit = event => {
     event.preventDefault();
     this.props.onFormSubmit(this.state.evaluation);
+    this.props.handleChangeCompetence(this.state.selectedCompetences);
   };
 
   render() {
@@ -126,7 +142,7 @@ class EvaluationForm extends Component {
                   name="competence"
                   id="competence"
                   value={this.state.selectedCompetences}
-                  onChange={this.props.handleChangeCompetence}
+                  onChange={event => this.handleChangeCompetence(event)}
                   required>
                   {this.props.listCompetences.map(ct => {
                     return (

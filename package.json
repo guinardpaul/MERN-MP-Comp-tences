@@ -27,6 +27,7 @@
   },
   "homepage": "https://github.com/guinardpaul/MP-Competences#readme",
   "dependencies": {
+    "async": "^2.6.1",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.17.2",
     "compression": "^1.7.1",
@@ -36,9 +37,11 @@
     "mongoose": "^4.11.1",
     "morgan": "^1.8.2",
     "mysql": "^2.15.0",
+    "mysql2": "^1.6.1",
     "nodemailer": "^4.3.1",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
+    "sequelize": "^4.38.0",
     "serve-favicon": "^2.4.3"
   },
   "devDependencies": {

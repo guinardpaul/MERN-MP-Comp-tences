@@ -97,7 +97,13 @@ class GestionEvaluation extends Component {
     });
   };
 
-  handleUpdate = obj => {};
+  handleUpdate = obj => {
+    this.setState({
+      evaluation: obj,
+      updateForm: true
+    });
+  };
+
   handleDelete = obj => {};
 
   handleChangeDescription = event => {
@@ -130,11 +136,10 @@ class GestionEvaluation extends Component {
     });
   };
 
-  handleChangeCompetence = event => {
-    const prevState = [...this.state.selectedCompetences];
+  handleChangeCompetence = selectedCompetences => {
     this.setState(
       {
-        selectedCompetences: [...prevState, event.target.value]
+        selectedCompetences: [...selectedCompetences]
       },
       () => console.log(this.state.selectedCompetences)
     );
@@ -185,7 +190,7 @@ class GestionEvaluation extends Component {
           handleChangeDescription={event => this.handleChangeDescription(event)}
           handleChangeCreatedAt={event => this.handleChangeCreatedAt(event)}
           handleChangeTrimestre={event => this.handleChangeTrimestre(event)}
-          handleChangeCompetence={event => this.handleChangeCompetence(event)}
+          handleChangeCompetence={this.handleChangeCompetence}
         />
       );
     } else if (this.state.updateForm) {
