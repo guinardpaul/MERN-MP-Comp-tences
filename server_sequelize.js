@@ -32,8 +32,8 @@ const app = express();
 
 // set routes
 // const auth = require('./app/mysql_routes/authentication')(router, passport);
-// const classe = require('./app/mysql_routes/classes')(router);
-// const eleve = require('./app/mysql_routes/eleves')(router);
+const classe = require('./app/sequelize_routes/classe')(router);
+const eleve = require('./app/sequelize_routes/eleve')(router);
 // const competence = require('./app/mysql_routes/competences')(router);
 // const domaine = require('./app/mysql_routes/domaines')(router);
 // const evaluation = require('./app/mysql_routes/evaluations')(router);
@@ -66,8 +66,8 @@ app.use(express.static(path.join(__dirname, config.static_path)));
 
 // use routes
 // app.use('/api/auth', auth);
-// app.use('/api', classe);
-// app.use('/api', eleve);
+app.use('/api', classe);
+app.use('/api', eleve);
 // app.use('/api', competence);
 // app.use('/api', domaine);
 // app.use('/api', evaluation);

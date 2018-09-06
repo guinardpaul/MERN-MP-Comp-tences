@@ -28,7 +28,7 @@ const Enum_trimestres = sequelize.define('enum_trimestres', {
   timestamps: false
 });
 
-const Classes = sequelize.define('classe', {
+const Classes = sequelize.define('classes', {
   name: {
     type: Sequelize.STRING
   },
@@ -717,3 +717,13 @@ sequelize
   }).catch(err => {
     console.log('err: ', err);
   });
+
+module.exports = {
+  Classes,
+  Eleves,
+  Evaluations,
+  Resultats,
+  Enum_cycles,
+  Enum_resultats,
+  Enum_trimestres
+};
