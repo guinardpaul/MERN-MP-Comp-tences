@@ -60,10 +60,11 @@ class EvaluationForm extends Component {
     const selectedComp = parseInt(event.target.value, 10);
     const prevState = [...this.state.selectedCompetences];
     if (prevState.includes(selectedComp)) {
-      prevState.splice(prevState.indexOf(selectedComp));
+      prevState.splice(prevState.indexOf(selectedComp), 1);
     } else {
       prevState.push(selectedComp);
     }
+
     this.setState(
       {
         selectedCompetences: prevState

@@ -6,9 +6,16 @@ const tableRow = props => {
   const cssRow = props.selectedRow ? 'selectedRow' : null;
 
   const tableItems = props.columns.map(header => {
+    let item = props.item[header.accessor];
+    if (
+      props.item[header.accessor] !== null &&
+      typeof props.item[header.accessor] === 'object'
+    ) {
+      item = props.item[header.accessor][header.nested];
+    }
     return (
-      <td className={cssRow} key={props.item[header.accessor]}>
-        {props.item[header.accessor]}
+      <td className={cssRow} key={item}>
+        {item}
       </td>
     );
   });

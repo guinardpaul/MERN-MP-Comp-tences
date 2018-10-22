@@ -31,13 +31,14 @@ sequelize
 const app = express();
 
 // set routes
-// const auth = require('./app/mysql_routes/authentication')(router, passport);
+const auth = require('./app/sequelize_routes/authentication')(router, passport);
 const classe = require('./app/sequelize_routes/classe')(router);
 const eleve = require('./app/sequelize_routes/eleve')(router);
-// const competence = require('./app/mysql_routes/competences')(router);
-// const domaine = require('./app/mysql_routes/domaines')(router);
-// const evaluation = require('./app/mysql_routes/evaluations')(router);
-// const enums = require('./app/mysql_routes/enums')(router);
+const competence = require('./app/sequelize_routes/competence')(router);
+const domaine = require('./app/sequelize_routes/domaine')(router);
+const evaluation = require('./app/sequelize_routes/evaluations')(router);
+const enums = require('./app/sequelize_routes/enums')(router);
+const resultat = require('./app/sequelize_routes/resultat')(router);
 
 // MIDDLEWARE
 // log into console (dev)
@@ -65,13 +66,14 @@ app.use(passport.initialize());
 app.use(express.static(path.join(__dirname, config.static_path)));
 
 // use routes
-// app.use('/api/auth', auth);
+app.use('/api/auth', auth);
 app.use('/api', classe);
 app.use('/api', eleve);
-// app.use('/api', competence);
-// app.use('/api', domaine);
-// app.use('/api', evaluation);
-// app.use('/api/enums', enums);
+app.use('/api', competence);
+app.use('/api', domaine);
+app.use('/api', evaluation);
+app.use('/api/enums', enums);
+app.use('/api', resultat);
 
 // allow to refresh page
 // send back to dist/index.html

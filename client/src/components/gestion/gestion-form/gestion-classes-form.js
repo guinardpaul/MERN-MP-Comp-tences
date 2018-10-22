@@ -1,10 +1,10 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { ENUM_CYCLES } from "../../../models/enums";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { ENUM_CYCLES } from '../../../models/enums';
 
 class GestionClassesForm extends Component {
   state = {
-    classe: { id: null, name: "", cycle_id: "" }
+    classe: { id: null, name: '', enumCycleId: '' }
   };
 
   componentDidMount() {
@@ -20,9 +20,9 @@ class GestionClassesForm extends Component {
   shouldComponentUpdate(nextProps, nextState) {
     return (
       nextProps.classe.name !== this.props.classe.name ||
-      nextProps.classe.cycle_id !== this.props.classe.cycle_id ||
+      nextProps.classe.enumCycleId !== this.props.classe.enumCycleId ||
       this.state.classe.name !== nextProps.classe.name ||
-      this.state.classe.cycle_id !== nextProps.classe.cycle_id
+      this.state.classe.enumCycleId !== nextProps.classe.enumCycleId
     );
   }
 
@@ -32,7 +32,7 @@ class GestionClassesForm extends Component {
       classe: {
         id: nextProps.classe.id,
         name: nextProps.classe.name,
-        cycle_id: nextProps.classe.cycle_id
+        enumCycleId: nextProps.classe.enumCycleId
       }
     });
   }
@@ -43,10 +43,10 @@ class GestionClassesForm extends Component {
 
   addClasse = event => {
     event.preventDefault();
-    if (this.state.classe.name !== "" && this.state.classe.cycle_id !== "") {
+    if (this.state.classe.name !== '' && this.state.classe.enumCycleId !== '') {
       this.props.onFormSubmit(this.state.classe);
       this.setState({
-        classe: { id: null, name: "", cycle_id: "" }
+        classe: { id: null, name: '', enumCycleId: '' }
       });
     }
   };
@@ -88,12 +88,11 @@ class GestionClassesForm extends Component {
               <div className="form-group">
                 <select
                   className="form-control"
-                  name="cycle_id"
-                  id="cycle_id"
-                  value={this.state.classe.cycle_id}
+                  name="enumCycleId"
+                  id="enumCycleId"
+                  value={this.state.classe.enumCycleId}
                   onChange={this.props.handleChangeCycle}
-                  required
-                >
+                  required>
                   <option value="">Cycles</option>
                   {options}
                 </select>
@@ -105,8 +104,7 @@ class GestionClassesForm extends Component {
                 </button>
                 <button
                   onClick={this.props.cancelForm}
-                  className="btn btn-default"
-                >
+                  className="btn btn-default">
                   Annuler
                 </button>
               </div>

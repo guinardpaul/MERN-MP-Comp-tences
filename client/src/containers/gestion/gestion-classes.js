@@ -1,12 +1,14 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import Tableau from "../../components/UI/Table/Tableau";
-import ClasseTableau from "../../components/gestion/gestion-tableau/classeTableau";
-import GestionClassesForm from "../../components/gestion/gestion-form/gestion-classes-form";
-import "./gestion.css";
-import Spinner from "../../components/UI/Spinner/Spinner";
-import * as actionCreator from "../../store/actions/index";
-import { connect } from "react-redux";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import Tableau from '../../components/UI/Table/Tableau';
+import ClasseTableau from '../../components/gestion/gestion-tableau/classeTableau';
+import GestionClassesForm from '../../components/gestion/gestion-form/gestion-classes-form';
+import './gestion.css';
+import Spinner from '../../components/UI/Spinner/Spinner';
+import * as actionCreator from '../../store/actions/index';
+import { connect } from 'react-redux';
+import Modal from '../../components/UI/Modal/Modal';
+import ConfirmDelete from '../../components/gestion/gestion-form/confirm-delete';
 
 class GestionClasses extends Component {
   state = {
@@ -15,7 +17,8 @@ class GestionClasses extends Component {
     addForm: false,
     updateForm: false,
     consulterButton: false,
-    selectedRow: null
+    selectedRow: null,
+    confirmDelete: false
   };
 
   componentDidMount() {
@@ -27,15 +30,15 @@ class GestionClasses extends Component {
       addForm: true,
       updateForm: false,
       classe: {
-        name: "",
-        cycle_id: ""
+        name: '',
+        enumCycleId: ''
       },
       selectedRow: null
     });
   };
 
   handleSubmit = obj => {
-    console.log("obj: ", obj);
+    console.log('obj: ', obj);
     if (this.state.addForm) {
       this.props.addClasse(obj);
       if (!this.props.loading) {
@@ -69,12 +72,21 @@ class GestionClasses extends Component {
   };
 
   handleDelete = obj => {
-    this.props.deleteClasse(obj.id);
+    this.setState({ confirmDelete: true, classe: obj });
+  };
+
+  cancelConfirmDelete = () => {
+    this.setState({ confirmDelete: false, classe: {} });
+  };
+
+  deleteClasse = () => {
+    this.props.deleteClasse(this.state.classe.id);
+    this.setState({ confirmDelete: false, classe: {} });
   };
 
   handleRedirectToEleveList = obj => {
     this.props.history.push({
-      pathname: "/gestion-eleves",
+      pathname: '/gestion-eleves',
       state: {
         selectedClasse: obj
       }
@@ -103,19 +115,18 @@ class GestionClasses extends Component {
       classe: {
         id: newState.id,
         name: event.target.value,
-        cycle_id: newState.cycle_id
+        enumCycleId: newState.enumCycleId
       }
     });
   };
 
   handleChangeCycle = event => {
     const newState = this.state.classe;
-    console.log(event.target.value);
     this.setState({
       classe: {
         id: newState.id,
         name: newState.name,
-        cycle_id: parseInt(event.target.value, 10)
+        enumCycleId: parseInt(event.target.value, 10)
       }
     });
   };
@@ -184,11 +195,16 @@ class GestionClasses extends Component {
           Gestion classes
           <button
             className="btn btn-primary btn-circle btn-lg margin"
-            onClick={this.displayAddForm}
-          >
+            onClick={this.displayAddForm}>
             <span className="glyphicon glyphicon-plus" />
           </button>
         </h2>
+        <ConfirmDelete
+          cancelConfirmDelete={this.cancelConfirmDelete}
+          showConfirmDelete={this.state.confirmDelete}
+          objectName={this.state.classe.name}
+          onDelete={this.deleteClasse}
+        />
         <div className="col-sm-6 col-md-6 col-lg-6 col-xs-12">{table}</div>
         <div className="col-sm-6 col-md-6 col-lg-6 col-xs-12">{classeForm}</div>
       </div>

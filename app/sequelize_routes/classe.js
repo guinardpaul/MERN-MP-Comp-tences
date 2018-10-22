@@ -1,4 +1,5 @@
 const Classes = require('../sequelize_models/models').Classes;
+const Enum_cycles = require('../sequelize_models/models').Enum_cycles;
 
 module.exports = router => {
   /**
@@ -6,7 +7,11 @@ module.exports = router => {
    */
   router.get('/classes', (req, res, next) => {
     Classes.findAll({
-        attributes: ['id', 'name', 'cycle_id']
+        // attributes: ['id', 'name', 'cycle_id'],
+        include: [{
+          model: Enum_cycles,
+          attributes: ['literal']
+        }]
       })
       .then(result => {
         console.log(result);
@@ -70,16 +75,27 @@ module.exports = router => {
         success: false,
         message: 'name not provided'
       });
-    } else if (!req.body.cycle_id) {
+    } else if (!req.body.enumCycleId) {
       return res.status(400).json({
         success: false,
-        message: 'cycle_id not provided'
+        message: 'enumCycleId not provided'
       });
     } else {
       Classes.create(req.body)
         .then(result => {
           console.log('result: ', result);
-          res.status(200).json(result);
+          Classes.findById(result.dataValues.id, {
+            include: [{
+              model: Enum_cycles,
+              attributes: ['literal']
+            }]
+          }).then(classe => {
+            console.log('classe: ', classe);
+            res.status(200).json(classe);
+          }).catch(err => {
+            console.log('err: ', err);
+            res.status(400).json(err);
+          })
         })
         .catch(err => {
           console.log('err: ', err);
@@ -110,7 +126,18 @@ module.exports = router => {
         })
         .then(result => {
           console.log('result: ', result);
-          res.status(201).json(result);
+          Classes.findById(req.params.id, {
+            include: [{
+              model: Enum_cycles,
+              attributes: ['literal']
+            }]
+          }).then(classe => {
+            console.log('classe: ', classe);
+            res.status(200).json(classe);
+          }).catch(err => {
+            console.log('err: ', err);
+            res.status(400).json(err);
+          })
         })
         .catch(err => {
           console.log('err: ', err);

@@ -84,8 +84,15 @@ module.exports = router => {
     } else {
       Eleves.create(req.body)
         .then(result => {
-          console.log('result: ', result);
-          res.status(200).json(result);
+          Eleves.findById(result.dataValues.id)
+            .then(eleve => {
+              console.log('eleve: ', eleve);
+              res.status(200).json(eleve);
+            })
+            .catch(err => {
+              console.log('err: ', err);
+              res.status(400).json(err);
+            });
         }).catch(err => {
           console.log('err: ', err);
           res.status(400).json(err);
@@ -114,8 +121,15 @@ module.exports = router => {
           }
         })
         .then(result => {
-          console.log('result: ', result);
-          res.status(200).json(result);
+          Eleves.findById(req.params.id)
+            .then(eleve => {
+              console.log('eleve: ', eleve);
+              res.status(200).json(eleve);
+            })
+            .catch(err => {
+              console.log('err: ', err);
+              res.status(400).json(err);
+            });
         }).catch(err => {
           console.log('err: ', err);
           res.status(400).json(err);

@@ -227,6 +227,29 @@ class TreeTable extends Component {
     return itemRows;
   }
 
+  getActionButtonInfos = () => {
+    let infosButton = '#';
+    if (this.state.expandedRows.length > 0) {
+      infosButton = (
+        <button
+          className="btn btn-default"
+          onClick={() => this.handleAllRowClick()}>
+          -
+        </button>
+      );
+    }
+
+    return infosButton;
+  };
+
+  handleAllRowClick = () => {
+    if (this.state.expandedRows.length > 0) {
+      this.setState({
+        expandedRows: []
+      });
+    }
+  };
+
   render() {
     let allRowItems = [];
     this.props.data.forEach(item => {
@@ -234,11 +257,13 @@ class TreeTable extends Component {
       allRowItems = allRowItems.concat(itemPerRow);
     });
 
+    let infosButton = this.getActionButtonInfos();
+
     return (
       <table className="table table-hover">
         <thead>
           <tr>
-            <th className="col-md-1">#</th>
+            <th className="col-md-1">{infosButton}</th>
             <th className="col-md-1">Ref</th>
             <th className="col-md-9">Description</th>
             {this.props.editionMode ? (

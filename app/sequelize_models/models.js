@@ -3,7 +3,8 @@ const sequelize = require('../sequelize_db');
 
 const Enum_cycles = sequelize.define('enum_cycles', {
   literal: {
-    type: Sequelize.STRING
+    type: Sequelize.STRING,
+    allowNull: false
   }
 }, {
   timestamps: false
@@ -11,10 +12,12 @@ const Enum_cycles = sequelize.define('enum_cycles', {
 
 const Enum_resultats = sequelize.define('enum_resultats', {
   literal: {
-    type: Sequelize.STRING
+    type: Sequelize.STRING,
+    allowNull: false
   },
   value: {
-    type: Sequelize.INTEGER
+    type: Sequelize.INTEGER,
+    allowNull: false
   }
 }, {
   timestamps: false
@@ -22,7 +25,8 @@ const Enum_resultats = sequelize.define('enum_resultats', {
 
 const Enum_trimestres = sequelize.define('enum_trimestres', {
   literal: {
-    type: Sequelize.STRING
+    type: Sequelize.STRING,
+    allowNull: false
   }
 }, {
   timestamps: false
@@ -30,28 +34,35 @@ const Enum_trimestres = sequelize.define('enum_trimestres', {
 
 const Classes = sequelize.define('classes', {
   name: {
-    type: Sequelize.STRING
+    type: Sequelize.STRING,
+    allowNull: false
   },
-  cycle_id: {
-    type: Sequelize.INTEGER,
-    references: {
-      // This is a reference to another model
-      model: Enum_cycles,
-      // This is the column name of the referenced model
-      key: 'id',
-    }
-  }
+  // cycle_id: {
+  //   type: Sequelize.INTEGER,
+  //   allowNull: false,
+  //   references: {
+  //     // This is a reference to another model
+  //     model: Enum_cycles,
+  //     // This is the column name of the referenced model
+  //     key: 'id'
+  //   }
+  // }
 });
+
+Classes.belongsTo(Enum_cycles);
 
 const Eleves = sequelize.define('eleves', {
   first_name: {
-    type: Sequelize.STRING
+    type: Sequelize.STRING,
+    allowNull: false
   },
   last_name: {
-    type: Sequelize.STRING
+    type: Sequelize.STRING,
+    allowNull: false
   },
   classe_id: {
     type: Sequelize.INTEGER,
+    allowNull: false,
     references: {
       model: Classes,
       key: 'id'
@@ -61,13 +72,12 @@ const Eleves = sequelize.define('eleves', {
 
 const Evaluations = sequelize.define('evaluations', {
   description: {
-    type: Sequelize.STRING
-  },
-  created_at: {
-    type: Sequelize.STRING
+    type: Sequelize.STRING,
+    allowNull: false
   },
   classe_id: {
     type: Sequelize.INTEGER,
+    allowNull: false,
     references: {
       model: Classes,
       key: 'id'
@@ -75,6 +85,7 @@ const Evaluations = sequelize.define('evaluations', {
   },
   cycle_id: {
     type: Sequelize.INTEGER,
+    allowNull: false,
     references: {
       model: Enum_cycles,
       key: 'id'
@@ -82,6 +93,7 @@ const Evaluations = sequelize.define('evaluations', {
   },
   trimestre_id: {
     type: Sequelize.INTEGER,
+    allowNull: false,
     references: {
       model: Enum_trimestres,
       key: 'id'
@@ -91,13 +103,16 @@ const Evaluations = sequelize.define('evaluations', {
 
 const Domaines = sequelize.define('domaines', {
   ref: {
-    type: Sequelize.STRING
+    type: Sequelize.STRING,
+    allowNull: false
   },
   description: {
-    type: Sequelize.STRING
+    type: Sequelize.STRING,
+    allowNull: false
   },
   cycle_id: {
     type: Sequelize.INTEGER,
+    allowNull: false,
     references: {
       model: Enum_cycles,
       key: 'id'
@@ -114,13 +129,16 @@ const Domaines = sequelize.define('domaines', {
 
 const Competences = sequelize.define('competences', {
   ref: {
-    type: Sequelize.STRING
+    type: Sequelize.STRING,
+    allowNull: false
   },
   description: {
-    type: Sequelize.STRING
+    type: Sequelize.STRING,
+    allowNull: false
   },
   cycle_id: {
     type: Sequelize.INTEGER,
+    allowNull: false,
     references: {
       model: Enum_cycles,
       key: 'id'
@@ -136,14 +154,9 @@ const Competences = sequelize.define('competences', {
 });
 
 const Resultats = sequelize.define('resultats', {
-  created_at: {
-    type: Sequelize.STRING
-  },
-  updated_at: {
-    type: Sequelize.STRING
-  },
   eleve_id: {
     type: Sequelize.INTEGER,
+    allowNull: false,
     references: {
       model: Eleves,
       key: 'id'
@@ -151,6 +164,7 @@ const Resultats = sequelize.define('resultats', {
   },
   evaluation_id: {
     type: Sequelize.INTEGER,
+    allowNull: false,
     references: {
       model: Evaluations,
       key: 'id'
@@ -165,10 +179,12 @@ const Evaluations_competences = sequelize.define('evaluations_competences', {
     autoIncrement: true
   },
   evaluation_id: {
-    type: Sequelize.INTEGER
+    type: Sequelize.INTEGER,
+    allowNull: false
   },
   competence_id: {
-    type: Sequelize.INTEGER
+    type: Sequelize.INTEGER,
+    allowNull: false
   }
 });
 
@@ -186,6 +202,24 @@ Competences.belongsToMany(Evaluations, {
   },
   foreignKey: 'competence_id',
   constraints: true
+});
+
+const Users = sequelize.define('auth_users', {
+  first_name: {
+    type: Sequelize.STRING
+  },
+  last_name: {
+    type: Sequelize.STRING
+  },
+  email: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    unique: 'emailIndex'
+  },
+  password: {
+    type: Sequelize.STRING,
+    allowNull: false
+  }
 });
 
 // init tables and data on server load 
@@ -237,57 +271,57 @@ sequelize
       Classes.bulkCreate([{
           id: 1,
           name: "6_G5",
-          cycle_id: 1
+          enumCycleId: 1
         },
         {
           id: 2,
           name: "6_G4",
-          cycle_id: 1
+          enumCycleId: 1
         },
         {
           id: 3,
           name: "6_G3",
-          cycle_id: 1
+          enumCycleId: 1
         },
         {
           id: 4,
           name: "6_G2",
-          cycle_id: 1
+          enumCycleId: 1
         },
         {
           id: 5,
           name: "6_G1",
-          cycle_id: 1
+          enumCycleId: 1
         },
         {
           id: 6,
           name: "5_G3",
-          cycle_id: 2
+          enumCycleId: 2
         },
         {
           id: 7,
           name: "5_G4",
-          cycle_id: 2
+          enumCycleId: 2
         },
         {
           id: 8,
           name: "301",
-          cycle_id: 2
+          enumCycleId: 2
         },
         {
           id: 9,
           name: "302",
-          cycle_id: 2
+          enumCycleId: 2
         },
         {
           id: 10,
           name: "303",
-          cycle_id: 2
+          enumCycleId: 2
         },
         {
           id: 11,
           name: "304",
-          cycle_id: 2
+          enumCycleId: 2
         }
       ]);
 
@@ -721,9 +755,12 @@ sequelize
 module.exports = {
   Classes,
   Eleves,
+  Domaines,
+  Competences,
   Evaluations,
   Resultats,
   Enum_cycles,
   Enum_resultats,
-  Enum_trimestres
+  Enum_trimestres,
+  Users
 };

@@ -9,7 +9,8 @@ const classeTableau = props => {
     },
     {
       header: 'Cycle',
-      accessor: 'literal'
+      accessor: 'enum_cycle',
+      nested: 'literal'
     }
   ];
   const tableStyle = 'table table-striped';

@@ -124,6 +124,7 @@ export const updateEleveAsync = eleve => {
     axios
       .put('/eleves/' + eleve.id, eleve)
       .then(res => {
+        console.log('res: ', res);
         dispatch(updateEleve(res.data));
       })
       .catch(err => {
