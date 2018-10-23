@@ -92,6 +92,7 @@ class GestionCompetencesForm extends Component {
                   id="ref"
                   value={this.state.competence.ref}
                   onChange={this.props.handleChangeRefCT}
+                  placeholder="CT-..."
                   autoFocus
                   required
                 />
@@ -106,6 +107,7 @@ class GestionCompetencesForm extends Component {
                   id="description"
                   value={this.state.competence.description}
                   onChange={this.props.handleChangeDescriptionCT}
+                  placeholder="description..."
                   required
                 />
               </div>
@@ -127,9 +129,9 @@ class GestionCompetencesForm extends Component {
                     .map(d => {
                       return (
                         <option key={d.id} value={d.id}>
-                          {d.ref !== 'null'
+                          {d.ref !== ''
                             ? d.ref + ' - ' + d.description
-                            : 'Sous-domaine ' + d.description}
+                            : 'Sous-domaine - ' + d.description}
                         </option>
                       );
                     })}

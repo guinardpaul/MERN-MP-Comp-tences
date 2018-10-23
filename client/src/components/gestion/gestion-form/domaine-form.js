@@ -40,6 +40,8 @@ class DomaineForm extends Component {
   }
 
   componentWillUpdate(nextProps, nextState) {
+    console.log('componentWillUpdate');
+
     // Si shouldComponentUpdate => true
     let nextSousDomaineId = '';
     if (nextProps.domaine.sous_domaine_id !== null) {
@@ -63,6 +65,42 @@ class DomaineForm extends Component {
     this.props.onFormSubmit(this.state.domaine);
   };
 
+  handleChangeRef = event => {
+    const prevState = { ...this.state.domaine };
+    this.setState({
+      domaine: {
+        ...prevState,
+        ref: event.target.value
+      }
+    });
+  };
+
+  handleChangeDescription = event => {
+    const prevState = { ...this.state.domaine };
+    this.setState(
+      {
+        domaine: {
+          id: prevState.id,
+          ref: prevState.ref,
+          description: event.target.value,
+          cycle_id: prevState.cycle_id,
+          sous_domaine_id: prevState.sous_domaine_id
+        }
+      },
+      () => console.log(this.state.domaine)
+    );
+  };
+
+  handleChangeSousDomaineID = event => {
+    const prevState = { ...this.state.domaine };
+    this.setState({
+      domaine: {
+        ...prevState,
+        sous_domaine_id: event.target.value
+      }
+    });
+  };
+
   render() {
     return (
       <div className="panel-group">
@@ -80,6 +118,7 @@ class DomaineForm extends Component {
                     id="ref"
                     value={this.state.domaine.ref}
                     onChange={this.props.handleChangeRef}
+                    placeholder="D-..."
                     autoFocus
                     required
                   />
@@ -95,6 +134,7 @@ class DomaineForm extends Component {
                   id="description"
                   value={this.state.domaine.description}
                   onChange={this.props.handleChangeDescription}
+                  placeholder="description..."
                   required
                 />
               </div>

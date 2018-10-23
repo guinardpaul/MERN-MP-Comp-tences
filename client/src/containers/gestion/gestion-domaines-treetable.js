@@ -117,33 +117,45 @@ class GestionDomainesTreeTable extends Component {
   }
 
   handleChangeRef = event => {
-    const prevState = { ...this.state.domaine };
-    this.setState({
-      domaine: {
-        ...prevState,
-        ref: event.target.value
-      }
-    });
+    if (this.state.domaineForm) {
+      const prevState = { ...this.state.domaine };
+      this.setState({
+        domaine: {
+          ...prevState,
+          ref: event.target.value
+        }
+      });
+    } else {
+      console.log("### Erreur : aucun form n'était sélectionné correctement.");
+    }
   };
 
   handleChangeDescription = event => {
-    const prevState = { ...this.state.domaine };
-    this.setState({
-      domaine: {
-        ...prevState,
-        description: event.target.value
-      }
-    });
+    if (this.state.domaineForm || this.state.sousDomaineForm) {
+      const prevState = { ...this.state.domaine };
+      this.setState({
+        domaine: {
+          ...prevState,
+          description: event.target.value
+        }
+      });
+    } else {
+      console.log("### Erreur : aucun form n'était sélectionné correctement.");
+    }
   };
 
   handleChangeSousDomaineID = event => {
-    const prevState = { ...this.state.domaine };
-    this.setState({
-      domaine: {
-        ...prevState,
-        sous_domaine_id: parseInt(event.target.value, 10)
-      }
-    });
+    if (this.state.sousDomaineForm) {
+      const prevState = { ...this.state.domaine };
+      this.setState({
+        domaine: {
+          ...prevState,
+          sous_domaine_id: parseInt(event.target.value, 10)
+        }
+      });
+    } else {
+      console.log("### Erreur : aucun form n'était sélectionné correctement.");
+    }
   };
 
   handleChangeRefCT = event => {
@@ -215,12 +227,12 @@ class GestionDomainesTreeTable extends Component {
     console.log('obj deleted: ', obj);
   };
 
-  addDomaine() {
-    console.log(this.state.domaine);
+  addDomaine(domaine) {
+    console.log(domaine);
   }
 
-  addCompetence() {
-    console.log(this.state.competence);
+  addCompetence(competence) {
+    console.log(competence);
   }
 
   cancelForm = () => {
